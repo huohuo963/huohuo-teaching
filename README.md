@@ -2,7 +2,7 @@
 
 初中数学各章节的交互模型站点。每章一个**单文件 HTML**，可离线运行，部署在 GitHub Pages。
 
-- 站点（部署后）：<https://huohuo963.github.io/huohuo-teaching/>
+- 线上站点（已部署）：<https://huohuo963.github.io/huohuo-teaching/>
 - 仓库名：`huohuo-teaching`（站点标题与页面品牌为「火火教学」；仓库用英文名是因为中文仓库名会让 Pages 链接变成 `%E7%81%AB%E7%81%AB%E6%95%99%E5%AD%A6` 这类编码串）
 
 ## 目录结构
@@ -46,6 +46,8 @@
 如需与线上行为完全一致，在项目根目录执行 `python -m http.server 8080`，访问 <http://localhost:8080>。
 
 ## 发布到 GitHub Pages
+
+> 本机已登录 `huohuo963`，并在 `C:\Users\24178\.local\gh-cli\bin\gh.exe` 放有便携版 GitHub CLI；仓库已创建、Pages 已开启。日常只需提交并推送。
 
 1. 登录 GitHub CLI（只需做一次）：
 
