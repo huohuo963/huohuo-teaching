@@ -1,0 +1,7 @@
+# IDE 预览缓存，不纳入站点
+.trae-html-share-packages/
+*.zip
+
+# 系统杂项
+Thumbs.db
+.DS_Store
