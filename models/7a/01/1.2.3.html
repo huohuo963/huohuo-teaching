@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2.3 相反数 · 七上 第1章 有理数</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e; --ok: #4f6b3a;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1060px; margin: 0 auto; padding: 26px 22px 70px; }
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 18px 0 0; padding: 12px 16px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 18px; }
+
+  section { margin-top: 38px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 18px; margin-top: 16px; align-items: start; }
+  .board { padding: 8px 6px 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .board svg { display: block; width: 100%; height: auto; touch-action: pan-y; cursor: grab; }
+  .board svg:active { cursor: grabbing; }
+  .board__cap { padding: 4px 14px 10px; font-size: 12.5px; color: var(--ink3); }
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 16px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .control__hint { margin: 4px 0 0; font-size: 11.5px; color: var(--ink3); }
+  .toggle { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13.5px; color: var(--ink2); min-height: 32px; }
+  .readout { margin: 14px 0 0; display: grid; gap: 8px; }
+  .readout div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--line-soft); font-size: 13px; color: var(--ink2); }
+  .readout dd { margin: 0; font-family: var(--serif); font-size: 18px; color: var(--ink); }
+
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+  .definition { font-family: var(--serif); font-size: 27px; line-height: 1.75; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 46px; }
+  .seg-note b { color: var(--brand-deep); }
+
+  .simplifier { margin-top: 16px; padding: 16px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .simplifier__expr { font-family: var(--serif); font-size: 30px; letter-spacing: .04em; min-height: 46px; }
+  .simplifier__steps { margin-top: 10px; font-size: 14px; color: var(--ink2); min-height: 48px; }
+  .simplifier__steps span { display: block; padding: 4px 0 4px 12px; border-left: 2px solid var(--line); margin-top: 6px; }
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .chip { padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; cursor: pointer; min-height: 38px; }
+  .chip:hover { border-color: var(--brand); color: var(--brand); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+
+  .self-list { margin-top: 16px; display: grid; gap: 12px; }
+  .self { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .self__q { margin: 0; font-size: 15px; font-weight: 600; }
+  .self textarea { display: block; width: 100%; min-height: 64px; margin-top: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fffdf8; font: inherit; font-size: 14px; resize: vertical; }
+  .self textarea:focus { border-color: var(--brand); outline: none; }
+  .self__row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+  .ref { display: none; margin-top: 12px; padding: 12px 14px; background: #fbf5e8; border-radius: 8px; font-size: 13.5px; color: var(--ink2); }
+  .ref.is-open { display: block; }
+  .self-note { margin-top: 12px; font-size: 12px; color: var(--ink3); }
+
+  .conclusion { margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 17.5px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 8px !important; font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+
+  .spark { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .spark > summary { padding: 14px 16px; cursor: pointer; list-style: none; font-size: 14px; color: var(--brand-deep); min-height: 44px; }
+  .spark > summary::-webkit-details-marker { display: none; }
+  .spark__body { padding: 0 16px 16px; font-size: 13.5px; color: var(--ink2); }
+  .spark__step { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); }
+
+  footer { border-top: 1px solid var(--line); background: var(--paper); }
+  .foot-line { max-width: 1060px; margin: 0 auto; padding: 16px 22px; display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 12px; color: var(--ink3); }
+
+  .teacher { position: fixed; top: 0; right: 0; z-index: 60; width: 400px; max-width: 92vw; height: 100vh; overflow: auto; padding: 20px 22px 40px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -8px 0 24px rgba(43,36,25,.12); transform: translateX(102%); transition: transform .24s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 13px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+
+  body.is-projector { font-size: 19px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 44px; }
+  body.is-projector h2 { font-size: 29px; }
+  body.is-projector .goal { font-size: 23px; }
+  body.is-projector .definition { font-size: 34px; }
+  body.is-projector .readout dd { font-size: 22px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 840px) {
+    .layout { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 60px; }
+    h1 { font-size: 28px; }
+    .definition { font-size: 23px; }
+    .teacher { width: 100vw; }
+    body.is-projector { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .teacher { transition: none; } html { scroll-behavior: auto; } }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .chip-row { display: none !important; }
+    body { background: #fff; }
+    .card, .mis, .self, .board { break-inside: avoid; }
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#ch=1" target="_top">← 返回第 1 章目录</a>
+  <span class="bar__crumb">七上 · 第 1 章 有理数 · 1.2.3</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">第一章 · 1.2 有理数及其大小比较 · 1.2.3</p>
+    <h1>相反数 <small>数轴上关于原点对称的两个点</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">概念 + 数轴</span>
+      <span class="badge">不计分</span>
+      <span class="badge">建议 6 分钟新授</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">拖点 a：看它和 −a 怎样隔着原点对称。再试试三层负号，看最后剩下几个「−」。</p>
+  </header>
+
+  <section id="board">
+    <div class="sec-head"><span class="sec-no">01</span><h2>先动手：对称点在哪儿</h2></div>
+    <p class="sec-sub">拖动数轴上的点，或在右边用滑块。−a 永远在原点另一侧，且到原点的距离相同。</p>
+    <div class="layout">
+      <div class="board">
+        <svg id="nl" viewBox="0 0 460 220" role="img" aria-label="数轴上互为相反数的两点">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#96886f"></path>
+            </marker>
+          </defs>
+          <line id="axis" x1="24" y1="120" x2="436" y2="120" stroke="#96886f" stroke-width="1.8" marker-end="url(#arrow)"></line>
+          <g id="ticks" font-size="12" fill="#b3a68c" text-anchor="middle"></g>
+          <line id="symLine" x1="230" y1="72" x2="230" y2="168" stroke="#e0d5be" stroke-width="1.4" stroke-dasharray="4 4"></line>
+          <circle id="negDot" cx="158" cy="120" r="6" fill="#fffdf8" stroke="#b9863c" stroke-width="2.4"></circle>
+          <text id="negLabel" x="158" y="98" font-size="14" fill="#83401a" text-anchor="middle">−a</text>
+          <circle id="posDot" cx="302" cy="120" r="7.5" fill="#a3541f" stroke="#fffdf8" stroke-width="2"></circle>
+          <text id="posLabel" x="302" y="98" font-size="14" fill="#83401a" text-anchor="middle">a</text>
+          <text x="230" y="150" font-size="12" fill="#96886f" text-anchor="middle">原点 0</text>
+          <text id="symText" x="230" y="196" font-size="13" fill="#5f5443" text-anchor="middle">两点到原点的距离相等</text>
+        </svg>
+        <p class="board__cap">拖点或拖滑块都可以；点只能落在半格上。</p>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label class="control__head" for="aRange">a 的值 <output id="aOut">3</output></label>
+          <input type="range" id="aRange" min="-6" max="6" step="0.5" value="3">
+        </div>
+        <label class="toggle"><input type="checkbox" id="showNeg" checked> 显示 −a</label>
+        <dl class="readout">
+          <div><dt>a</dt><dd id="vA">3</dd></div>
+          <div><dt>−a</dt><dd id="vNeg">−3</dd></div>
+          <div><dt>两点距离</dt><dd id="vGap">6</dd></div>
+        </dl>
+        <div class="btn-row">
+          <button class="btn" type="button" id="zeroBtn">让 a = 0</button>
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">
+      只有符号不同的两个数叫做<b>互为相反数</b>。在数轴上，它们分别在原点两侧，到原点的距离相等。
+      <p class="transfer">a = 0 时，−a 也是 0：<b>0 的相反数是 0</b>。这不是「没有相反数」，而是它和自己重合。</p>
+    </div>
+  </section>
+
+  <section id="rule">
+    <div class="sec-head"><span class="sec-no">02</span><h2>定义与符号：−a 到底是什么</h2></div>
+    <p class="sec-sub">「只有符号不同」是定义；「a 的相反数是 −a」是写法。两者要分开记。</p>
+    <div class="card">
+      <p class="definition">
+        <button class="seg" type="button" data-seg="def" aria-pressed="false">只有符号不同</button>的两个数，叫做互为相反数；
+        <button class="seg" type="button" data-seg="letter" aria-pressed="false">数 a 的相反数是 −a</button>；
+        <button class="seg" type="button" data-seg="zero" aria-pressed="false">0 的相反数是 0</button>。
+      </p>
+      <p class="seg-note" id="segNote">点一段，看它容易错在哪。</p>
+    </div>
+
+    <div class="simplifier">
+      <p><b>多重符号化简器：</b>点一个式子，看每一层负号怎么剥。</p>
+      <div class="chip-row" id="exprChips">
+        <button class="chip" type="button" data-expr="-(-3)">−(−3)</button>
+        <button class="chip" type="button" data-expr="-(+3)">−(+3)</button>
+        <button class="chip" type="button" data-expr="-(-(-3))">−(−(−3))</button>
+        <button class="chip" type="button" data-expr="-[-(+3)]">−[−(+3)]</button>
+      </div>
+      <div class="simplifier__expr" id="exprShow">−(−3)</div>
+      <div class="simplifier__steps" id="exprSteps">点上面的式子，逐层看。</div>
+    </div>
+  </section>
+
+  <section id="textbook">
+    <div class="sec-head"><span class="sec-no">03</span><h2>教材例题</h2></div>
+    <p class="sec-sub">先自己写，再展开。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例：分别写出 3、−4、0、2/3 的相反数。</summary>
+        <div class="acc-body"><p>3 的相反数是 <b>−3</b>；−4 的相反数是 <b>4</b>；0 的相反数是 <b>0</b>；2/3 的相反数是 <b>−2/3</b>。</p><p><b>要点：</b>求相反数就是改符号；0 改完还是 0。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：化简 −(−2)、−(+3)、−[−(−5)]。</summary>
+        <div class="acc-body"><p>−(−2) = <b>2</b>；−(+3) = <b>−3</b>；−[−(−5)] = <b>−5</b>。</p><p><b>方法：</b>从最里面往外剥，每剥一层负号，符号就翻一次；也可以数负号个数，奇数个得负，偶数个得正。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>变式：如果 a 是负数，−a 是什么数？</summary>
+        <div class="acc-body"><p>−a 是<b>正数</b>。比如 a = −4，则 −a = 4。所以「−a 一定是负数」是错的：<b>−a 的符号要看 a 本身</b>。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>变式：一个数的相反数是它本身，这个数是多少？</summary>
+        <div class="acc-body"><p>只有 <b>0</b>。因为 a 与 −a 要在数轴上重合，只能都在原点。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">04</span><h2>四个常见误解</h2></div>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">误解 01</div><h3>「−a 一定是负数。」</h3><p>a 可能是负数或 0：a = −4 时 −a = 4；a = 0 时 −a = 0。<b>−a 只是「a 的相反数」这个写法。</b></p></div>
+      <div class="mis"><div class="mis__wrong">误解 02</div><h3>「0 没有相反数。」</h3><p>0 的相反数是 <b>0</b>。它和自己重合，但确实满足「只有符号不同」的特殊情形。</p></div>
+      <div class="mis"><div class="mis__wrong">误解 03</div><h3>「相反数就是倒数。」</h3><p>相反数是<b>和为 0</b>（3 与 −3）；倒数是<b>积为 1</b>（3 与 1/3）。两回事。</p></div>
+      <div class="mis"><div class="mis__wrong">误解 04</div><h3>「负号越多，数越小。」</h3><p>要看负号个数的奇偶：−(−3) = 3，−(−(−3)) = −3。先化简，再判断大小。</p></div>
+    </div>
+  </section>
+
+  <section id="selfcheck">
+    <div class="sec-head"><span class="sec-no">05</span><h2>复述自检：不判分</h2></div>
+    <p class="sec-sub">先自己说，再对照。输入只在本机内存，刷新即清空。</p>
+    <div class="self-list" id="selfList">
+      <div class="self">
+        <p class="self__q">1. 用自己的话说：什么样的两个数叫互为相反数？</p>
+        <textarea aria-label="第1题回答" placeholder="先说「符号」，再说「数字」"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>只有符号不同的两个数叫做互为相反数；在数轴上，它们在原点两侧，到原点的距离相等。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">2. 0 的相反数是多少？为什么不是「没有」？</p>
+        <textarea aria-label="第2题回答" placeholder="想想数轴上的位置"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>0 的相反数是 0。0 在原点，对称点还是原点，所以它和自己重合。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">3. 如果 a 是负数，−a 是什么数？举例说明。</p>
+        <textarea aria-label="第3题回答" placeholder="举个具体数"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>−a 是正数。例如 a = −4，则 −a = 4。所以不能看到「−a」就说它是负数。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">4. 化简 −[−(−5)]，并说清每一步。</p>
+        <textarea aria-label="第4题回答" placeholder="从里往外剥"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>先算最里面 −(−5) = 5，再算 −[5] = −5。也可以数负号：三个负号，奇数个，结果是负。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">5. 相反数和倒数有什么不同？</p>
+        <textarea aria-label="第5题回答" placeholder="一个看和，一个看积"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>相反数的和为 0（3 与 −3）；倒数的积为 1（3 与 1/3）。0 有相反数 0，但没有倒数。</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="spark">
+    <details class="spark">
+      <summary>卡住了？点这里</summary>
+      <div class="spark__body">
+        <p><b>先问自己：</b>题里的「−」是在改变方向，还是在表示「相反数」？</p>
+        <span class="spark__step"><b>线索 1：</b>先把数轴上 a 和 −a 的位置画出来。</span>
+        <span class="spark__step"><b>线索 2：</b>多重负号从最里面往外剥，每剥一层翻一次。</span>
+        <span class="spark__step"><b>解释：</b>相反数只改符号、不改数字；0 是唯一等于自己相反数的数。</span>
+      </div>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 1 章 1.2.3</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 1.2.3</h2>
+  <p>2024 人教版七上第 1 章；核对 2026-11-26。按 T 开关。</p>
+  <h3>本节目标</h3>
+  <p>学生能在数轴上找到相反数，说清「只有符号不同」，并会化简多重符号。</p>
+  <h3>3 分钟开场</h3>
+  <p>「3 和 −3 差在哪？只差一个负号。可如果我问：−a 一定是负数吗？很多同学会点头。今天我们就把这个『−』看清楚：它到底是负号，还是『相反数』的记号。」</p>
+  <h3>5 个追问</h3>
+  <ol>
+    <li>「0 的相反数是多少？」期望：0。</li>
+    <li>「a = −4 时，−a 是多少？」期望：4。</li>
+    <li>「相反数和倒数差在哪？」期望：和為 0 vs 积为 1。</li>
+    <li>「−(−3) 等于几？为什么？」期望：3，两个负号抵消。</li>
+    <li>「数轴上互为相反数的两点有什么位置关系？」期望：关于原点对称、距离相等。</li>
+  </ol>
+  <h3>常见反应</h3>
+  <p>① 「−a 就是负数」——用滑块把 a 拖到负半轴。<br>② 「0 没有相反数」——看 a=0 时两点重合。<br>③ 「负号越多越小」——用化简器数奇偶。</p>
+  <h3>衔接</h3>
+  <p>模型停在 01 屏；接着板书「符号不同、数字相同」，再写 4 个求相反数的口答题。</p>
+  <h3>课后 1 题</h3>
+  <p>若 −a = 5，则 a = ？若 −a = −5，则 a = ？</p>
+  <h3>离线使用</h3>
+  <p>单文件、无网络请求；手机竖屏可用。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { a: 3, showNeg: true };
+  var X0 = 230, U = 24;
+  var svg = $("nl"), aRange = $("aRange");
+  var posDot = $("posDot"), posLabel = $("posLabel");
+  var negDot = $("negDot"), negLabel = $("negLabel");
+  var symLine = $("symLine"), symText = $("symText");
+  var aOut = $("aOut"), vA = $("vA"), vNeg = $("vNeg"), vGap = $("vGap");
+
+  function fmt(n) {
+    var s = (Math.round(n * 10) / 10).toString();
+    return s.replace("-", "−");
+  }
+  function xOf(v) { return X0 + v * U; }
+
+  function drawTicks() {
+    var html = "";
+    for (var i = -6; i <= 6; i++) {
+      var x = xOf(i);
+      html += '<line x1="' + x + '" y1="114" x2="' + x + '" y2="126" stroke="' + (i === 0 ? "#83401a" : "#d8cab0") + '" stroke-width="' + (i === 0 ? 2 : 1) + '"></line>';
+      if (i !== 0) html += '<text x="' + x + '" y="144">' + fmt(i) + '</text>';
+    }
+    $("ticks").innerHTML = html;
+  }
+
+  function render() {
+    var a = state.a;
+    var px = xOf(a);
+    posDot.setAttribute("cx", px);
+    posLabel.setAttribute("x", px);
+    posLabel.textContent = a === 0 ? "a = 0" : "a = " + fmt(a);
+
+    var nx = xOf(-a);
+    negDot.setAttribute("cx", nx);
+    negLabel.setAttribute("x", nx);
+    negLabel.textContent = "−a = " + fmt(-a);
+    negDot.style.display = state.showNeg ? "" : "none";
+    negLabel.style.display = state.showNeg ? "" : "none";
+
+    symLine.setAttribute("x1", Math.min(px, nx));
+    symLine.setAttribute("x2", Math.max(px, nx));
+    symLine.style.display = state.showNeg && a !== 0 ? "" : "none";
+
+    symText.textContent = a === 0 ? "a = 0 时，两点重合在原点" :
+      ("两点在原点两侧，各距原点 " + fmt(Math.abs(a)));
+
+    aOut.textContent = fmt(a);
+    vA.textContent = fmt(a);
+    vNeg.textContent = fmt(-a);
+    vGap.textContent = fmt(Math.abs(a) * 2);
+  }
+
+  aRange.addEventListener("input", function () {
+    state.a = parseFloat(aRange.value);
+    render();
+  });
+  $("showNeg").addEventListener("change", function (e) {
+    state.showNeg = e.target.checked;
+    render();
+  });
+  $("zeroBtn").addEventListener("click", function () {
+    state.a = 0; aRange.value = 0; render();
+  });
+
+  function fromEvent(e) {
+    var rect = svg.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width * 460;
+    var v = Math.round(((x - X0) / U) * 2) / 2;
+    return Math.max(-6, Math.min(6, v));
+  }
+  svg.addEventListener("pointerdown", function (e) {
+    svg.setPointerCapture(e.pointerId);
+    state.a = fromEvent(e);
+    aRange.value = state.a;
+    render();
+    e.preventDefault();
+  });
+  svg.addEventListener("pointermove", function (e) {
+    if (!svg.hasPointerCapture || !svg.hasPointerCapture(e.pointerId)) return;
+    state.a = fromEvent(e);
+    aRange.value = state.a;
+    render();
+  });
+
+  var segData = {
+    def: "<b>只有符号不同</b>：数字部分必须一样，只差一个负号。3 与 −3 是；3 与 −1/3 不是（那是倒数）。0 是特殊情形，它和自己互为相反数。",
+    letter: "<b>a 的相反数是 −a</b>：这里 −a 是一个整体记号，不是「负数 a」。a = −4 时，−a = 4；a = 0 时，−a = 0。",
+    zero: "<b>0 的相反数是 0</b>：数轴上原点关于自己对称。别把它说成「0 没有相反数」。"
+  };
+  var segNote = $("segNote");
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      segNote.innerHTML = segData[b.getAttribute("data-seg")];
+    });
+  });
+
+  var EXPR = {
+    "-(-3)": ["−(−3)", "最里面：−3 的相反数是 3", "结果：3"],
+    "-(+3)": ["−(+3)", "+3 的相反数是 −3", "结果：−3"],
+    "-(-(-3))": ["−(−(−3))", "先算 −(−3) = 3", "再算 −3 = −3", "结果：−3（三个负号，奇数个）"],
+    "-[-(+3)]": ["−[−(+3)]", "先算 −(+3) = −3", "再算 −(−3) = 3", "结果：3（两个负号，偶数个）"]
+  };
+  $("exprChips").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-expr]");
+    if (!btn) return;
+    var key = btn.getAttribute("data-expr");
+    var list = EXPR[key];
+    $("exprShow").textContent = list[0];
+    $("exprSteps").innerHTML = list.slice(1).map(function (t) { return "<span>" + t + "</span>"; }).join("");
+  });
+
+  document.querySelectorAll(".self button[data-ref]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var ref = btn.closest(".self").querySelector(".ref");
+      ref.classList.toggle("is-open");
+      btn.textContent = ref.classList.contains("is-open") ? "收起参考" : "看参考表述";
+    });
+  });
+
+  var teacher = $("teacherPanel"), teacherBtn = $("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  $("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  var pBtn = $("projectorBtn");
+  pBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    pBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+
+  var fullBtn = $("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key === "t" || e.key === "T") setTeacher(!teacher.classList.contains("is-open"));
+  });
+
+  drawTicks();
+  render();
+})();
+</script>
+</body>
+</html>

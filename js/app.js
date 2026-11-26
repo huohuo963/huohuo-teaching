@@ -57,6 +57,7 @@
           id: raw.id,
           title: raw.title,
           type: type,
+          note: raw.note || "",
           ready: !!raw.ready,
           depth: depth,
           parentId: parent ? parent.id : null,
@@ -389,6 +390,7 @@
       html += '<div class="placeholder">'
         + '<div class="placeholder__mark">待制</div>'
         + '<h2>这一节还没有制作模型</h2>'
+        + (sec.note ? '<p>' + esc(sec.note) + '</p>' : '')
         + '<p>目录里已经为它留好位置。把模型文件放进 <code>' + esc(sec.path) + '</code>，打开本页就能看到，首页的「已上线」也会自动加一。</p>'
         + '<a class="btn" href="https://github.com/huohuo963/huohuo-teaching/blob/main/templates/chapter-template.html" target="_blank" rel="noopener">打开章节模板</a>'
         + '</div>';

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2.5 有理数的大小比较 · 七上 第1章 有理数</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e; --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1060px; margin: 0 auto; padding: 26px 22px 70px; }
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 18px 0 0; padding: 12px 16px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 18px; }
+
+  section { margin-top: 38px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 18px; margin-top: 16px; align-items: start; }
+  .board { padding: 8px 6px 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .board svg { display: block; width: 100%; height: auto; touch-action: pan-y; cursor: grab; }
+  .board svg:active { cursor: grabbing; }
+  .board__cap { padding: 4px 14px 10px; font-size: 12.5px; color: var(--ink3); }
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 16px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .control__hint { margin: 4px 0 0; font-size: 11.5px; color: var(--ink3); }
+  .toggle { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13.5px; color: var(--ink2); min-height: 32px; }
+  .relation { margin-top: 14px; padding: 14px; border: 1px solid rgba(163,84,31,.3); border-radius: 10px; background: #fbf5e8; text-align: center; font-family: var(--serif); font-size: 26px; color: var(--brand-deep); }
+  .readout { margin: 12px 0 0; display: grid; gap: 8px; }
+  .readout div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--line-soft); font-size: 13px; color: var(--ink2); }
+  .readout dd { margin: 0; font-family: var(--serif); font-size: 17px; color: var(--ink); }
+  .hintbox { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: #f3f6ec; font-size: 12.5px; color: #45533a; }
+
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+  .definition { font-family: var(--serif); font-size: 26px; line-height: 1.75; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 46px; }
+  .seg-note b { color: var(--brand-deep); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body b { color: var(--brand-deep); }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+
+  .conclusion { margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 17.5px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 8px !important; font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+
+  footer { border-top: 1px solid var(--line); background: var(--paper); }
+  .foot-line { max-width: 1060px; margin: 0 auto; padding: 16px 22px; display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 12px; color: var(--ink3); }
+
+  .teacher { position: fixed; top: 0; right: 0; z-index: 60; width: 400px; max-width: 92vw; height: 100vh; overflow: auto; padding: 20px 22px 40px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -8px 0 24px rgba(43,36,25,.12); transform: translateX(102%); transition: transform .24s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 13px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+
+  body.is-projector { font-size: 19px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 44px; }
+  body.is-projector h2 { font-size: 29px; }
+  body.is-projector .goal { font-size: 23px; }
+  body.is-projector .definition { font-size: 33px; }
+  body.is-projector .relation { font-size: 34px; }
+  body.is-projector .readout dd { font-size: 21px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 840px) {
+    .layout { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 60px; }
+    h1 { font-size: 28px; }
+    .definition { font-size: 22px; }
+    .teacher { width: 100vw; }
+    body.is-projector { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .teacher { transition: none; } html { scroll-behavior: auto; } }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .q__opts { display: none !important; }
+    body { background: #fff; }
+    .card, .mis, .q, .board { break-inside: avoid; }
+    .layout { grid-template-columns: 1fr; }
+    .q__fb { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#ch=1" target="_top">← 返回第 1 章目录</a>
+  <span class="bar__crumb">七上 · 第 1 章 有理数 · 1.2.5</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">第一章 · 1.2 有理数及其大小比较 · 1.2.5</p>
+    <h1>有理数的大小比较 <small>左边小，右边大</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">数轴 + 绝对值</span>
+      <span class="badge">5 题当堂检测</span>
+      <span class="badge">长春第 1 题同类</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">拖 a、b 两个点，看不等号怎么变。重点盯住两个负数：谁绝对值大，谁反而小。</p>
+  </header>
+
+  <section id="board">
+    <div class="sec-head"><span class="sec-no">01</span><h2>在数轴上，位置就是大小</h2></div>
+    <p class="sec-sub">水平数轴看左右；右边的温度计看上下。两种摆法，结论一致。</p>
+    <div class="layout">
+      <div class="board">
+        <svg id="nl" viewBox="0 0 480 280" role="img" aria-label="数轴上两点与温度计对照">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#96886f"></path>
+            </marker>
+          </defs>
+          <line x1="28" y1="200" x2="386" y2="200" stroke="#96886f" stroke-width="1.8" marker-end="url(#arrow)"></line>
+          <g id="ticks" font-size="12" fill="#b3a68c" text-anchor="middle"></g>
+          <line id="link" x1="200" y1="188" x2="200" y2="212" stroke="#e0d5be" stroke-width="1.4" stroke-dasharray="4 4"></line>
+          <circle id="dotA" cx="254" cy="200" r="7.5" fill="#a3541f" stroke="#fffdf8" stroke-width="2"></circle>
+          <circle id="dotB" cx="146" cy="200" r="7" fill="#b9863c" stroke="#fffdf8" stroke-width="2"></circle>
+          <text id="labA" x="254" y="172" font-size="14" fill="#83401a" text-anchor="middle">a = 2</text>
+          <text id="labB" x="146" y="228" font-size="14" fill="#8a6a33" text-anchor="middle">b = −2</text>
+          <text id="relText" x="230" y="252" font-size="18" font-weight="700" fill="#83401a" text-anchor="middle">a &gt; b</text>
+          <text x="430" y="30" font-size="12" fill="#96886f" text-anchor="middle">温度计</text>
+          <line x1="430" y1="44" x2="430" y2="248" stroke="#cdbb9b" stroke-width="1.6"></line>
+          <g id="thermoTicks" font-size="10" fill="#b3a68c"></g>
+          <circle id="thA" cx="430" cy="124" r="5.5" fill="#a3541f"></circle>
+          <circle id="thB" cx="430" cy="188" r="5" fill="#b9863c"></circle>
+        </svg>
+        <p class="board__cap">数轴上越靠右越大；温度计上越靠上越高。两个负数的比较最容易反。</p>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label class="control__head" for="aRange">a <output id="aOut">2</output></label>
+          <input type="range" id="aRange" min="-6" max="6" step="0.5" value="2">
+        </div>
+        <div class="control">
+          <label class="control__head" for="bRange">b <output id="bOut">−2</output></label>
+          <input type="range" id="bRange" min="-6" max="6" step="0.5" value="-2">
+        </div>
+        <label class="toggle"><input type="checkbox" id="showAbs"> 同时看绝对值</label>
+        <div class="relation" id="relation">a &gt; b</div>
+        <dl class="readout" id="absBox" hidden>
+          <div><dt>|a|</dt><dd id="vA">2</dd></div>
+          <div><dt>|b|</dt><dd id="vB">2</dd></div>
+        </dl>
+        <div class="hintbox" id="hintBox" hidden>两个负数：绝对值大的那个，反而更小。</div>
+        <div class="btn-row">
+          <button class="btn" type="button" id="resetBtn">复位</button>
+          <button class="btn" type="button" id="negBtn">换两个负数</button>
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">
+      在水平数轴上，<b>左边的数小于右边的数</b>。正数大于 0，0 大于负数，正数大于负数；两个负数，<b>绝对值大的反而小</b>。
+      <p class="transfer">例：−5 与 −3。|−5| = 5，|−3| = 3，5 &gt; 3，所以 −5 &lt; −3。绝对值大，说明它离原点更远，位置更靠左。</p>
+    </div>
+  </section>
+
+  <section id="rule">
+    <div class="sec-head"><span class="sec-no">02</span><h2>三条规则，一条比一条具体</h2></div>
+    <div class="card">
+      <p class="definition">
+        在水平数轴上，<button class="seg" type="button" data-seg="order" aria-pressed="false">左边的数小于右边的数</button>；
+        <button class="seg" type="button" data-seg="sign" aria-pressed="false">正数 &gt; 0 &gt; 负数</button>；
+        两个负数，<button class="seg" type="button" data-seg="abs" aria-pressed="false">绝对值大的反而小</button>。
+      </p>
+      <p class="seg-note" id="segNote">点一段，看它和上一条怎么接上。</p>
+    </div>
+  </section>
+
+  <section id="textbook">
+    <div class="sec-head"><span class="sec-no">03</span><h2>教材例题</h2></div>
+    <p class="sec-sub">先自己排、自己比，再展开。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例：把 −4、−3、−2、−1、0、1、2 按从低到高的顺序排列。</summary>
+        <div class="acc-body"><p><b>−4 &lt; −3 &lt; −2 &lt; −1 &lt; 0 &lt; 1 &lt; 2</b>。它们正好是数轴上从左到右的一串点；温度计上就是从下到上。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：比较 −3 与 −5 的大小。</summary>
+        <div class="acc-body"><p><b>−3 &gt; −5</b>。因为 |−3| = 3，|−5| = 5，两个负数绝对值大的反而小，所以 −5 更小。</p><p><b>易错：</b>不要因为 5 &gt; 3 就写 −5 &gt; −3。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：比较 −(−2) 与 −|−3|。</summary>
+        <div class="acc-body"><p>先化简：−(−2) = <b>2</b>，−|−3| = <b>−3</b>。所以 <b>2 &gt; −3</b>。</p><p><b>方法：</b>带括号或绝对值符号的数，先化成最简形式再比。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>长春连接：2023 年第 1 题「数轴上四点中绝对值最小」。</summary>
+        <div class="acc-body"><p>先看各点到原点的距离（绝对值），再比较距离大小。绝对值最小，就是离原点最近；不要把它和「数最小」混为一谈。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">04</span><h2>三个常见误解</h2></div>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">误解 01</div><h3>「−5 &gt; −3，因为 5 &gt; 3。」</h3><p>两个负数比大小，<b>绝对值大的反而小</b>。−5 在 −3 左边，所以 −5 &lt; −3。</p></div>
+      <div class="mis"><div class="mis__wrong">误解 02</div><h3>「0 是最小的数。」</h3><p>负半轴上的数都比 0 小。<b>0 只是正数和负数的分界</b>，不是最小的数。</p></div>
+      <div class="mis"><div class="mis__wrong">误解 03</div><h3>「−(−2) 一定比 −3 小。」</h3><p>先化简：−(−2) = 2，2 &gt; −3。带符号的数<b>不化简就比较</b>，是常见失分点。</p></div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="sec-head"><span class="sec-no">05</span><h2>当堂检测 · 5 题</h2></div>
+    <p class="sec-sub">选完立刻看解析；不排名、不上传。</p>
+    <div class="quiz" id="quiz"></div>
+    <div class="quiz__bar">
+      <span id="quizStat">已答 0 / 5</span>
+      <button class="btn" type="button" id="quizReset">重做</button>
+    </div>
+  </section>
+
+  <section id="spark">
+    <details class="spark">
+      <summary>卡住了？点这里</summary>
+      <div class="spark__body">
+        <p><b>先问自己：</b>它们在数轴上谁在左边？</p>
+        <span class="spark__step"><b>线索 1：</b>把两个数都化成最简形式，再标到数轴上。</span>
+        <span class="spark__step"><b>线索 2：</b>两个负数，先比绝对值；绝对值大的更靠左。</span>
+        <span class="spark__step"><b>解释：</b>数轴上左边的数小于右边的数；正数 &gt; 0 &gt; 负数。</span>
+      </div>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 1 章 1.2.5</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 1.2.5</h2>
+  <p>2024 人教版七上第 1 章；核对 2026-11-26。按 T 开关。</p>
+  <h3>本节目标</h3>
+  <p>学生能用数轴比较有理数大小，记住「左小右大」，并会说清「两个负数绝对值大的反而小」。</p>
+  <h3>3 分钟开场</h3>
+  <p>「−5 和 −3 谁大？有人说 5 比 3 大，所以 −5 大。我们把它俩放到数轴上看看：谁在左边？左边的小。今天就用数轴把这件事一次说清。」</p>
+  <h3>5 个追问</h3>
+  <ol>
+    <li>「数轴上左边的数大还是小？」期望：小。</li>
+    <li>「0 是最小的数吗？」期望：不是，负数更小。</li>
+    <li>「−5 和 −3 谁大？」期望：−3 大。</li>
+    <li>「−(−2) 和 −|−3| 谁大？」期望：2 &gt; −3。</li>
+    <li>「绝对值最小的数是不是最小的数？」期望：不是，绝对值看远近。</li>
+  </ol>
+  <h3>常见反应</h3>
+  <p>① 用绝对值直接比负数——把 a、b 拖到两个负数，看位置。<br>② 0 最小——拖到负半轴。<br>③ 不化简就比——用例题 −(−2)。</p>
+  <h3>衔接</h3>
+  <p>模型停在 01 屏；接着板书三条规则，再做 4 组口答：−2 与 −7、0 与 −1、−(−3) 与 −4。</p>
+  <h3>课后 1 题</h3>
+  <p>把 −|−4|、−(−1)、0、−2.5 从大到小排列。</p>
+  <h3>离线使用</h3>
+  <p>单文件、无网络请求；手机竖屏可用。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { a: 2, b: -2 };
+  var X0 = 200, U = 27, TY0 = 146, TU = 17;
+  var svg = $("nl"), aRange = $("aRange"), bRange = $("bRange");
+
+  function fmt(n) {
+    var s = (Math.round(n * 10) / 10).toString();
+    return s.replace("-", "−");
+  }
+  function xOf(v) { return X0 + v * U; }
+  function yOfT(v) { return TY0 - v * TU; }
+
+  function drawTicks() {
+    var html = "";
+    for (var i = -6; i <= 6; i++) {
+      var x = xOf(i);
+      html += '<line x1="' + x + '" y1="194" x2="' + x + '" y2="206" stroke="' + (i === 0 ? "#83401a" : "#d8cab0") + '" stroke-width="' + (i === 0 ? 2 : 1) + '"></line>';
+      if (i !== 0) html += '<text x="' + x + '" y="222">' + fmt(i) + '</text>';
+    }
+    $("ticks").innerHTML = html;
+
+    var th = "";
+    for (var j = -6; j <= 6; j++) {
+      var y = yOfT(j);
+      th += '<line x1="424" y1="' + y + '" x2="436" y2="' + y + '" stroke="#d8cab0" stroke-width="1"></line>';
+      th += '<text x="418" y="' + (y + 3) + '" text-anchor="end">' + fmt(j) + '</text>';
+    }
+    $("thermoTicks").innerHTML = th;
+  }
+
+  function render() {
+    var a = state.a, b = state.b;
+    var ax = xOf(a), bx = xOf(b);
+    $("dotA").setAttribute("cx", ax);
+    $("dotB").setAttribute("cx", bx);
+    $("labA").setAttribute("x", ax);
+    $("labA").textContent = "a = " + fmt(a);
+    $("labB").setAttribute("x", bx);
+    $("labB").textContent = "b = " + fmt(b);
+
+    $("link").setAttribute("x1", Math.min(ax, bx));
+    $("link").setAttribute("x2", Math.max(ax, bx));
+
+    var rel = a > b ? "a &gt; b" : (a < b ? "a &lt; b" : "a = b");
+    $("relText").innerHTML = rel;
+    $("relation").innerHTML = rel;
+
+    $("thA").setAttribute("cy", yOfT(a));
+    $("thB").setAttribute("cy", yOfT(b));
+
+    aOut.textContent = fmt(a);
+    bOut.textContent = fmt(b);
+    $("vA").textContent = fmt(Math.abs(a));
+    $("vB").textContent = fmt(Math.abs(b));
+
+    var bothNeg = a < 0 && b < 0;
+    $("hintBox").hidden = !(bothNeg && $("showAbs").checked);
+    $("absBox").hidden = !$("showAbs").checked;
+  }
+
+  aRange.addEventListener("input", function () { state.a = parseFloat(aRange.value); render(); });
+  bRange.addEventListener("input", function () { state.b = parseFloat(bRange.value); render(); });
+  $("showAbs").addEventListener("change", render);
+  $("resetBtn").addEventListener("click", function () {
+    state.a = 2; state.b = -2; aRange.value = 2; bRange.value = -2; render();
+  });
+  $("negBtn").addEventListener("click", function () {
+    state.a = -3; state.b = -5; aRange.value = -3; bRange.value = -5;
+    $("showAbs").checked = true;
+    render();
+  });
+
+  function pick(e, which) {
+    var rect = svg.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width * 480;
+    var v = Math.round(((x - X0) / U) * 2) / 2;
+    v = Math.max(-6, Math.min(6, v));
+    state[which] = v;
+    (which === "a" ? aRange : bRange).value = v;
+    render();
+  }
+  var drag = null;
+  svg.addEventListener("pointerdown", function (e) {
+    var rect = svg.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width * 480;
+    if (x > 400) return;
+    var da = Math.abs(x - xOf(state.a)), db = Math.abs(x - xOf(state.b));
+    drag = da <= db ? "a" : "b";
+    svg.setPointerCapture(e.pointerId);
+    pick(e, drag);
+    e.preventDefault();
+  });
+  svg.addEventListener("pointermove", function (e) {
+    if (!drag || !svg.hasPointerCapture(e.pointerId)) return;
+    pick(e, drag);
+  });
+  svg.addEventListener("pointerup", function () { drag = null; });
+
+  var segData = {
+    order: "<b>左小右大</b>：这是总规则，正数、负数、0 都适用。先定位，再读左右。",
+    sign: "<b>正数 &gt; 0 &gt; 负数</b>：正半轴都在原点右边，负半轴都在左边，所以这条一定成立。",
+    abs: "<b>两个负数，绝对值大的反而小</b>：绝对值大说明离原点远，位置更靠左。−5 与 −3 就是例子。"
+  };
+  var segNote = $("segNote");
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      segNote.innerHTML = segData[b.getAttribute("data-seg")];
+    });
+  });
+
+  var QUESTIONS = [
+    {
+      stem: "1. 下列大小关系正确的是：",
+      opts: ["正数 &lt; 0 &lt; 负数", "正数 &gt; 0 &gt; 负数", "0 &lt; 负数 &lt; 正数", "负数 &gt; 0 &gt; 正数"],
+      answer: 1,
+      why: "正数在原点右边，负数在左边，所以正数 &gt; 0 &gt; 负数。"
+    },
+    {
+      stem: "2. −5 与 −3 的大小关系是：",
+      opts: ["−5 &gt; −3", "−5 &lt; −3", "−5 = −3", "无法比较"],
+      answer: 1,
+      why: "|−5| = 5，|−3| = 3。两个负数绝对值大的反而小，所以 −5 &lt; −3。"
+    },
+    {
+      stem: "3. 数轴上 a = −2、b = 0.5、c = 3，其中最小的是：",
+      opts: ["a", "b", "c", "一样大"],
+      answer: 0,
+      why: "数轴上 −2 在最左边，所以最小。负数总比 0 和正数小。"
+    },
+    {
+      stem: "4. 把 −4、−3、−2、−1、0、1、2 从低到高排列，正确的是：",
+      opts: [
+        "0, 1, 2, −1, −2, −3, −4",
+        "−4, −3, −2, −1, 0, 1, 2",
+        "−1, −2, −3, −4, 0, 1, 2",
+        "1, 2, 0, −1, −2, −3, −4"
+      ],
+      answer: 1,
+      why: "数轴上从左到右就是从小到大：−4 &lt; −3 &lt; −2 &lt; −1 &lt; 0 &lt; 1 &lt; 2。"
+    },
+    {
+      stem: "5. 比较 −(−2) 与 −|−3|，正确的是：",
+      opts: ["−(−2) &gt; −|−3|", "−(−2) &lt; −|−3|", "相等", "无法比较"],
+      answer: 0,
+      why: "−(−2) = 2，−|−3| = −3，所以 2 &gt; −3。先化简再比较。"
+    }
+  ];
+
+  var quiz = $("quiz"), answered = 0;
+  function renderQuiz() {
+    answered = 0;
+    quiz.innerHTML = QUESTIONS.map(function (q, qi) {
+      return '<div class="q" data-q="' + qi + '">'
+        + '<p class="q__stem">' + q.stem + '</p>'
+        + '<div class="q__opts">'
+        + q.opts.map(function (o, oi) {
+            return '<button type="button" data-o="' + oi + '">' + o + '</button>';
+          }).join("")
+        + '</div><div class="q__fb"></div></div>';
+    }).join("");
+    $("quizStat").textContent = "已答 0 / 5";
+  }
+  quiz.addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-o]");
+    if (!btn) return;
+    var box = btn.closest(".q");
+    if (box.classList.contains("is-done")) return;
+    var qi = +box.getAttribute("data-q"), oi = +btn.getAttribute("data-o");
+    var q = QUESTIONS[qi];
+    box.classList.add("is-done");
+    var opts = box.querySelectorAll(".q__opts button");
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].classList.add("is-locked");
+      if (i === q.answer) opts[i].classList.add("is-ok");
+    }
+    if (oi !== q.answer) btn.classList.add("is-bad");
+    var fb = box.querySelector(".q__fb");
+    fb.innerHTML = (oi === q.answer ? "<b>答对了。</b>" : "<b>再想想这一步。</b>") + q.why;
+    fb.classList.add("is-open");
+    answered += 1;
+    $("quizStat").textContent = "已答 " + answered + " / 5";
+  });
+  $("quizReset").addEventListener("click", renderQuiz);
+
+  var teacher = $("teacherPanel"), teacherBtn = $("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  $("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  var pBtn = $("projectorBtn");
+  pBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    pBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+
+  var fullBtn = $("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key === "t" || e.key === "T") setTeacher(!teacher.classList.contains("is-open"));
+  });
+
+  drawTicks();
+  render();
+  renderQuiz();
+})();
+</script>
+</body>
+</html>

@@ -23,7 +23,10 @@ function Write-JsonFile($path, $obj) {
 $remote = (& $gh api "repos/$repo/git/ref/heads/main" --jq .object.sha).Trim()
 $local = (git rev-parse HEAD).Trim()
 $baseTree = (& $gh api "repos/$repo/git/commits/$remote" --jq .tree.sha).Trim()
-$changed = @(git diff-tree --no-commit-id --name-only -r HEAD)
+# -z gives NUL-separated raw paths; avoids PowerShell mis-reading git's quoted
+# octal escapes for non-ASCII (e.g. docs/...md), which broke Test-Path.
+$raw = ((git -c core.quotepath=false diff-tree --no-commit-id --name-only -r -z HEAD) -join "")
+$changed = @($raw -split "`0" | Where-Object { $_ -ne "" })
 
 Write-Output "remote=$remote"
 Write-Output "local=$local"

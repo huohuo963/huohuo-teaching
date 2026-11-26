@@ -13,51 +13,47 @@ window.CURRICULUM = [
       {
         no: 1, title: "有理数",
         sections: [
-          { id: "1.1", title: "正数和负数" },
+          { id: "1.1", title: "正数和负数", ready: true },
+          { id: "1.1-rd", title: "用正负数表示允许偏差", type: "reading" },
           {
-            id: "1.2", title: "有理数",
+            id: "1.2", title: "有理数及其大小比较",
             children: [
               { id: "1.2.1", title: "有理数的概念", ready: true },
               { id: "1.2.2", title: "数轴", ready: true },
-              { id: "1.2.3", title: "相反数" },
-              { id: "1.2.4", title: "绝对值" },
-              { id: "1.2.5", title: "有理数的大小比较" }
+              { id: "1.2.3", title: "相反数", ready: true },
+              { id: "1.2.4", title: "绝对值", ready: true },
+              { id: "1.2.5", title: "有理数的大小比较", ready: true }
             ]
           },
-          { id: "1.2-rd", title: "漫漫长路识负数", type: "reading" },
-          {
-            id: "1.3", title: "有理数的加减法",
-            children: [
-              { id: "1.3.1", title: "有理数加法" },
-              { id: "1.3.2", title: "有理数减法" }
-            ]
-          },
-          { id: "1.3-ex", title: "填幻方", type: "experiment" },
-          {
-            id: "1.4", title: "有理数的乘除法",
-            children: [
-              { id: "1.4.1", title: "有理数乘法" },
-              { id: "1.4.2", title: "有理数除法" }
-            ]
-          },
-          { id: "1.4-in", title: "翻牌游戏中的数学道理", type: "inquiry" },
-          {
-            id: "1.5", title: "有理数的乘方",
-            children: [
-              { id: "1.5.1", title: "乘方" },
-              { id: "1.5.2", title: "科学记数法" },
-              { id: "1.5.3", title: "近似数" }
-            ]
-          },
+          { id: "1.2-rd", title: "图说数学史：漫漫长路识负数", type: "reading" },
           { id: "1-rv", title: "数学活动、小结、复习题1", type: "review" }
         ]
       },
       {
         no: 2, title: "有理数的运算",
         sections: [
-          { id: "2.1", title: "有理数加减混合运算" },
-          { id: "2.2", title: "有理数乘除混合运算" },
-          { id: "2.3", title: "有理数的混合运算" },
+          {
+            id: "2.1", title: "有理数的加法与减法",
+            children: [
+              { id: "2.1.1", title: "有理数的加法" },
+              { id: "2.1.2", title: "有理数的减法" }
+            ]
+          },
+          {
+            id: "2.2", title: "有理数的乘法与除法",
+            children: [
+              { id: "2.2.1", title: "有理数的乘法" },
+              { id: "2.2.2", title: "有理数的除法" }
+            ]
+          },
+          {
+            id: "2.3", title: "有理数的乘方",
+            children: [
+              { id: "2.3.1", title: "乘方" },
+              { id: "2.3.2", title: "科学记数法" },
+              { id: "2.3.3", title: "近似数", note: "按规划并入 2.3.2《科学记数法》的最后一屏（精确度与有效数字），不单独建模。请从 2.3.2 进入。" }
+            ]
+          },
           { id: "2-rd", title: "我国古代正负数加减法则", type: "reading" },
           { id: "2-rv", title: "数学活动、小结、复习题2", type: "review" },
           { id: "2-pj", title: "进位制的认识与探究", type: "project" }

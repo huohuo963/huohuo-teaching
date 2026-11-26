@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 正数和负数 · 七上 第1章 有理数</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  button, summary, [role="button"] { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 26px 22px 70px; }
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 18px 0 0; padding: 12px 16px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 18px; }
+
+  section { margin-top: 38px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0,1fr) 310px; gap: 18px; margin-top: 16px; align-items: start; }
+  .scene { padding: 8px 6px 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .scene svg { display: block; width: 100%; height: auto; }
+  .scene__cap { padding: 6px 14px 12px; font-size: 12.5px; color: var(--ink3); }
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 16px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .control__hint { margin: 4px 0 0; font-size: 11.5px; color: var(--ink3); }
+  .segmented { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .segmented button { flex: 1 1 44%; padding: 8px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-size: 13px; cursor: pointer; min-height: 40px; }
+  .segmented button[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  .readout { margin: 14px 0 0; display: grid; gap: 8px; }
+  .readout div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--line-soft); font-size: 13px; color: var(--ink2); }
+  .readout dd { margin: 0; font-family: var(--serif); font-size: 17px; color: var(--ink); }
+  .readout .big dd { font-size: 21px; color: var(--brand-deep); font-weight: 700; }
+
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+  .definition { font-family: var(--serif); font-size: 27px; line-height: 1.75; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 46px; }
+  .seg-note b { color: var(--brand-deep); }
+
+  .examples { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .ex-col { padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .ex-col h3 { margin: 0 0 6px; font-family: var(--serif); font-size: 18px; }
+  .ex-col--yes h3 { color: var(--ok); }
+  .ex-col--no h3 { color: var(--brand); }
+  .ex-col > p { margin: 0 0 10px; font-size: 12.5px; color: var(--ink3); }
+  .ex-grid { display: grid; gap: 8px; }
+  .ex { padding: 9px 10px; border: 1px solid var(--line-soft); border-radius: 8px; background: #fdfaf2; text-align: left; cursor: pointer; }
+  .ex:hover { border-color: var(--ochre); }
+  .ex__num { display: block; font-family: var(--serif); font-size: 17px; color: var(--ink); }
+  .ex__why { display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.5; color: var(--ink3); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; line-height: 1.4; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+
+  .self-list { margin-top: 16px; display: grid; gap: 12px; }
+  .self { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .self__q { margin: 0; font-size: 15px; font-weight: 600; }
+  .self textarea { display: block; width: 100%; min-height: 68px; margin-top: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fffdf8; font: inherit; font-size: 14px; resize: vertical; }
+  .self textarea:focus { border-color: var(--brand); outline: none; }
+  .self__row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+  .self__rate { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+  .rate-btn { padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 12px; cursor: pointer; min-height: 34px; }
+  .rate-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); background: #fbf5e8; }
+  .ref { display: none; margin-top: 12px; padding: 12px 14px; background: #fbf5e8; border-radius: 8px; font-size: 13.5px; color: var(--ink2); }
+  .ref.is-open { display: block; }
+  .self-note { margin-top: 12px; font-size: 12px; color: var(--ink3); }
+
+  .conclusion { margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 17.5px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 8px !important; font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+
+  .spark { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .spark > summary { padding: 14px 16px; cursor: pointer; list-style: none; font-size: 14px; color: var(--brand-deep); min-height: 44px; }
+  .spark > summary::-webkit-details-marker { display: none; }
+  .spark__body { padding: 0 16px 16px; font-size: 13.5px; color: var(--ink2); }
+  .spark__step { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); }
+
+  footer { border-top: 1px solid var(--line); background: var(--paper); }
+  .foot-line { max-width: 1080px; margin: 0 auto; padding: 16px 22px; display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 12px; color: var(--ink3); }
+
+  .teacher { position: fixed; top: 0; right: 0; z-index: 60; width: 400px; max-width: 92vw; height: 100vh; overflow: auto; padding: 20px 22px 40px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -8px 0 24px rgba(43,36,25,.12); transform: translateX(102%); transition: transform .24s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 13px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+
+  body.is-projector { font-size: 19px; }
+  body.is-projector main { max-width: 1260px; }
+  body.is-projector h1 { font-size: 44px; }
+  body.is-projector h2 { font-size: 29px; }
+  body.is-projector .goal { font-size: 23px; }
+  body.is-projector .definition { font-size: 34px; }
+  body.is-projector .readout dd { font-size: 21px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .examples, .mis-grid { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 60px; }
+    h1 { font-size: 28px; }
+    .definition { font-size: 23px; }
+    .teacher { width: 100vw; }
+    body.is-projector { font-size: 16px; }
+    body.is-projector h1 { font-size: 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .teacher { transition: none; } html { scroll-behavior: auto; } }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .segmented { display: none !important; }
+    body { background: #fff; }
+    .card, .mis, .self, .scene { break-inside: avoid; }
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#ch=1" target="_top">← 返回第 1 章目录</a>
+  <span class="bar__crumb">七上 · 第 1 章 有理数 · 1.1</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">第一章 · 有理数 · 1.1</p>
+    <h1>正数和负数 <small>先有基准，才有正负</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">概念解剖</span>
+      <span class="badge">不计分 · 不判对错</span>
+      <span class="badge">建议 10 分钟新授 + 6 分钟追问</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">拖一拖基准线和实际位置：同一个位置，换个基准，记法就会变。先把「基准」说清，再说正负。</p>
+  </header>
+
+  <section id="scene">
+    <div class="sec-head"><span class="sec-no">01</span><h2>先看一件事：正负是相对于谁说的</h2></div>
+    <p class="sec-sub">选一个情境，拖「基准」和「实际位置」。注意：变的是记法，不是这件事本身。</p>
+    <div class="layout">
+      <div class="scene">
+        <svg viewBox="0 0 380 400" role="img" aria-label="基准线与实际位置示意图">
+          <line x1="190" y1="32" x2="190" y2="368" stroke="#cdbb9b" stroke-width="1.6"></line>
+          <g id="ticks" font-size="11" fill="#b3a68c" text-anchor="end"></g>
+          <line id="baseLine" x1="78" y1="200" x2="302" y2="200" stroke="#a3541f" stroke-width="1.6" stroke-dasharray="6 5"></line>
+          <text id="baseText" x="306" y="196" font-size="12" fill="#a3541f">基准</text>
+          <line id="distLine" x1="190" y1="200" x2="190" y2="200" stroke="#cd6a2e" stroke-width="2.4"></line>
+          <circle id="baseDot" cx="190" cy="200" r="4.5" fill="#fffdf8" stroke="#a3541f" stroke-width="2"></circle>
+          <circle id="posDot" cx="190" cy="122" r="7.5" fill="#a3541f" stroke="#fffdf8" stroke-width="2"></circle>
+          <text id="posText" x="204" y="116" font-size="14" fill="#2b2419">实际</text>
+          <text id="diffText" x="182" y="200" font-size="13" fill="#83401a" text-anchor="end">差</text>
+          <text id="notaText" x="190" y="26" font-size="17" font-weight="700" fill="#83401a" text-anchor="middle">记作 +3</text>
+        </svg>
+        <p class="scene__cap" id="sceneCap">温度情境：基准可以设为 0℃，也可以设为别的温度。</p>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <span class="control__head">情境</span>
+          <div class="segmented" id="sceneTabs">
+            <button type="button" data-scene="temp" aria-pressed="true">温度</button>
+            <button type="button" data-scene="alt" aria-pressed="false">海拔</button>
+            <button type="button" data-scene="money" aria-pressed="false">收支</button>
+            <button type="button" data-scene="water" aria-pressed="false">水位</button>
+          </div>
+        </div>
+        <div class="control">
+          <label class="control__head" for="baseRange">基准 <output id="baseOut">0℃</output></label>
+          <input type="range" id="baseRange" min="-5" max="5" step="1" value="0">
+          <p class="control__hint">基准就是「0」放在哪儿，可以换。</p>
+        </div>
+        <div class="control">
+          <label class="control__head" for="posRange">实际位置 <output id="posOut">3℃</output></label>
+          <input type="range" id="posRange" min="-5" max="5" step="0.5" value="3">
+          <p class="control__hint">实际位置相对基准高，记正；低，记负；一样，就是 0。</p>
+        </div>
+        <dl class="readout">
+          <div><dt>相对基准</dt><dd id="vDiff">+3℃</dd></div>
+          <div class="big"><dt>记作</dt><dd id="vNota">+3℃</dd></div>
+          <div><dt>这个数是</dt><dd id="vKind">正数</dd></div>
+        </dl>
+        <div class="btn-row">
+          <button class="btn" type="button" id="resetBtn">回到标准例</button>
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">
+      <b>正负说的是「相对基准的方向」。</b>比基准高（多、升、盈）记作正；比基准低（少、降、亏）记作负；正好等于基准，记作 <b>0</b>。
+      <p class="transfer">换基准试试：同一个 5℃，基准设 0℃ 时记 +5℃；基准设 3℃ 时记 +2℃。数变了，但它表示的那件事没变。</p>
+    </div>
+  </section>
+
+  <section id="definition">
+    <div class="sec-head"><span class="sec-no">02</span><h2>教材原句，拆开读</h2></div>
+    <p class="sec-sub">2024 版教材：像 3、50、7.8% 这样大于 0 的数叫做正数；像 −3、−10、−0.7% 这样在正数前加上符号「−」的数叫做负数。点下面三段。</p>
+    <div class="card">
+      <p class="definition">
+        <button class="seg" type="button" data-seg="pos" aria-pressed="false">大于 0 的数</button>叫做正数；
+        <button class="seg" type="button" data-seg="neg" aria-pressed="false">在正数前加上「−」</button>的数叫做负数；
+        <button class="seg" type="button" data-seg="zero" aria-pressed="false">0</button>既不是正数，也不是负数。
+      </p>
+      <p class="seg-note" id="segNote">点一段，看看它到底在限定什么。</p>
+    </div>
+  </section>
+
+  <section id="examples">
+    <div class="sec-head"><span class="sec-no">03</span><h2>成对看：一个量，两种记法</h2></div>
+    <p class="sec-sub">具有相反意义的量，必须成对出现。先找基准，再定符号。</p>
+    <div class="examples">
+      <div class="ex-col ex-col--yes">
+        <h3>这样记</h3>
+        <p>先有基准，再有正负。</p>
+        <div class="ex-grid">
+          <button class="ex" type="button"><span class="ex__num">零上 3℃ → +3℃</span><span class="ex__why">基准 0℃；零下 3℃ → −3℃</span></button>
+          <button class="ex" type="button"><span class="ex__num">盈利 50 万元 → +50 万元</span><span class="ex__why">基准是不盈不亏；亏损 10 万元 → −10 万元</span></button>
+          <button class="ex" type="button"><span class="ex__num">增长 7.8% → +7.8%</span><span class="ex__why">基准是不增不减；减少 0.7% → −0.7%</span></button>
+          <button class="ex" type="button"><span class="ex__num">高于海平面 100 m → +100 m</span><span class="ex__why">基准是海平面；低于 20 m → −20 m</span></button>
+        </div>
+      </div>
+      <div class="ex-col ex-col--no">
+        <h3>这样想就错了</h3>
+        <p>错不在算，在「基准」没找对。</p>
+        <div class="ex-grid">
+          <button class="ex" type="button"><span class="ex__num">「0 是正数」</span><span class="ex__why">0 不比 0 大，也不是在正数前加负号</span></button>
+          <button class="ex" type="button"><span class="ex__num">「没有负号就是正数」</span><span class="ex__why">0 没有负号，但 0 不是正数</span></button>
+          <button class="ex" type="button"><span class="ex__num">「0℃ 就是没有温度」</span><span class="ex__why">0℃ 是一个确定的温度，0 只表示与基准相同</span></button>
+          <button class="ex" type="button"><span class="ex__num">「−100 m 就是在下降」</span><span class="ex__why">它只表示低于海平面，不表示正在下降</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="textbook">
+    <div class="sec-head"><span class="sec-no">04</span><h2>教材例题与阅读材料</h2></div>
+    <p class="sec-sub">答案先自己说，再展开对照。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例：一个月内，小明体重增加 2 kg 记作 +2 kg，那么减少 1 kg 记作什么？</summary>
+        <div class="acc-body"><p>记作 <b>−1 kg</b>。基准是「体重不变」；增加记正，减少就记负。数字 1 表示变化的多少，负号表示方向。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：某年花生产量比上年增长 1.8% 记作 +1.8%，那么下降 0.7% 记作什么？</summary>
+        <div class="acc-body"><p>记作 <b>−0.7%</b>。基准是「与上年持平」。增长与下降是具有相反意义的量。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>阅读与思考：零件直径 10 ± 0.05 mm，+0.03 mm 和 −0.02 mm 各表示什么？</summary>
+        <div class="acc-body"><p>标准尺寸是 10 mm，允许偏差 ±0.05 mm。<b>+0.03 mm</b> 表示比标准尺寸大 0.03 mm，即 10.03 mm；<b>−0.02 mm</b> 表示比标准尺寸小 0.02 mm，即 9.98 mm。两个零件都在允许范围内。</p><p><b>要点：</b>这里的「正负」不是好坏，只是比标准大还是小。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>变式：如果以 3℃ 为基准，5℃ 和 1℃ 分别记作什么？</summary>
+        <div class="acc-body"><p>5℃ 比 3℃ 高 2℃，记 <b>+2℃</b>；1℃ 比 3℃ 低 2℃，记 <b>−2℃</b>。同一个温度，基准换了，记法就变了——这正是「正负相对基准」的意思。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">05</span><h2>四个常见误解</h2></div>
+    <p class="sec-sub">这些都是课堂上真的会听到的说法。</p>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">误解 01</div><h3>「0 是正数。」</h3><p>正数是<b>大于 0</b> 的数，0 不比 0 大；0 也不是在正数前加负号得到的。<b>0 既不是正数，也不是负数。</b></p></div>
+      <div class="mis"><div class="mis__wrong">误解 02</div><h3>「没有负号就是正数。」</h3><p>0 就没有负号，但 0 不是正数。判断正数要看它是否<b>大于 0</b>，不是看有没有负号。</p></div>
+      <div class="mis"><div class="mis__wrong">误解 03</div><h3>「0 表示没有。」</h3><p>0℃、0 m、0 元都是<b>确定的量</b>。0 在记法里表示「与基准相同」，不是「什么都没有」。</p></div>
+      <div class="mis"><div class="mis__wrong">误解 04</div><h3>「负数就是减少。」</h3><p>−100 m 表示<b>低于海平面 100 m</b>，是一个位置，不是「正在下降」。正负表示方向，不表示动作。</p></div>
+    </div>
+  </section>
+
+  <section id="selfcheck">
+    <div class="sec-head"><span class="sec-no">06</span><h2>复述自检：不判分，只看能不能说清</h2></div>
+    <p class="sec-sub">先自己说或写，再点「看参考表述」。输入只留在本机内存，刷新即清空。</p>
+    <div class="self-list" id="selfList">
+      <div class="self">
+        <p class="self__q">1. 用自己的话说：什么情况下会用到负数？</p>
+        <textarea aria-label="第1题回答" placeholder="先自己写一句"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>当两个量具有相反意义、又需要一个基准时，用正数表示比基准高（多、升、盈）的量，用负数表示比基准低（少、降、亏）的量。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">2. 0 是正数吗？为什么？</p>
+        <textarea aria-label="第2题回答" placeholder="注意「大于 0」这个条件"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>不是。正数要求大于 0，0 等于 0；0 也不是在正数前加负号得到的。所以 0 既不是正数，也不是负数。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">3. 「零下 5℃」记作 −5℃，这里的基准是什么？</p>
+        <textarea aria-label="第3题回答" placeholder="先说基准，再说方向"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>基准是 0℃。零上记正，零下记负；−5℃ 表示比 0℃ 低 5℃。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">4. 零件标注 10 ± 0.05 mm，+0.03 mm 和 −0.02 mm 各表示什么？</p>
+        <textarea aria-label="第4题回答" placeholder="分别说大还是小、差多少"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>+0.03 mm 表示比标准尺寸 10 mm 大 0.03 mm；−0.02 mm 表示比标准尺寸小 0.02 mm。两者都在允许偏差 ±0.05 mm 内。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">5. 同一个 5℃，为什么基准设 0℃ 时记 +5℃，基准设 3℃ 时记 +2℃？</p>
+        <textarea aria-label="第5题回答" placeholder="想想「相对谁」"></textarea>
+        <div class="self__row"><button class="btn" type="button" data-ref>看参考表述</button></div>
+        <div class="ref"><b>参考：</b>因为正负是相对基准说的。相对 0℃ 高 5℃，记 +5℃；相对 3℃ 只高 2℃，记 +2℃。记法变了，5℃ 这个温度本身没变。</div>
+      </div>
+    </div>
+    <p class="self-note">自检没有分数，也不上传；能说清比写对更重要。</p>
+  </section>
+
+  <section id="spark">
+    <details class="spark">
+      <summary>卡住了？点这里，按「提问 → 线索 → 解释」慢慢来</summary>
+      <div class="spark__body">
+        <p><b>先问自己：</b>这道题里，谁是「0」？</p>
+        <span class="spark__step"><b>线索 1：</b>先找「不增不减、不盈不亏、与海平面齐平」的那个状态。</span>
+        <span class="spark__step"><b>线索 2：</b>比它高（多、升）记正，比它低（少、降）记负。</span>
+        <span class="spark__step"><b>解释：</b>正负号表示的是相对基准的方向，数字表示相差多少。先定基准，再定符号，最后写数字。</span>
+        <p><b>两个常见错误：</b>① 把 0 当成正数；② 换个基准还套原来的符号。</p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 1 章 1.1</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 1.1</h2>
+  <p>2024 人教版七上第 1 章；核对 2026-11-26。按 T 可随时开关。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能说清「正负是相对基准的方向」，会用正负数表示具有相反意义的量，并知道 0 既不是正数也不是负数。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「今天先不算题。我问一件事：天气预报说零下 3℃，这个『零下』为什么要写成 −3？如果我说『今天比昨天高 3℃』，这个 3 又该不该带正号？先别翻书，想一想：正号和负号，到底是相对谁说的？」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「0 是正数还是负数？」期望：都不是，0 等于 0。</li>
+    <li>「没有负号的数一定是正数吗？」期望：不一定，0 就没有负号。</li>
+    <li>「盈利记正，亏损记什么？基准是什么？」期望：记负；基准是不盈不亏。</li>
+    <li>「同一个 5℃，为什么可以记 +5，也可以记 +2？」期望：基准不同。</li>
+    <li>「−100 m 是在下降吗？」期望：不是，只表示低于海平面。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="btn-row">
+    <button class="btn" type="button" data-preset="std">标准例</button>
+    <button class="btn" type="button" data-preset="err">易错例</button>
+    <button class="btn" type="button" data-preset="hard">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：温度、基准 0℃、实际 3℃。</p>
+
+  <h3>常见学生反应与应对</h3>
+  <p>① 「0 就是没有」——用 0℃ 反问：没有温度是什么温度？<br>② 「负号就是减少」——用海拔 −100 m 说明它表示位置。<br>③ 「基准换了，数也变了，是不是算错了」——回到「相对谁」。</p>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>模型停在第 01 屏的对比；接着板书「基准 → 方向 → 数字」三步，再发 6 个情境让学生只写符号、不写数。</p>
+
+  <h3>课后 1 题</h3>
+  <p>以班级平均分为基准，高出 8 分记 +8，低于 5 分记什么？正好等于平均分记什么？</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  var SCENES = {
+    temp:  { unit: "℃",  hi: "零上", lo: "零下", base: "0℃", cap: "温度情境：基准可以设为 0℃，也可以设为别的温度。" },
+    alt:   { unit: "m",   hi: "高于海平面", lo: "低于海平面", base: "海平面", cap: "海拔情境：基准通常是海平面，也可以换成某个高度。" },
+    money: { unit: "元",  hi: "收入", lo: "支出", base: "不盈不亏", cap: "收支情境：基准是不盈不亏，收入记正、支出记负。" },
+    water: { unit: "m",   hi: "高于警戒线", lo: "低于警戒线", base: "警戒线", cap: "水位情境：基准是警戒线，高于记正、低于记负。" }
+  };
+
+  var state = { scene: "temp", base: 0, pos: 3 };
+  var Y0 = 200, STEP = 26;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var baseLine = $("baseLine"), baseText = $("baseText"), baseDot = $("baseDot");
+  var posDot = $("posDot"), posText = $("posText"), distLine = $("distLine");
+  var diffText = $("diffText"), notaText = $("notaText"), ticks = $("ticks");
+  var baseRange = $("baseRange"), posRange = $("posRange");
+  var baseOut = $("baseOut"), posOut = $("posOut");
+  var vDiff = $("vDiff"), vNota = $("vNota"), vKind = $("vKind"), sceneCap = $("sceneCap");
+
+  function yOf(v) { return Y0 - v * STEP; }
+
+  function fmtNum(n) {
+    var s = (Math.round(n * 10) / 10).toString();
+    return s.replace("-", "−");
+  }
+
+  function signed(n, unit) {
+    if (n === 0) return "0" + (unit || "");
+    return (n > 0 ? "+" : "−") + fmtNum(Math.abs(n)) + (unit || "");
+  }
+
+  function drawTicks() {
+    var html = "";
+    for (var i = -5; i <= 5; i++) {
+      var y = yOf(i);
+      html += '<line x1="182" y1="' + y + '" x2="198" y2="' + y + '" stroke="#d8cab0" stroke-width="1"></line>';
+      html += '<text x="176" y="' + (y + 4) + '" text-anchor="end">' + (i === 0 ? "0" : fmtNum(i)) + '</text>';
+    }
+    ticks.innerHTML = html;
+  }
+
+  function render() {
+    var s = SCENES[state.scene];
+    var diff = Math.round((state.pos - state.base) * 10) / 10;
+    var by = yOf(state.base), py = yOf(state.pos);
+    var top = Math.min(by, py), bottom = Math.max(by, py);
+
+    baseLine.setAttribute("y1", by);
+    baseLine.setAttribute("y2", by);
+    baseDot.setAttribute("cy", by);
+    baseText.setAttribute("y", by - 8);
+    baseText.textContent = "基准 " + s.base;
+
+    posDot.setAttribute("cy", py);
+    posText.setAttribute("y", py - 14);
+    posText.textContent = "实际 " + fmtNum(state.pos) + s.unit;
+
+    distLine.setAttribute("y1", top);
+    distLine.setAttribute("y2", bottom);
+    distLine.style.display = diff === 0 ? "none" : "";
+
+    diffText.setAttribute("y", (top + bottom) / 2 + 5);
+    diffText.textContent = diff === 0 ? "与基准相同" : "相差 " + fmtNum(Math.abs(diff)) + s.unit;
+
+    notaText.textContent = "记作 " + signed(diff, s.unit);
+    notaText.setAttribute("fill", diff === 0 ? "#5f5443" : "#83401a");
+
+    baseOut.textContent = fmtNum(state.base) + s.unit;
+    posOut.textContent = fmtNum(state.pos) + s.unit;
+    vDiff.textContent = signed(diff, s.unit);
+    vNota.textContent = signed(diff, s.unit);
+    vKind.textContent = diff === 0 ? "既不是正数，也不是负数" : (diff > 0 ? "正数" : "负数");
+    sceneCap.textContent = s.cap;
+  }
+
+  baseRange.addEventListener("input", function () {
+    state.base = parseFloat(baseRange.value);
+    render();
+  });
+  posRange.addEventListener("input", function () {
+    state.pos = parseFloat(posRange.value);
+    render();
+  });
+
+  $("sceneTabs").addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-scene]");
+    if (!btn) return;
+    state.scene = btn.getAttribute("data-scene");
+    var all = $("sceneTabs").querySelectorAll("button");
+    for (var i = 0; i < all.length; i++) {
+      all[i].setAttribute("aria-pressed", all[i] === btn ? "true" : "false");
+    }
+    render();
+  });
+
+  $("resetBtn").addEventListener("click", function () {
+    state.scene = "temp"; state.base = 0; state.pos = 3;
+    baseRange.value = 0; posRange.value = 3;
+    var all = $("sceneTabs").querySelectorAll("button");
+    for (var i = 0; i < all.length; i++) {
+      all[i].setAttribute("aria-pressed", all[i].getAttribute("data-scene") === "temp" ? "true" : "false");
+    }
+    render();
+  });
+
+  var segData = {
+    pos: "<b>大于 0</b>：正数的硬标准。注意不是「没有负号」，0 就没有负号，但 0 不大于 0。",
+    neg: "<b>在正数前加上「−」</b>：负号表示与正数相反的方向。−3 的「3」是数量，负号是方向。",
+    zero: "<b>0</b>：既不是正数，也不是负数。它是正数和负数的分界，也是记法里的「与基准相同」。"
+  };
+  var segNote = $("segNote");
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var key = b.getAttribute("data-seg");
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      segNote.innerHTML = segData[key];
+    });
+  });
+
+  document.querySelectorAll(".self button[data-ref]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var ref = btn.closest(".self").querySelector(".ref");
+      ref.classList.toggle("is-open");
+      btn.textContent = ref.classList.contains("is-open") ? "收起参考" : "看参考表述";
+    });
+  });
+
+  var teacher = $("teacherPanel"), teacherBtn = $("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  $("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  var projectorBtn = $("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+
+  var fullBtn = $("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  var presetNote = $("presetNote");
+  document.querySelectorAll("[data-preset]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var p = btn.getAttribute("data-preset");
+      if (p === "std") {
+        state.scene = "temp"; state.base = 0; state.pos = 3;
+        presetNote.textContent = "标准例：温度、基准 0℃、实际 3℃，记 +3℃。";
+      } else if (p === "err") {
+        state.scene = "money"; state.base = 0; state.pos = 0;
+        presetNote.textContent = "易错例：收支、正好不盈不亏，记 0——0 既不是正数也不是负数。";
+      } else {
+        state.scene = "temp"; state.base = 3; state.pos = 5;
+        presetNote.textContent = "挑战例：基准 3℃、实际 5℃，同一温度记 +2℃，让基准变一变。";
+      }
+      baseRange.value = state.base; posRange.value = state.pos;
+      var all = $("sceneTabs").querySelectorAll("button");
+      for (var i = 0; i < all.length; i++) {
+        all[i].setAttribute("aria-pressed", all[i].getAttribute("data-scene") === state.scene ? "true" : "false");
+      }
+      render();
+    });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || e.target.isContentEditable) return;
+    if (e.key === "t" || e.key === "T") {
+      setTeacher(!teacher.classList.contains("is-open"));
+    }
+  });
+
+  drawTicks();
+  render();
+})();
+</script>
+</body>
+</html>
