@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.2.1 有理数的乘法 · 七上 第2章 有理数的运算</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e; --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+  main { max-width: 1060px; margin: 0 auto; padding: 26px 22px 70px; }
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 18px 0 0; padding: 12px 16px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 18px; }
+  section { margin-top: 38px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .layout { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 18px; margin-top: 16px; align-items: start; }
+  .board { padding: 8px 6px 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .board svg { display: block; width: 100%; height: auto; }
+  .board__cap { padding: 4px 14px 10px; font-size: 12.5px; color: var(--ink3); }
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 16px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .readout { margin: 14px 0 0; display: grid; gap: 8px; }
+  .readout div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--line-soft); font-size: 13px; color: var(--ink2); }
+  .readout dd { margin: 0; font-family: var(--serif); font-size: 18px; color: var(--ink); }
+  .readout .big dd { font-size: 22px; color: var(--brand-deep); font-weight: 700; }
+  .flipbox { margin-top: 12px; padding: 12px 14px; border-radius: 8px; background: #f3f6ec; font-size: 13px; color: #45533a; min-height: 44px; }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .definition { font-family: var(--serif); font-size: 25px; line-height: 1.75; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 46px; }
+  .seg-note b { color: var(--brand-deep); }
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body b { color: var(--brand-deep); }
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+  .conclusion { margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 17.5px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 8px !important; font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+  footer { border-top: 1px solid var(--line); background: var(--paper); }
+  .foot-line { max-width: 1060px; margin: 0 auto; padding: 16px 22px; display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 12px; color: var(--ink3); }
+  .teacher { position: fixed; top: 0; right: 0; z-index: 60; width: 400px; max-width: 92vw; height: 100vh; overflow: auto; padding: 20px 22px 40px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -8px 0 24px rgba(43,36,25,.12); transform: translateX(102%); transition: transform .24s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 13px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+  body.is-projector { font-size: 19px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 44px; }
+  body.is-projector h2 { font-size: 29px; }
+  body.is-projector .goal { font-size: 23px; }
+  body.is-projector .definition { font-size: 31px; }
+  body.is-projector .readout dd { font-size: 21px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+  @media (max-width: 840px) {
+    .layout { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 60px; }
+    h1 { font-size: 28px; }
+    .definition { font-size: 21px; }
+    .teacher { width: 100vw; }
+    body.is-projector { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .teacher { transition: none; } html { scroll-behavior: auto; } }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .q__opts { display: none !important; }
+    body { background: #fff; }
+    .card, .mis, .q, .board { break-inside: avoid; }
+    .layout { grid-template-columns: 1fr; }
+    .q__fb { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#ch=2" target="_top">← 返回第 2 章目录</a>
+  <span class="bar__crumb">七上 · 第 2 章 有理数的运算 · 2.2.1</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">第二章 · 2.2 有理数的乘法与除法 · 2.2.1</p>
+    <h1>有理数的乘法 <small>负因数每出现一个，方向翻一次</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">算理可视化</span>
+      <span class="badge">符号翻转</span>
+      <span class="badge">5 题当堂检测</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">先数负因数有几个，再看箭头翻了几次。负负为什么得正？翻两次就回到正向。</p>
+  </header>
+
+  <section id="board">
+    <div class="sec-head"><span class="sec-no">01</span><h2>先定长度，再定方向</h2></div>
+    <p class="sec-sub">箭头长度是 |a| × |b|；每有一个负因数，方向翻一次。</p>
+    <div class="layout">
+      <div class="board">
+        <svg id="nl" viewBox="0 0 480 250" role="img" aria-label="乘法符号翻转示意">
+          <defs>
+            <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#a3541f"></path>
+            </marker>
+            <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#b9863c"></path>
+            </marker>
+          </defs>
+          <line x1="24" y1="190" x2="456" y2="190" stroke="#96886f" stroke-width="1.8"></line>
+          <g id="ticks" font-size="11" fill="#b3a68c" text-anchor="middle"></g>
+          <line id="prodArrow" x1="240" y1="130" x2="240" y2="130" stroke="#a3541f" stroke-width="4" marker-end="url(#arrowRed)"></line>
+          <line id="dropLine" x1="240" y1="190" x2="240" y2="112" stroke="#e0d5be" stroke-width="1.2" stroke-dasharray="4 4"></line>
+          <circle id="startDot" cx="240" cy="190" r="4" fill="#fffdf8" stroke="#96886f" stroke-width="2"></circle>
+          <circle id="endDot" cx="240" cy="190" r="7" fill="#83401a" stroke="#fffdf8" stroke-width="2"></circle>
+          <text id="labProd" x="240" y="112" font-size="15" font-weight="700" fill="#83401a" text-anchor="middle">a × b</text>
+          <text id="flipHint" x="240" y="228" font-size="13" fill="#5f5443" text-anchor="middle">负因数 0 个：方向不翻</text>
+        </svg>
+        <p class="board__cap">箭头向右表示积为正，向左表示积为负；长度就是积的绝对值。</p>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label class="control__head" for="aRange">a <output id="aOut">−5</output></label>
+          <input type="range" id="aRange" min="-5" max="5" step="1" value="-5">
+        </div>
+        <div class="control">
+          <label class="control__head" for="bRange">b <output id="bOut">−3</output></label>
+          <input type="range" id="bRange" min="-5" max="5" step="1" value="-3">
+        </div>
+        <dl class="readout">
+          <div><dt>负因数个数</dt><dd id="vNeg">2 个</dd></div>
+          <div><dt>翻几次</dt><dd id="vFlip">2 次</dd></div>
+          <div class="big"><dt>a × b</dt><dd id="vProd">15</dd></div>
+        </dl>
+        <div class="flipbox" id="flipBox">翻两次：负 → 正。所以积为正。</div>
+        <div class="btn-row">
+          <button class="btn" type="button" data-ex="-5,-3">负负</button>
+          <button class="btn" type="button" data-ex="-4,5">负正</button>
+          <button class="btn" type="button" data-ex="0,-7">有 0</button>
+          <button class="btn" type="button" id="resetBtn">复位</button>
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">
+      两数相乘，<b>同号得正，异号得负</b>，并把绝对值相乘。任何数同 0 相乘都得 0。
+      <p class="transfer">乘积是 1 的两个数互为倒数：3 与 1/3，−2 与 −1/2。倒数看「积为 1」，不是「符号相反」。</p>
+    </div>
+  </section>
+
+  <section id="rule">
+    <div class="sec-head"><span class="sec-no">02</span><h2>法则拆成三句</h2></div>
+    <div class="card">
+      <p class="definition">
+        <button class="seg" type="button" data-seg="sign" aria-pressed="false">同号得正，异号得负</button>；
+        再把<button class="seg" type="button" data-seg="abs" aria-pressed="false">绝对值相乘</button>；
+        <button class="seg" type="button" data-seg="zero" aria-pressed="false">任何数同 0 相乘</button>都得 0。
+      </p>
+      <p class="seg-note" id="segNote">点一句，看符号和数字分别怎么处理。</p>
+    </div>
+  </section>
+
+  <section id="textbook">
+    <div class="sec-head"><span class="sec-no">03</span><h2>教材例题</h2></div>
+    <p class="sec-sub">先写符号，再写绝对值。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例：计算 (−5) × (−3)。</summary>
+        <div class="acc-body"><p>同号得正，5 × 3 = 15，所以 <b>(−5) × (−3) = 15</b>。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 (−4) × 5。</summary>
+        <div class="acc-body"><p>异号得负，4 × 5 = 20，所以 <b>(−4) × 5 = −20</b>。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 0 × (−7)。</summary>
+        <div class="acc-body"><p>任何数同 0 相乘都得 <b>0</b>。不是 −7，也不是 0 × 7。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：−1/2 与 −2 互为倒数吗？</summary>
+        <div class="acc-body"><p>是。(−1/2) × (−2) = <b>1</b>，乘积为 1，所以互为倒数。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">04</span><h2>四个常见错误</h2></div>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>「负负得负。」</h3><p>两个负因数，方向翻两次，回到正向，所以<b>负负得正</b>。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>「0 × (−7) = −7。」</h3><p>任何数同 0 相乘都得 <b>0</b>。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>「相反数就是倒数。」</h3><p>相反数看<b>和为 0</b>；倒数看<b>积为 1</b>。3 的相反数是 −3，倒数是 1/3。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>「多个因数相乘，只数第一个负号。」</h3><p>要数<b>负因数总个数</b>：奇数个得负，偶数个得正。</p></div>
+    </div>
+  </section>
+
+  <section id="quizSec">
+    <div class="sec-head"><span class="sec-no">05</span><h2>当堂检测 · 5 题</h2></div>
+    <p class="sec-sub">选完立刻看解析；不排名、不上传。</p>
+    <div class="quiz" id="quiz"></div>
+    <div class="quiz__bar"><span id="quizStat">已答 0 / 5</span><button class="btn" type="button" id="quizReset">重做</button></div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 2 章 2.2.1</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 2.2.1</h2>
+  <p>2024 人教版七上第 2 章；核对 2026-11-26。按 T 开关。</p>
+  <h3>本节目标</h3>
+  <p>学生能说清「同号得正、异号得负」的由来，会用负因数个数判断符号，并分清倒数与相反数。</p>
+  <h3>3 分钟开场</h3>
+  <p>「(−5) × (−3)，为什么不是 −15？我们不急着背。先想：乘一个负数，相当于把方向反过来一次。反一次是负，反两次呢？又回到正。今天就把『翻方向』这件事看清楚。」</p>
+  <h3>5 个追问</h3>
+  <ol>
+    <li>「两个负数相乘，积的符号？」期望：正。</li>
+    <li>「(−4) × 5 等于几？」期望：−20。</li>
+    <li>「0 × (−7) 等于几？」期望：0。</li>
+    <li>「3 的倒数和相反数分别是什么？」期望：1/3 和 −3。</li>
+    <li>「三个负数相乘，积的符号？」期望：负，奇数个。</li>
+  </ol>
+  <h3>常见反应</h3>
+  <p>① 负负得负——看箭头翻两次。<br>② 0 乘负数得负数——用「有 0」预设。<br>③ 倒数写成相反数——回到「积为 1」。</p>
+  <h3>衔接</h3>
+  <p>模型停在 01 屏；接着板书「先定符号、再乘绝对值」，再做 4 道只判符号的口答题。</p>
+  <h3>课后 1 题</h3>
+  <p>计算：(−2) × 3 × (−5)。</p>
+  <h3>离线使用</h3>
+  <p>单文件、无网络请求；手机竖屏可用。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { a: -5, b: -3 };
+  var X0 = 240, U = 8;
+  var aRange = $("aRange"), bRange = $("bRange");
+
+  function fmt(n) {
+    var s = (Math.round(n * 10) / 10).toString();
+    return s.replace("-", "−");
+  }
+  function xOf(v) { return X0 + v * U; }
+
+  function drawTicks() {
+    var html = "";
+    for (var i = -25; i <= 25; i += 5) {
+      var x = xOf(i);
+      html += '<line x1="' + x + '" y1="184" x2="' + x + '" y2="196" stroke="' + (i === 0 ? "#83401a" : "#d8cab0") + '" stroke-width="' + (i === 0 ? 2 : 1) + '"></line>';
+      html += '<text x="' + x + '" y="212">' + fmt(i) + '</text>';
+    }
+    $("ticks").innerHTML = html;
+  }
+
+  function render() {
+    var a = state.a, b = state.b;
+    var prod = a * b;
+    var negs = (a < 0 ? 1 : 0) + (b < 0 ? 1 : 0);
+    var prodArrow = $("prodArrow"), endDot = $("endDot");
+    var endX = xOf(prod);
+
+    prodArrow.setAttribute("x1", X0);
+    prodArrow.setAttribute("x2", endX);
+    prodArrow.style.display = prod === 0 ? "none" : "";
+    endDot.setAttribute("cx", endX);
+    $("dropLine").setAttribute("x1", endX);
+    $("dropLine").setAttribute("x2", endX);
+    $("labProd").setAttribute("x", endX);
+    $("labProd").textContent = "积 = " + fmt(prod);
+
+    var hint = "";
+    if (a === 0 || b === 0) {
+      hint = "有一个因数是 0，积就是 0，不谈方向。";
+    } else if (negs === 0) {
+      hint = "负因数 0 个：方向不翻，积为正。";
+    } else if (negs === 1) {
+      hint = "负因数 1 个：翻一次，负 → 积为负。";
+    } else {
+      hint = "负因数 2 个：翻两次，负 → 正，积为正。";
+    }
+    $("flipHint").textContent = hint;
+    $("flipBox").textContent = hint;
+
+    $("vNeg").textContent = (a === 0 || b === 0) ? "—" : negs + " 个";
+    $("vFlip").textContent = (a === 0 || b === 0) ? "—" : negs + " 次";
+    $("vProd").textContent = fmt(prod);
+    aOut.textContent = fmt(a);
+    bOut.textContent = fmt(b);
+  }
+
+  aRange.addEventListener("input", function () { state.a = parseFloat(aRange.value); render(); });
+  bRange.addEventListener("input", function () { state.b = parseFloat(bRange.value); render(); });
+  $("resetBtn").addEventListener("click", function () {
+    state.a = -5; state.b = -3; aRange.value = -5; bRange.value = -3; render();
+  });
+  document.querySelectorAll("[data-ex]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var p = btn.getAttribute("data-ex").split(",");
+      state.a = parseFloat(p[0]); state.b = parseFloat(p[1]);
+      aRange.value = state.a; bRange.value = state.b;
+      render();
+    });
+  });
+
+  var segData = {
+    sign: "<b>符号</b>：同号得正，异号得负。多个因数时数负因数个数：奇数个负，偶数个正。",
+    abs: "<b>绝对值相乘</b>：符号定完，数字部分就是 |a| × |b|，不带符号。",
+    zero: "<b>有 0</b>：任何数同 0 相乘都得 0，不用再看符号。"
+  };
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      $("segNote").innerHTML = segData[b.getAttribute("data-seg")];
+    });
+  });
+
+  var QUESTIONS = [
+    { stem: "1. 两个有理数相乘，符号法则是：", opts: ["同号得负，异号得正", "同号得正，异号得负", "都取第一个数的符号", "都得正"], answer: 1, why: "同号得正，异号得负，再把绝对值相乘。" },
+    { stem: "2. (−4) × 5 等于：", opts: ["20", "−20", "−9", "9"], answer: 1, why: "异号得负，4 × 5 = 20，所以是 −20。" },
+    { stem: "3. (−5) × (−3) 等于：", opts: ["−15", "15", "−8", "8"], answer: 1, why: "同号得正，5 × 3 = 15。负负得正。" },
+    { stem: "4. 0 × (−7) 等于：", opts: ["−7", "0", "7", "无法计算"], answer: 1, why: "任何数同 0 相乘都得 0。" },
+    { stem: "5. 下列互为倒数的是：", opts: ["3 与 −3", "3 与 1/3", "−3 与 1/3", "0 与 0"], answer: 1, why: "乘积为 1 的两个数互为倒数：3 × 1/3 = 1。3 与 −3 是相反数。" }
+  ];
+
+  var quiz = $("quiz"), answered = 0;
+  function renderQuiz() {
+    answered = 0;
+    quiz.innerHTML = QUESTIONS.map(function (q, qi) {
+      return '<div class="q" data-q="' + qi + '"><p class="q__stem">' + q.stem + '</p><div class="q__opts">' +
+        q.opts.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + o + '</button>'; }).join("") +
+        '</div><div class="q__fb"></div></div>';
+    }).join("");
+    $("quizStat").textContent = "已答 0 / 5";
+  }
+  quiz.addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-o]");
+    if (!btn) return;
+    var box = btn.closest(".q");
+    if (box.classList.contains("is-done")) return;
+    var qi = +box.getAttribute("data-q"), oi = +btn.getAttribute("data-o"), q = QUESTIONS[qi];
+    box.classList.add("is-done");
+    var opts = box.querySelectorAll(".q__opts button");
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].classList.add("is-locked");
+      if (i === q.answer) opts[i].classList.add("is-ok");
+    }
+    if (oi !== q.answer) btn.classList.add("is-bad");
+    var fb = box.querySelector(".q__fb");
+    fb.innerHTML = (oi === q.answer ? "<b>答对了。</b>" : "<b>再看一步。</b>") + q.why;
+    fb.classList.add("is-open");
+    answered += 1;
+    $("quizStat").textContent = "已答 " + answered + " / 5";
+  });
+  $("quizReset").addEventListener("click", renderQuiz);
+
+  var teacher = $("teacherPanel"), teacherBtn = $("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  $("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  var pBtn = $("projectorBtn");
+  pBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    pBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = $("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) { document.exitFullscreen(); }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key === "t" || e.key === "T") setTeacher(!teacher.classList.contains("is-open"));
+  });
+
+  drawTicks();
+  render();
+  renderQuiz();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3.1 乘方 · 七上 第2章 有理数的运算</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e; --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+  main { max-width: 1060px; margin: 0 auto; padding: 26px 22px 70px; }
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 18px 0 0; padding: 12px 16px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 18px; }
+  section { margin-top: 38px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .layout { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 18px; margin-top: 16px; align-items: start; }
+  .board { padding: 8px 6px 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .board svg { display: block; width: 100%; height: auto; }
+  .board__cap { padding: 4px 14px 10px; font-size: 12.5px; color: var(--ink3); }
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 16px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .readout { margin: 14px 0 0; display: grid; gap: 8px; }
+  .readout div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--line-soft); font-size: 13px; color: var(--ink2); }
+  .readout dd { margin: 0; font-family: var(--serif); font-size: 18px; color: var(--ink); }
+  .readout .big dd { font-size: 22px; color: var(--brand-deep); font-weight: 700; }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .definition { font-family: var(--serif); font-size: 25px; line-height: 1.75; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 46px; }
+  .seg-note b { color: var(--brand-deep); }
+  table.cmp { width: 100%; margin-top: 16px; border-collapse: collapse; font-size: 14px; background: var(--panel); }
+  table.cmp th, table.cmp td { padding: 9px 10px; border: 1px solid var(--line); text-align: center; }
+  table.cmp th { background: #f7f0df; font-size: 12.5px; color: var(--ink2); }
+  table.cmp td { font-family: var(--serif); font-size: 15px; }
+  table.cmp tr.is-hot td { background: #fbf5e8; }
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body b { color: var(--brand-deep); }
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+  .conclusion { margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 17.5px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 8px !important; font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+  footer { border-top: 1px solid var(--line); background: var(--paper); }
+  .foot-line { max-width: 1060px; margin: 0 auto; padding: 16px 22px; display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 12px; color: var(--ink3); }
+  .teacher { position: fixed; top: 0; right: 0; z-index: 60; width: 400px; max-width: 92vw; height: 100vh; overflow: auto; padding: 20px 22px 40px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -8px 0 24px rgba(43,36,25,.12); transform: translateX(102%); transition: transform .24s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 13px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+  body.is-projector { font-size: 19px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 44px; }
+  body.is-projector h2 { font-size: 29px; }
+  body.is-projector .goal { font-size: 23px; }
+  body.is-projector .definition { font-size: 31px; }
+  body.is-projector .readout dd, table.cmp td { font-size: 21px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+  @media (max-width: 840px) {
+    .layout { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 60px; }
+    h1 { font-size: 28px; }
+    .definition { font-size: 21px; }
+    .teacher { width: 100vw; }
+    body.is-projector { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .teacher { transition: none; } html { scroll-behavior: auto; } }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .q__opts { display: none !important; }
+    body { background: #fff; }
+    .card, .mis, .q, .board { break-inside: avoid; }
+    .layout { grid-template-columns: 1fr; }
+    .q__fb { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#ch=2" target="_top">← 返回第 2 章目录</a>
+  <span class="bar__crumb">七上 · 第 2 章 有理数的运算 · 2.3.1</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">第二章 · 2.3 有理数的乘方 · 2.3.1</p>
+    <h1>乘方 <small>相同的因数乘几次，符号跟着指数走</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">算理可视化</span>
+      <span class="badge">括号之争</span>
+      <span class="badge">5 题当堂检测</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">拖底数、调指数，看幂的符号怎么变。重点盯住 (−2)⁴ 和 −2⁴：差一对括号，差一个符号。</p>
+  </header>
+
+  <section id="board">
+    <div class="sec-head"><span class="sec-no">01</span><h2>指数变大，幂怎么变</h2></div>
+    <p class="sec-sub">柱子在零线上方表示幂为正，下方表示幂为负；每多乘一次底数，就多一次符号判断。</p>
+    <div class="layout">
+      <div class="board">
+        <svg id="chart" viewBox="0 0 480 280" role="img" aria-label="底数各次幂的柱状图">
+          <line x1="40" y1="160" x2="456" y2="160" stroke="#96886f" stroke-width="1.6"></line>
+          <g id="bars"></g>
+          <g id="axisLabels" font-size="11" fill="#96886f" text-anchor="middle"></g>
+        </svg>
+        <p class="board__cap">横轴是 n（1–6），柱子高度是 |aⁿ|，方向表示正负。</p>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label class="control__head" for="aRange">底数 a <output id="aOut">−2</output></label>
+          <input type="range" id="aRange" min="-3" max="3" step="1" value="-2">
+        </div>
+        <div class="control">
+          <label class="control__head" for="nRange">指数 n <output id="nOut">4</output></label>
+          <input type="range" id="nRange" min="1" max="6" step="1" value="4">
+        </div>
+        <dl class="readout">
+          <div><dt>表示</dt><dd id="vExpr">(−2)⁴</dd></div>
+          <div><dt>符号</dt><dd id="vSign">正</dd></div>
+          <div class="big"><dt>幂</dt><dd id="vPow">16</dd></div>
+        </dl>
+        <div class="btn-row">
+          <button class="btn" type="button" data-ex="-2,3">(−2)³</button>
+          <button class="btn" type="button" data-ex="-2,4">(−2)⁴</button>
+          <button class="btn" type="button" data-ex="2,3">2³</button>
+          <button class="btn" type="button" id="resetBtn">复位</button>
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">
+      <b>负数的奇次幂是负数，偶次幂是正数</b>；正数的任何次幂都是正数；0 的任何正整数次幂都是 0。
+      <p class="transfer">aⁿ 里，a 是底数，n 是指数，结果是幂。指数写在右上角，不表示相乘。</p>
+    </div>
+  </section>
+
+  <section id="rule">
+    <div class="sec-head"><span class="sec-no">02</span><h2>括号决定底数是谁</h2></div>
+    <div class="card">
+      <p class="definition">
+        <button class="seg" type="button" data-seg="def" aria-pressed="false">求 n 个相同因数的积</button>的运算叫做乘方；
+        <button class="seg" type="button" data-seg="neg" aria-pressed="false">负数的奇次幂是负数</button>，偶次幂是正数；
+        <button class="seg" type="button" data-seg="paren" aria-pressed="false">括号决定底数</button>。
+      </p>
+      <p class="seg-note" id="segNote">点一句，看它和括号的关系。</p>
+    </div>
+    <table class="cmp">
+      <thead><tr><th>n</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+      <tbody>
+        <tr><td>(−2)ⁿ</td><td>−2</td><td>4</td><td>−8</td><td>16</td><td>−32</td><td>64</td></tr>
+        <tr><td>−2ⁿ</td><td>−2</td><td>−4</td><td>−8</td><td>−16</td><td>−32</td><td>−64</td></tr>
+      </tbody>
+    </table>
+    <p class="sec-sub" style="margin-top:8px">(−2)ⁿ 的底数是 −2；−2ⁿ 的底数是 2，负号在乘方外面。</p>
+  </section>
+
+  <section id="textbook">
+    <div class="sec-head"><span class="sec-no">03</span><h2>教材例题</h2></div>
+    <p class="sec-sub">先圈底数，再数负号。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例：计算 (−2)³。</summary>
+        <div class="acc-body"><p>(−2)³ = (−2) × (−2) × (−2) = <b>−8</b>。三个负因数，奇数个，结果为负。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 (−2)⁴。</summary>
+        <div class="acc-body"><p>(−2)⁴ = (−2) × (−2) × (−2) × (−2) = <b>16</b>。四个负因数，偶数个，结果为正。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 −2⁴。</summary>
+        <div class="acc-body"><p>−2⁴ = −(2 × 2 × 2 × 2) = <b>−16</b>。底数是 2，负号在乘方外面，不参与「负负得正」。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 (−2/3)³。</summary>
+        <div class="acc-body"><p>(−2/3)³ = (−2/3) × (−2/3) × (−2/3) = <b>−8/27</b>。分数作底数要加括号。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">04</span><h2>四个常见错误</h2></div>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>「−2⁴ = 16。」</h3><p>−2⁴ 的底数是 2，结果是 <b>−16</b>；(−2)⁴ 才是 16。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>「(−2)³ = 8。」</h3><p>三个负因数，奇数个，结果是 <b>−8</b>。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>「2³ = 2 × 3 = 6。」</h3><p>2³ = 2 × 2 × 2 = <b>8</b>；指数不参与相乘。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>「(−2/3)² 可以写成 −2²/3²。」</h3><p>分数作底数必须整体加括号：(−2/3)² = 4/9，不是 −4/9。</p></div>
+    </div>
+  </section>
+
+  <section id="quizSec">
+    <div class="sec-head"><span class="sec-no">05</span><h2>当堂检测 · 5 题</h2></div>
+    <p class="sec-sub">选完立刻看解析；不排名、不上传。</p>
+    <div class="quiz" id="quiz"></div>
+    <div class="quiz__bar"><span id="quizStat">已答 0 / 5</span><button class="btn" type="button" id="quizReset">重做</button></div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 2 章 2.3.1</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 2.3.1</h2>
+  <p>2024 人教版七上第 2 章；核对 2026-11-26。按 T 开关。</p>
+  <h3>本节目标</h3>
+  <p>学生能说清底数、指数、幂，判断负数幂的符号，并分清 (−2)⁴ 与 −2⁴。</p>
+  <h3>3 分钟开场</h3>
+  <p>「2 × 2 × 2 写成 2³，这个 3 不是乘 3，是乘三次。那 (−2)⁴ 和 −2⁴ 一样吗？今天只看一件事：括号里的底数到底是谁。」</p>
+  <h3>5 个追问</h3>
+  <ol>
+    <li>「2³ 等于几？」期望：8。</li>
+    <li>「(−2)³ 等于几？」期望：−8。</li>
+    <li>「(−2)⁴ 等于几？」期望：16。</li>
+    <li>「−2⁴ 等于几？」期望：−16。</li>
+    <li>「0 的任何正整数次幂？」期望：0。</li>
+  </ol>
+  <h3>常见反应</h3>
+  <p>① 指数当乘数——用「2³ = 2×2×2」纠正。<br>② 负号在外也当负负得正——用对照表。<br>③ 分数底数不加括号——用 (−2/3)³。</p>
+  <h3>衔接</h3>
+  <p>模型停在 01 屏与对照表；接着板书 a、n、幂的位置，再做 4 道符号口答。</p>
+  <h3>课后 1 题</h3>
+  <p>计算：(−1)²⁰²⁶ + (−1)²⁰²⁵。</p>
+  <h3>离线使用</h3>
+  <p>单文件、无网络请求；手机竖屏可用。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { a: -2, n: 4 };
+  var aRange = $("aRange"), nRange = $("nRange");
+
+  function fmt(n) {
+    var s = (Math.round(n * 100) / 100).toString();
+    return s.replace("-", "−");
+  }
+
+  function render() {
+    var a = state.a, n = state.n;
+    var pow = Math.pow(a, n);
+
+    var maxAbs = 1;
+    for (var i = 1; i <= 6; i++) maxAbs = Math.max(maxAbs, Math.abs(Math.pow(a, i)));
+    var scale = 110 / maxAbs;
+
+    var bars = "", labels = "";
+    for (var k = 1; k <= 6; k++) {
+      var v = Math.pow(a, k);
+      var h = Math.abs(v) * scale;
+      var x = 60 + (k - 1) * 66;
+      var y = v >= 0 ? 160 - h : 160;
+      var color = v >= 0 ? "#a3541f" : "#b9863c";
+      bars += '<rect x="' + (x - 20) + '" y="' + y + '" width="40" height="' + Math.max(h, 1) + '" rx="4" fill="' + color + '" opacity="' + (k === n ? 1 : .45) + '"></rect>';
+      bars += '<text x="' + x + '" y="' + (v >= 0 ? y - 6 : y + h + 15) + '" font-size="11" fill="#5f5443" text-anchor="middle">' + fmt(v) + '</text>';
+      labels += '<text x="' + x + '" y="176">n=' + k + '</text>';
+    }
+    $("bars").innerHTML = bars;
+    $("axisLabels").innerHTML = labels;
+
+    $("vExpr").textContent = a < 0 ? "(" + fmt(a) + ")" + sup(n) : fmt(a) + sup(n);
+    $("vSign").textContent = pow > 0 ? "正" : (pow < 0 ? "负" : "0");
+    $("vPow").textContent = fmt(pow);
+    aOut.textContent = fmt(a);
+    nOut.textContent = n;
+  }
+
+  function sup(n) {
+    var map = { "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+    return String(n).split("").map(function (c) { return map[c] || c; }).join("");
+  }
+
+  aRange.addEventListener("input", function () { state.a = parseFloat(aRange.value); render(); });
+  nRange.addEventListener("input", function () { state.n = parseInt(nRange.value, 10); render(); });
+  $("resetBtn").addEventListener("click", function () {
+    state.a = -2; state.n = 4; aRange.value = -2; nRange.value = 4; render();
+  });
+  document.querySelectorAll("[data-ex]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var p = btn.getAttribute("data-ex").split(",");
+      state.a = parseFloat(p[0]); state.n = parseInt(p[1], 10);
+      aRange.value = state.a; nRange.value = state.n;
+      render();
+    });
+  });
+
+  var segData = {
+    def: "<b>乘方</b>：求 n 个相同因数的积。aⁿ 表示 n 个 a 相乘，不是 a × n。",
+    neg: "<b>负数幂的符号</b>：奇次幂为负，偶次幂为正。数负因数个数即可。",
+    paren: "<b>括号</b>：(−2)⁴ 的底数是 −2；−2⁴ 的底数是 2。括号管住底数，负号在外面只管结果。"
+  };
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      $("segNote").innerHTML = segData[b.getAttribute("data-seg")];
+    });
+  });
+
+  var QUESTIONS = [
+    { stem: "1. 在 aⁿ 中，a 叫做：", opts: ["指数", "底数", "幂", "因数"], answer: 1, why: "a 是底数，n 是指数，aⁿ 的结果是幂。" },
+    { stem: "2. (−2)⁴ 等于：", opts: ["−16", "16", "−8", "8"], answer: 1, why: "四个负因数，偶数个，结果为正；2⁴ = 16。" },
+    { stem: "3. −2⁴ 等于：", opts: ["16", "−16", "−8", "8"], answer: 1, why: "底数是 2，负号在乘方外面：−(2⁴) = −16。" },
+    { stem: "4. (−2/3)³ 等于：", opts: ["8/27", "−8/27", "−6/9", "8/9"], answer: 1, why: "三个负因数，结果为负；2³/3³ = 8/27，所以是 −8/27。" },
+    { stem: "5. 下列说法正确的是：", opts: ["负数的任何次幂都是负数", "负数的奇次幂是负数，偶次幂是正数", "0 的 0 次幂是 0", "正数的偶次幂是负数"], answer: 1, why: "负数的奇次幂为负，偶次幂为正；0 的正整数次幂是 0。" }
+  ];
+
+  var quiz = $("quiz"), answered = 0;
+  function renderQuiz() {
+    answered = 0;
+    quiz.innerHTML = QUESTIONS.map(function (q, qi) {
+      return '<div class="q" data-q="' + qi + '"><p class="q__stem">' + q.stem + '</p><div class="q__opts">' +
+        q.opts.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + o + '</button>'; }).join("") +
+        '</div><div class="q__fb"></div></div>';
+    }).join("");
+    $("quizStat").textContent = "已答 0 / 5";
+  }
+  quiz.addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-o]");
+    if (!btn) return;
+    var box = btn.closest(".q");
+    if (box.classList.contains("is-done")) return;
+    var qi = +box.getAttribute("data-q"), oi = +btn.getAttribute("data-o"), q = QUESTIONS[qi];
+    box.classList.add("is-done");
+    var opts = box.querySelectorAll(".q__opts button");
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].classList.add("is-locked");
+      if (i === q.answer) opts[i].classList.add("is-ok");
+    }
+    if (oi !== q.answer) btn.classList.add("is-bad");
+    var fb = box.querySelector(".q__fb");
+    fb.innerHTML = (oi === q.answer ? "<b>答对了。</b>" : "<b>再看一步。</b>") + q.why;
+    fb.classList.add("is-open");
+    answered += 1;
+    $("quizStat").textContent = "已答 " + answered + " / 5";
+  });
+  $("quizReset").addEventListener("click", renderQuiz);
+
+  var teacher = $("teacherPanel"), teacherBtn = $("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  $("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  var pBtn = $("projectorBtn");
+  pBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    pBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = $("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) { document.exitFullscreen(); }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key === "t" || e.key === "T") setTeacher(!teacher.classList.contains("is-open"));
+  });
+
+  render();
+  renderQuiz();
+})();
+</script>
+</body>
+</html>

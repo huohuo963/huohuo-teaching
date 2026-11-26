@@ -35,22 +35,22 @@ window.CURRICULUM = [
           {
             id: "2.1", title: "有理数的加法与减法",
             children: [
-              { id: "2.1.1", title: "有理数的加法" },
-              { id: "2.1.2", title: "有理数的减法" }
+              { id: "2.1.1", title: "有理数的加法", ready: true },
+              { id: "2.1.2", title: "有理数的减法", ready: true }
             ]
           },
           {
             id: "2.2", title: "有理数的乘法与除法",
             children: [
-              { id: "2.2.1", title: "有理数的乘法" },
-              { id: "2.2.2", title: "有理数的除法" }
+              { id: "2.2.1", title: "有理数的乘法", ready: true },
+              { id: "2.2.2", title: "有理数的除法", ready: true }
             ]
           },
           {
             id: "2.3", title: "有理数的乘方",
             children: [
-              { id: "2.3.1", title: "乘方" },
-              { id: "2.3.2", title: "科学记数法" },
+              { id: "2.3.1", title: "乘方", ready: true },
+              { id: "2.3.2", title: "科学记数法", ready: true },
               { id: "2.3.3", title: "近似数", note: "按规划并入 2.3.2《科学记数法》的最后一屏（精确度与有效数字），不单独建模。请从 2.3.2 进入。" }
             ]
           },

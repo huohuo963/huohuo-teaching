@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1.2 有理数的减法 · 七上 第2章 有理数的运算</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e; --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+  main { max-width: 1060px; margin: 0 auto; padding: 26px 22px 70px; }
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 18px 0 0; padding: 12px 16px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 18px; }
+  section { margin-top: 38px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .layout { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 18px; margin-top: 16px; align-items: start; }
+  .board { padding: 8px 6px 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .board svg { display: block; width: 100%; height: auto; }
+  .board__cap { padding: 4px 14px 10px; font-size: 12.5px; color: var(--ink3); }
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 16px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .control__hint { margin: 4px 0 0; font-size: 11.5px; color: var(--ink3); }
+  .readout { margin: 14px 0 0; display: grid; gap: 8px; }
+  .readout div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 6px; border-bottom: 1px dashed var(--line-soft); font-size: 13px; color: var(--ink2); }
+  .readout dd { margin: 0; font-family: var(--serif); font-size: 18px; color: var(--ink); }
+  .readout .big dd { font-size: 22px; color: var(--brand-deep); font-weight: 700; }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .definition { font-family: var(--serif); font-size: 26px; line-height: 1.75; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 46px; }
+  .seg-note b { color: var(--brand-deep); }
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body b { color: var(--brand-deep); }
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+  .conclusion { margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 17.5px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 8px !important; font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+  footer { border-top: 1px solid var(--line); background: var(--paper); }
+  .foot-line { max-width: 1060px; margin: 0 auto; padding: 16px 22px; display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 12px; color: var(--ink3); }
+  .teacher { position: fixed; top: 0; right: 0; z-index: 60; width: 400px; max-width: 92vw; height: 100vh; overflow: auto; padding: 20px 22px 40px; background: var(--panel); border-left: 1px solid var(--line); box-shadow: -8px 0 24px rgba(43,36,25,.12); transform: translateX(102%); transition: transform .24s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 13px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+  body.is-projector { font-size: 19px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 44px; }
+  body.is-projector h2 { font-size: 29px; }
+  body.is-projector .goal { font-size: 23px; }
+  body.is-projector .definition { font-size: 33px; }
+  body.is-projector .readout dd { font-size: 21px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+  @media (max-width: 840px) {
+    .layout { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 60px; }
+    h1 { font-size: 28px; }
+    .definition { font-size: 22px; }
+    .teacher { width: 100vw; }
+    body.is-projector { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .teacher { transition: none; } html { scroll-behavior: auto; } }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .q__opts { display: none !important; }
+    body { background: #fff; }
+    .card, .mis, .q, .board { break-inside: avoid; }
+    .layout { grid-template-columns: 1fr; }
+    .q__fb { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#ch=2" target="_top">← 返回第 2 章目录</a>
+  <span class="bar__crumb">七上 · 第 2 章 有理数的运算 · 2.1.2</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">第二章 · 2.1 有理数的加法与减法 · 2.1.2</p>
+    <h1>有理数的减法 <small>减去一个数，等于加上它的相反数</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">算理可视化</span>
+      <span class="badge">双路径对照</span>
+      <span class="badge">5 题当堂检测</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">上下两条路径，一条是 a − b，一条是 a + (−b)。终点一定重合——这就是减法的转化。</p>
+  </header>
+
+  <section id="board">
+    <div class="sec-head"><span class="sec-no">01</span><h2>两条路，同一个终点</h2></div>
+    <p class="sec-sub">红线是「a 减去 b」，黄线是「a 加上 b 的相反数」。拖动 a、b 看它们始终重合。</p>
+    <div class="layout">
+      <div class="board">
+        <svg id="nl" viewBox="0 0 480 280" role="img" aria-label="减法转化为加法的数轴对照">
+          <defs>
+            <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#a3541f"></path>
+            </marker>
+            <marker id="arrowGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#b9863c"></path>
+            </marker>
+          </defs>
+          <line x1="24" y1="204" x2="456" y2="204" stroke="#96886f" stroke-width="1.8"></line>
+          <g id="ticks" font-size="11" fill="#b3a68c" text-anchor="middle"></g>
+          <line id="subA" x1="240" y1="172" x2="240" y2="172" stroke="#a3541f" stroke-width="3.2" marker-end="url(#arrowRed)"></line>
+          <line id="subB" x1="240" y1="172" x2="240" y2="172" stroke="#a3541f" stroke-width="3.2" marker-end="url(#arrowRed)" opacity=".45"></line>
+          <line id="addA" x1="240" y1="120" x2="240" y2="120" stroke="#b9863c" stroke-width="3.2" marker-end="url(#arrowGold)" stroke-dasharray="7 4"></line>
+          <line id="addB" x1="240" y1="120" x2="240" y2="120" stroke="#b9863c" stroke-width="3.2" marker-end="url(#arrowGold)" stroke-dasharray="7 4" opacity=".45"></line>
+          <line id="dropLine" x1="240" y1="204" x2="240" y2="96" stroke="#e0d5be" stroke-width="1.2" stroke-dasharray="4 4"></line>
+          <circle id="endDot" cx="240" cy="204" r="7" fill="#83401a" stroke="#fffdf8" stroke-width="2"></circle>
+          <text id="labSub" x="240" y="188" font-size="12" fill="#a3541f" text-anchor="middle">a − b</text>
+          <text id="labAdd" x="240" y="110" font-size="12" fill="#8a6a33" text-anchor="middle">a + (−b)</text>
+          <text id="labEnd" x="240" y="236" font-size="14" font-weight="700" fill="#83401a" text-anchor="middle">终点相同</text>
+        </svg>
+        <p class="board__cap">上面虚线：a + (−b)；下面实线：a − b。两条箭头终点重合。</p>
+      </div>
+      <div class="controls">
+        <div class="control">
+          <label class="control__head" for="aRange">a <output id="aOut">15</output></label>
+          <input type="range" id="aRange" min="-8" max="8" step="0.5" value="8">
+        </div>
+        <div class="control">
+          <label class="control__head" for="bRange">b <output id="bOut">−3</output></label>
+          <input type="range" id="bRange" min="-8" max="8" step="0.5" value="-3">
+        </div>
+        <dl class="readout">
+          <div><dt>转化式</dt><dd id="vExpr">8 − (−3)</dd></div>
+          <div><dt>变成加法</dt><dd id="vExpr2">8 + 3</dd></div>
+          <div class="big"><dt>结果</dt><dd id="vRes">11</dd></div>
+        </dl>
+        <div class="btn-row">
+          <button class="btn" type="button" data-ex="8,-3">减负数</button>
+          <button class="btn" type="button" data-ex="3,5">小数减大数</button>
+          <button class="btn" type="button" data-ex="-5,-8">负减负</button>
+          <button class="btn" type="button" id="resetBtn">复位</button>
+        </div>
+      </div>
+    </div>
+    <div class="conclusion">
+      减去一个数，等于<b>加上这个数的相反数</b>：a − b = a + (−b)。转化时两件事一起变：<b>减号变加号，减数变相反数</b>。
+      <p class="transfer">例：15 − (−3) = 15 + 3 = 18；3 − 5 = 3 + (−5) = −2；0 − (−7) = 0 + 7 = 7。</p>
+    </div>
+  </section>
+
+  <section id="rule">
+    <div class="sec-head"><span class="sec-no">02</span><h2>法则与两步转化</h2></div>
+    <div class="card">
+      <p class="definition">
+        <button class="seg" type="button" data-seg="law" aria-pressed="false">减去一个数</button>，等于加上这个数的
+        <button class="seg" type="button" data-seg="opp" aria-pressed="false">相反数</button>；
+        转化后按
+        <button class="seg" type="button" data-seg="add" aria-pressed="false">加法法则</button>计算。
+      </p>
+      <p class="seg-note" id="segNote">点一段，看转化时哪两处必须同时变。</p>
+    </div>
+  </section>
+
+  <section id="textbook">
+    <div class="sec-head"><span class="sec-no">03</span><h2>教材例题</h2></div>
+    <p class="sec-sub">每一步都把「转化」写出来，别跳步。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例：计算 15 − (−3)。</summary>
+        <div class="acc-body"><p>15 − (−3) = 15 + 3 = <b>18</b>。减号变加号，−3 变 +3。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 0 − (−7)。</summary>
+        <div class="acc-body"><p>0 − (−7) = 0 + 7 = <b>7</b>。注意不是 0，也不是 −7。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 (−5) − (−8)。</summary>
+        <div class="acc-body"><p>(−5) − (−8) = (−5) + 8 = <b>3</b>。转化为加法后，异号相加，8 的绝对值大，取正。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例：计算 3 − 5。</summary>
+        <div class="acc-body"><p>3 − 5 = 3 + (−5) = <b>−2</b>。小数减大数，结果是负的。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>阅读与思考：我国古代正负数加减法则</summary>
+        <div class="acc-body"><p>《九章算术》里已有「正负术」：同名相除、异名相益等说法，用今天的记号就是同号相加、异号相减。我们现在的法则，古人两千年前就在用。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">04</span><h2>四个常见错误</h2></div>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>「只把减号改成加号。」</h3><p>减数也要变相反数。3 − (−5) 要写成 3 + 5，不是 3 − 5，也不是 3 + (−5)。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>「3 − 5 = 2。」</h3><p>小数减大数得负：3 − 5 = 3 + (−5) = <b>−2</b>。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>「0 − (−7) = 0。」</h3><p>0 减负数等于加上正数：0 + 7 = <b>7</b>。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>「减法不能转化，直接大减小。」</h3><p>减法必须先转成加法，再用加法法则；不能拿两个数的绝对值直接相减。</p></div>
+    </div>
+  </section>
+
+  <section id="quizSec">
+    <div class="sec-head"><span class="sec-no">05</span><h2>当堂检测 · 5 题</h2></div>
+    <p class="sec-sub">选完立刻看解析；不排名、不上传。</p>
+    <div class="quiz" id="quiz"></div>
+    <div class="quiz__bar"><span id="quizStat">已答 0 / 5</span><button class="btn" type="button" id="quizReset">重做</button></div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 2 章 2.1.2</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 2.1.2</h2>
+  <p>2024 人教版七上第 2 章；核对 2026-11-26。按 T 开关。</p>
+  <h3>本节目标</h3>
+  <p>学生能说清「减号变加号、减数变相反数」，并把减法稳定转化为加法。</p>
+  <h3>3 分钟开场</h3>
+  <p>「15 − (−3)，有人得 12，有人得 18。差别在哪？就在那个『减负数』上。今天不背，我们画两条路：一条直接减，一条先变成加相反数，看它们是不是停在同一个地方。」</p>
+  <h3>5 个追问</h3>
+  <ol>
+    <li>「减去一个数，等于加上什么？」期望：这个数的相反数。</li>
+    <li>「3 − 5 等于几？」期望：−2。</li>
+    <li>「15 − (−3) 等于几？」期望：18。</li>
+    <li>「0 − (−7) 等于几？」期望：7。</li>
+    <li>「转化时要改几处？」期望：两处，减号变加号、减数变相反数。</li>
+  </ol>
+  <h3>常见反应</h3>
+  <p>① 只改减号——用双路径图指出第二条箭头的方向。<br>② 小数减大数得正——把 a 调小、b 调大。<br>③ 0 减负数得 0——用「0 − (−7)」预设。</p>
+  <h3>衔接</h3>
+  <p>模型停在 01 屏；接着板书 a − b = a + (−b)，再做 4 道只写转化式的口答。</p>
+  <h3>课后 1 题</h3>
+  <p>计算：−7 − (−3) − 5。</p>
+  <h3>离线使用</h3>
+  <p>单文件、无网络请求；手机竖屏可用。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var state = { a: 8, b: -3 };
+  var X0 = 240, U = 13;
+  var aRange = $("aRange"), bRange = $("bRange");
+
+  function fmt(n) {
+    var s = (Math.round(n * 10) / 10).toString();
+    return s.replace("-", "−");
+  }
+  function xOf(v) { return X0 + v * U; }
+
+  function drawTicks() {
+    var html = "";
+    for (var i = -8; i <= 8; i++) {
+      var x = xOf(i);
+      html += '<line x1="' + x + '" y1="198" x2="' + x + '" y2="210" stroke="' + (i === 0 ? "#83401a" : "#d8cab0") + '" stroke-width="' + (i === 0 ? 2 : 1) + '"></line>';
+      if (i !== 0) html += '<text x="' + x + '" y="226">' + fmt(i) + '</text>';
+    }
+    $("ticks").innerHTML = html;
+  }
+
+  function setArrow(el, from, to) {
+    el.setAttribute("x1", xOf(from));
+    el.setAttribute("x2", xOf(to));
+  }
+
+  function render() {
+    var a = state.a, b = state.b;
+    var res = Math.round((a - b) * 10) / 10;
+    var xa = xOf(a), xr = xOf(res);
+
+    setArrow($("subA"), 0, a);
+    setArrow($("subB"), a, res);
+    setArrow($("addA"), 0, a);
+    setArrow($("addB"), a, res);
+    $("dropLine").setAttribute("x1", xr);
+    $("dropLine").setAttribute("x2", xr);
+    $("endDot").setAttribute("cx", xr);
+
+    $("labSub").setAttribute("x", (X0 + xr) / 2);
+    $("labSub").textContent = "a − b = " + fmt(res);
+    $("labAdd").setAttribute("x", (X0 + xr) / 2);
+    $("labAdd").textContent = "a + (−b) = " + fmt(res);
+    $("labEnd").setAttribute("x", xr);
+    $("labEnd").textContent = "终点 " + fmt(res);
+
+    $("vExpr").textContent = fmt(a) + " − (" + fmt(b) + ")";
+    $("vExpr2").textContent = fmt(a) + " + " + (b < 0 ? fmt(-b) : "(" + fmt(-b) + ")");
+    $("vRes").textContent = fmt(res);
+    aOut.textContent = fmt(a);
+    bOut.textContent = fmt(b);
+  }
+
+  aRange.addEventListener("input", function () { state.a = parseFloat(aRange.value); render(); });
+  bRange.addEventListener("input", function () { state.b = parseFloat(bRange.value); render(); });
+  $("resetBtn").addEventListener("click", function () {
+    state.a = 8; state.b = -3; aRange.value = 8; bRange.value = -3; render();
+  });
+  document.querySelectorAll("[data-ex]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var p = btn.getAttribute("data-ex").split(",");
+      state.a = parseFloat(p[0]); state.b = parseFloat(p[1]);
+      aRange.value = state.a; bRange.value = state.b;
+      render();
+    });
+  });
+
+  var segData = {
+    law: "<b>减去一个数</b>：先把「减」看成「加相反数」。这一步不改结果，只改写法。",
+    opp: "<b>相反数</b>：b 变成 −b。b 本身是负数时，−b 反而是正数，所以「减负数」会变大。",
+    add: "<b>加法法则</b>：转化完就按同号、异号、与 0 相加的规则算，不要再用减法思维。"
+  };
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      $("segNote").innerHTML = segData[b.getAttribute("data-seg")];
+    });
+  });
+
+  var QUESTIONS = [
+    { stem: "1. 有理数的减法法则是：", opts: ["减去一个数，等于加上这个数", "减去一个数，等于加上这个数的相反数", "减去一个数，等于减去它的绝对值", "减去一个数，直接把绝对值相减"], answer: 1, why: "a − b = a + (−b)：减号变加号，减数变相反数。" },
+    { stem: "2. 3 − 5 等于：", opts: ["2", "−2", "8", "−8"], answer: 1, why: "3 − 5 = 3 + (−5) = −2。小数减大数，结果是负的。" },
+    { stem: "3. 15 − (−3) 等于：", opts: ["12", "−12", "18", "−18"], answer: 2, why: "15 − (−3) = 15 + 3 = 18。" },
+    { stem: "4. (−5) − (−8) 等于：", opts: ["−13", "13", "−3", "3"], answer: 3, why: "(−5) − (−8) = (−5) + 8 = 3。" },
+    { stem: "5. 0 − (−7) 等于：", opts: ["0", "−7", "7", "14"], answer: 2, why: "0 − (−7) = 0 + 7 = 7。" }
+  ];
+
+  var quiz = $("quiz"), answered = 0;
+  function renderQuiz() {
+    answered = 0;
+    quiz.innerHTML = QUESTIONS.map(function (q, qi) {
+      return '<div class="q" data-q="' + qi + '"><p class="q__stem">' + q.stem + '</p><div class="q__opts">' +
+        q.opts.map(function (o, oi) { return '<button type="button" data-o="' + oi + '">' + o + '</button>'; }).join("") +
+        '</div><div class="q__fb"></div></div>';
+    }).join("");
+    $("quizStat").textContent = "已答 0 / 5";
+  }
+  quiz.addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-o]");
+    if (!btn) return;
+    var box = btn.closest(".q");
+    if (box.classList.contains("is-done")) return;
+    var qi = +box.getAttribute("data-q"), oi = +btn.getAttribute("data-o"), q = QUESTIONS[qi];
+    box.classList.add("is-done");
+    var opts = box.querySelectorAll(".q__opts button");
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].classList.add("is-locked");
+      if (i === q.answer) opts[i].classList.add("is-ok");
+    }
+    if (oi !== q.answer) btn.classList.add("is-bad");
+    var fb = box.querySelector(".q__fb");
+    fb.innerHTML = (oi === q.answer ? "<b>答对了。</b>" : "<b>再看一步。</b>") + q.why;
+    fb.classList.add("is-open");
+    answered += 1;
+    $("quizStat").textContent = "已答 " + answered + " / 5";
+  });
+  $("quizReset").addEventListener("click", renderQuiz);
+
+  var teacher = $("teacherPanel"), teacherBtn = $("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  $("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  var pBtn = $("projectorBtn");
+  pBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    pBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = $("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) { document.exitFullscreen(); }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key === "t" || e.key === "T") setTeacher(!teacher.classList.contains("is-open"));
+  });
+
+  drawTicks();
+  render();
+  renderQuiz();
+})();
+</script>
+</body>
+</html>
