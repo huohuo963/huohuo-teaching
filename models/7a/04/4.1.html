@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 整式 · 七上 第4章 整式的加减</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button, summary { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 72px; }
+  .hero { padding: 8px 0 4px; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; letter-spacing: .02em; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 20px 0 0; padding: 14px 18px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+
+  section { margin-top: 40px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .card b { color: var(--brand-deep); }
+  .note { margin-top: 12px !important; font-size: 13.5px; color: var(--ink2); }
+  .note b { color: var(--brand-deep); }
+
+  .definition { font-family: var(--serif); font-size: 26px; line-height: 1.8; }
+  .definition mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 3px; }
+
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tab { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; cursor: pointer; min-height: 40px; }
+  .tab[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .is-hidden { display: none !important; }
+  .frac { font-family: var(--serif); white-space: nowrap; }
+
+  .bridge { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .bridge__seg { padding: 12px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; text-align: center; transition: border-color .18s ease, background .18s ease; }
+  .bridge__seg b { display: block; font-family: var(--serif); font-size: 17px; }
+  .bridge__seg span { display: block; margin-top: 2px; font-size: 12px; color: var(--ink3); }
+  .bridge__seg.is-on { border-color: var(--brand); background: #fbf5e8; }
+  .bridge__seg.is-on b { color: var(--brand-deep); }
+
+  .eqline { display: flex; align-items: baseline; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 16px 8px 8px; font-family: var(--serif); font-size: 38px; line-height: 1.35; }
+  .eqline .op { color: var(--ink3); font-size: 28px; }
+  .readout { margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: #fbf5e8; font-family: var(--serif); font-size: 20px; text-align: center; color: var(--brand-deep); }
+  .readout small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .slider-row label { font-size: 13px; color: var(--ink2); min-width: 88px; }
+  .slider-row input[type="range"] { flex: 1 1 220px; min-width: 160px; accent-color: var(--brand); height: 32px; }
+  .slider-val { font-family: var(--serif); font-size: 17px; color: var(--brand-deep); min-width: 76px; text-align: right; }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .chip { padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-family: var(--serif); font-size: 16px; cursor: pointer; min-height: 40px; }
+  .chip:hover { border-color: var(--ochre); }
+  .chip.is-ok { border-color: var(--ok); background: #f0f4ea; color: #3d552c; }
+  .chip.is-bad { border-color: var(--err); background: #fbeee9; color: var(--err); }
+  .chip-fb { margin-top: 10px !important; padding: 10px 12px; border-radius: 8px; background: #fdfaf2; font-size: 13.5px; color: var(--ink2); }
+  .chip-fb b { color: var(--brand-deep); }
+
+  .big-expr { font-family: var(--serif); font-size: 46px; text-align: center; padding: 16px 6px 4px; letter-spacing: .02em; word-break: break-all; }
+  .big-expr .coef { color: var(--orange); font-weight: 700; }
+  .big-expr .exp { color: var(--brand); font-weight: 700; }
+  .big-expr .paren { color: var(--ink3); }
+  .mono-meta { margin-top: 6px; text-align: center; font-size: 13.5px; color: var(--ink2); }
+  .mono-meta b { color: var(--brand-deep); }
+
+  .termline { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; font-family: var(--serif); font-size: 32px; padding: 14px 0 4px; }
+  .term { padding: 2px 6px; border: 1px solid transparent; border-radius: 8px; background: transparent; font-family: inherit; font-size: inherit; cursor: pointer; }
+  .term:hover { border-color: var(--line); background: #fdfaf2; }
+  .term[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  .term.is-top { text-decoration: underline 2px var(--ochre); text-underline-offset: 9px; }
+  .term-fb { margin-top: 10px !important; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .term-fb b { color: var(--brand-deep); }
+
+  .family { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .fam { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; }
+  .fam span { display: block; font-family: var(--serif); font-size: 12px; letter-spacing: .1em; color: var(--brand); }
+  .fam b { display: block; margin-top: 4px; font-family: var(--serif); font-size: 20px; }
+  .fam p { margin-top: 4px; font-size: 13px; color: var(--ink2); }
+  .fam--all { grid-column: 1 / -1; background: #fbf5e8; border-color: rgba(163,84,31,.3); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+  .work { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); font-family: var(--serif); font-size: 19px; line-height: 1.9; color: var(--ink); }
+  .work mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 2px; }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .mis p b { color: var(--ink); }
+
+  .self { display: grid; gap: 12px; margin-top: 14px; }
+  .self-q { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .self-q h3 { margin: 0; font-size: 14.5px; font-weight: 600; }
+  .self-q textarea { width: 100%; min-height: 62px; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fffdf8; font-size: 14px; resize: vertical; }
+  .self-q select { margin-top: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 13px; }
+  .self-ref { display: none; margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .self-ref.is-open { display: block; }
+  .self-ref b { color: var(--brand-deep); }
+  .self-note { margin-top: 10px !important; font-size: 12.5px; color: var(--ink3); }
+
+  .conclusion { margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 10px !important; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam { margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--ochre); border-radius: 8px; background: #fffdf8; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam b { color: var(--ink); }
+
+  footer { max-width: 1080px; margin: 0 auto; padding: 0 22px 42px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(420px, 92vw); padding: 22px 22px 40px; overflow-y: auto; background: #fffdf8; border-left: 1px solid var(--line); transform: translateX(104%); transition: transform .22s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 22px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 7px; }
+  .teacher .tool-btn { float: right; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .definition { font-size: 34px; }
+  body.is-projector .eqline { font-size: 50px; }
+  body.is-projector .big-expr { font-size: 60px; }
+  body.is-projector .termline { font-size: 42px; }
+  body.is-projector .card, body.is-projector .self-q { padding: 24px 26px; }
+  body.is-projector .mis p, body.is-projector .acc-body { font-size: 18px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 20px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 760px) {
+    main { padding: 22px 16px 60px; }
+    h1 { font-size: 29px; }
+    .eqline { font-size: 30px; }
+    .definition { font-size: 22px; }
+    .big-expr { font-size: 34px; }
+    .termline { font-size: 26px; }
+    .bridge { grid-template-columns: 1fr; }
+    .family { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .tool-btn, .btn, .tab, .chip { min-height: 44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher, .bridge__seg { transition: none; }
+  }
+
+  @media print {
+    .bar, .teacher, .tool-btn, .btn, .tab, .chips, .preset-row { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    section { break-inside: avoid; }
+    .card, .mis, .conclusion, .fam, .self-q { border-color: #bbb; background: #fff; }
+    .self-ref { display: block !important; }
+    footer { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#s=4.1" target="_top">← 返回 4.1</a>
+  <span class="bar__crumb">七上 · 第4章 整式的加减 · 4.1</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">概念建构 · 2024 人教版 · 七上第 4 章</p>
+    <h1>整式<small>先看清一个式子由哪些「零件」组成：系数、字母、指数、项。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">S 旗舰样板</span>
+      <span class="badge">概念型 · 不判分 · 复述自检</span>
+      <span class="badge">2 课时内容（单项式 + 多项式）</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">本节只追一件事：拿到一个式子，你能说清它是不是整式、是单项式还是多项式，以及它的系数、次数、项分别是什么。</p>
+  </header>
+
+  <section id="situation">
+    <div class="sec-head"><span class="sec-no">01</span><h2>一条大桥，三个式子</h2></div>
+    <p class="sec-sub">港珠澳大桥由主桥、海底隧道和人工岛组成。汽车在不同路段速度不同：口岸到东人工岛 96 km/h，海底隧道 72 km/h，主桥 92 km/h。本章的三个问题都从这里来。</p>
+    <div class="card">
+      <div class="bridge" id="bridgeSegs">
+        <div class="bridge__seg" data-seg="1"><b>口岸 → 东人工岛</b><span>96 km/h</span></div>
+        <div class="bridge__seg" data-seg="2"><b>海底隧道</b><span>72 km/h</span></div>
+        <div class="bridge__seg" data-seg="3"><b>主桥</b><span>92 km/h</span></div>
+      </div>
+      <div class="tabs" id="qTabs">
+        <button class="tab" type="button" data-q="1" aria-pressed="true">问题 (1) 主桥路程</button>
+        <button class="tab" type="button" data-q="2" aria-pressed="false">问题 (2) 口岸到西人工岛</button>
+        <button class="tab" type="button" data-q="3" aria-pressed="false">问题 (3) 主桥与隧道</button>
+      </div>
+
+      <div class="q-pane" id="pane1">
+        <div class="eqline"><span>92 × t = 92t</span></div>
+        <div class="slider-row">
+          <label for="tSlider">主桥行驶 t</label>
+          <input id="tSlider" type="range" min="0" max="3" step="0.1" value="1">
+          <span class="slider-val" id="tVal">1 h</span>
+        </div>
+        <div class="readout" id="tReadout">92 × 1 = 92 km<small>t = 1 h 时，在主桥上行驶 92 km</small></div>
+        <p class="note"><b>看清：</b>92 是速度（数），t 是时间（字母），92t 表示「92 乘 t」。<b>t 表示在这段路上行驶的小时数</b>，换成 1.5 h，路程就是 92×1.5 = 138 km。</p>
+      </div>
+
+      <div class="q-pane is-hidden" id="pane2">
+        <div class="eqline"><span>72a + 96×1.25a</span></div>
+        <div class="slider-row">
+          <label for="aSlider">隧道时间 a</label>
+          <input id="aSlider" type="range" min="0.2" max="2" step="0.1" value="1">
+          <span class="slider-val" id="aVal">1 h</span>
+        </div>
+        <div class="readout" id="aReadout">72×1 + 120×1 = 192 km<small>a = 1 h 时，口岸到西人工岛全长 192 km</small></div>
+        <p class="note"><b>先不急着合并。</b>72a 表示隧道里的路程，96×1.25a = 120a 表示口岸到东人工岛的路程。两个含 a 的项怎么加起来，是 4.2 要解决的问题；此刻只要看清 <b>a 表示隧道里行驶的小时数</b>。</p>
+      </div>
+
+      <div class="q-pane is-hidden" id="pane3">
+        <div class="eqline"><span>92b + 72(b − 0.15)</span></div>
+        <div class="slider-row">
+          <label for="bSlider">主桥时间 b</label>
+          <input id="bSlider" type="range" min="0.2" max="2" step="0.05" value="1">
+          <span class="slider-val" id="bVal">1 h</span>
+        </div>
+        <div class="readout" id="bReadout">92×1 + 72×(1−0.15) = 92 + 61.2 = 153.2 km<small>b = 1 h 时，主桥与海底隧道长度之和约 153.2 km</small></div>
+        <p class="note"><b>括号从哪来：</b>隧道时间比主桥少 0.15 h，所以是 (b−0.15)，<b>括号不能丢</b>。长度之差是 92b − 72(b−0.15)。带括号的式子怎么化简，同样在 4.2 解决。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="monomial">
+    <div class="sec-head"><span class="sec-no">02</span><h2>单项式：数或字母的积</h2></div>
+    <p class="sec-sub">观察 92t、a²、0.9p、<span class="frac">1/3</span>a²h：它们都是数或字母的积。这样的式子叫单项式。</p>
+    <div class="card">
+      <p class="definition">表示数或字母的积的式子叫做<mark>单项式</mark>。单独一个数或一个字母也是单项式。</p>
+      <p class="note"><b>边界要记牢：</b>单独一个数（如 −6、0、π）或单独一个字母（如 x、a）都算单项式；但分母里含字母的（如 1/x）、含加减运算的（如 x+1）都不是单项式。</p>
+      <p class="note"><b>点一点，判断下面哪些是单项式：</b></p>
+      <div class="chips" id="monoChips">
+        <button class="chip" type="button" data-ok="1" data-why="92t 是 92 与 t 的积，是单项式。">92t</button>
+        <button class="chip" type="button" data-ok="1" data-why="−ab²c 是 −1、a、b²、c 的积，是单项式；系数是 −1。">−ab²c</button>
+        <button class="chip" type="button" data-ok="1" data-why="π 是数，2πr 是 2π 与 r 的积，是单项式；不要把它当成两个字母。">2πr</button>
+        <button class="chip" type="button" data-ok="1" data-why="单独一个数也是单项式；非零常数的次数规定为 0。">0</button>
+        <button class="chip" type="button" data-ok="1" data-why="单独一个字母也是单项式，系数是 1。">x</button>
+        <button class="chip" type="button" data-ok="0" data-why="x+1 含加法，是两个单项式的和，是多项式，不是单项式。">x + 1</button>
+        <button class="chip" type="button" data-ok="0" data-why="分母里含字母 x，不是数与字母的积，不是单项式。">1/x</button>
+        <button class="chip" type="button" data-ok="0" data-why="a÷b 的分母含字母，不是单项式。">a/b</button>
+        <button class="chip" type="button" data-ok="0" data-why="含减法，是多项式。">2x − y</button>
+      </div>
+      <p class="chip-fb" id="monoFb">点一个式子，看判断与理由。</p>
+    </div>
+  </section>
+
+  <section id="coefdeg">
+    <div class="sec-head"><span class="sec-no">03</span><h2>系数与次数：一项里的两个数</h2></div>
+    <p class="sec-sub">单项式中的数字因数叫系数；所有字母的指数的和叫次数。点下面的单项式，看数字和指数各在哪里。</p>
+    <div class="card">
+      <div class="eqline"><span class="big-expr" id="monoBig">92t</span></div>
+      <div class="readout" id="monoReadout">系数 92 · 次数 1<small>92t 是 1 次单项式</small></div>
+      <div class="chips" id="monoPick">
+        <button class="chip" type="button" data-i="0" aria-pressed="true">92t</button>
+        <button class="chip" type="button" data-i="1" aria-pressed="false">−3x²y³</button>
+        <button class="chip" type="button" data-i="2" aria-pressed="false">a²</button>
+        <button class="chip" type="button" data-i="3" aria-pressed="false">−x</button>
+        <button class="chip" type="button" data-i="4" aria-pressed="false">1/3 a²h</button>
+        <button class="chip" type="button" data-i="5" aria-pressed="false">2πr</button>
+        <button class="chip" type="button" data-i="6" aria-pressed="false">−6</button>
+      </div>
+      <p class="note" id="monoNote"><b>规则：</b>系数是 1 或 −1 时，1 通常省略不写；π 是数，不算字母；单独一个非零常数，次数规定为 0。</p>
+      <div class="mis-grid" style="margin-top:14px">
+        <div class="mis"><div class="mis__wrong">易错 01</div><h3>把 π 当成字母</h3><p>2πr 的系数是 <b>2π</b>，次数是 <b>1</b>（只有 r 的指数 1）。π 是一个具体的数。</p></div>
+        <div class="mis"><div class="mis__wrong">易错 02</div><h3>把系数的指数也算进次数</h3><p>−3x²y³ 的次数只看字母：2+3 = <b>5</b>，与系数 −3 无关。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="polynomial">
+    <div class="sec-head"><span class="sec-no">04</span><h2>多项式：几个单项式的和</h2></div>
+    <p class="sec-sub">2n−10、x²+2x+8、2a+3b、<span class="frac">1/2</span>ab−πr² 都可以看作几个单项式的和。点每一项，看它的系数与次数。</p>
+    <div class="card">
+      <p class="definition">几个单项式的和叫做<mark>多项式</mark>；其中每个单项式叫做多项式的<mark>项</mark>，不含字母的项叫做<mark>常数项</mark>。多项式里，次数最高的项的次数，叫做这个多项式的<mark>次数</mark>。</p>
+      <div class="chips" id="polyPick">
+        <button class="chip" type="button" data-i="0" aria-pressed="true">2x² − 3x + 1</button>
+        <button class="chip" type="button" data-i="1" aria-pressed="false">−a³ + 2a²b − b³ + 5</button>
+        <button class="chip" type="button" data-i="2" aria-pressed="false">3x − 2y + 7</button>
+      </div>
+      <div class="termline" id="polyTerms"></div>
+      <div class="readout" id="polyReadout">3 项 · 次数 2<small>最高次项是 2x²，所以这是二次三项式</small></div>
+      <p class="term-fb" id="polyFb">点其中一个项，看它的系数和次数。</p>
+      <p class="note"><b>两个细节：</b>① 项要<b>带着前面的符号</b>，2x²−3x+1 的项是 2x²、−3x、1，不是 2x²、3x、1；② 常数项也是项，数项数时不要漏掉它。</p>
+    </div>
+  </section>
+
+  <section id="integral">
+    <div class="sec-head"><span class="sec-no">05</span><h2>整式：单项式与多项式合起来</h2></div>
+    <p class="sec-sub">单项式和多项式统称整式。判断一个式子是不是整式，只看两件事：分母里有没有字母、有没有把字母放在根号里。</p>
+    <div class="card">
+      <div class="family">
+        <div class="fam"><span>第一类</span><b>单项式</b><p>92t、a²、−6、x、2πr</p></div>
+        <div class="fam"><span>第二类</span><b>多项式</b><p>2n−10、x²+2x+8、2a+3b</p></div>
+        <div class="fam fam--all"><span>合起来</span><b>整式 = 单项式 ∪ 多项式</b><p>例如 92t、0.9p、2n−10、x²+2x+8 都是整式。</p></div>
+      </div>
+      <div class="chips" id="integralChips">
+        <button class="chip" type="button" data-ok="1" data-why="x²+1 是多项式，属于整式。">x² + 1</button>
+        <button class="chip" type="button" data-ok="1" data-why="−5 是单项式，属于整式。">−5</button>
+        <button class="chip" type="button" data-ok="1" data-why="a/2 就是 (1/2)a，是单项式，属于整式。">a/2</button>
+        <button class="chip" type="button" data-ok="1" data-why="2a+b 是多项式，属于整式。">2a + b</button>
+        <button class="chip" type="button" data-ok="0" data-why="分母含字母 x，不是整式。">1/x</button>
+        <button class="chip" type="button" data-ok="0" data-why="字母在根号里，不是整式（到八下学二次根式）。">√x</button>
+      </div>
+      <p class="chip-fb" id="integralFb">点一个式子，看它是不是整式。</p>
+    </div>
+  </section>
+
+  <section id="examples">
+    <div class="sec-head"><span class="sec-no">06</span><h2>教材例题：用式子表示，再说清零件</h2></div>
+    <p class="sec-sub">教材的做法是「先列式，再指出系数、次数或项」。点开每一问，对照自己的写法。</p>
+    <div class="accordion">
+      <details class="acc-item" open>
+        <summary>例 1（1）三角形的一条边长为 a，这条边上的高为 h，面积是多少？</summary>
+        <div class="acc-body">
+          <p>面积 = 底 × 高 ÷ 2，写成积的形式是 <b>1/2 · a · h</b>。</p>
+          <span class="work">S = <b>1/2 ah</b><br>系数是 <mark>1/2</mark>，次数是 1+1 = <mark>2</mark>，是二次单项式。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 1（2）长方体包装盒的长、宽、高分别为 x、y、z cm，体积是多少？</summary>
+        <div class="acc-body">
+          <span class="work">V = <b>xyz</b><br>系数是 <mark>1</mark>（省略不写），次数是 1+1+1 = <mark>3</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 1（3）有理数 n 的相反数是什么？</summary>
+        <div class="acc-body">
+          <span class="work">−n<br>系数是 <mark>−1</mark>（1 省略），次数是 <mark>1</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 1（4）邮票每张 12 元，买 m 张共花多少元？</summary>
+        <div class="acc-body">
+          <p>一套 5 枚 6 元，一种版式一张 10 枚（2 套），所以一张 12 元。</p>
+          <span class="work">12 × m = <b>12m</b>（元）<br>系数是 <mark>12</mark>，次数是 <mark>1</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 1（5）国旗长与高之比为 3∶2，长为 a cm，面积是多少？</summary>
+        <div class="acc-body">
+          <p>宽 = 2/3 · a，面积 = a × 2/3 a。</p>
+          <span class="work">S = <b>2/3 a²</b>（cm²）<br>系数是 <mark>2/3</mark>，次数是 <mark>2</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 2（1）长方形相邻两边为 a、b，周长是多少？</summary>
+        <div class="acc-body">
+          <span class="work">C = 2a + 2b<br>项是 <mark>2a</mark> 与 <mark>2b</mark>，共 2 项；次数是 <mark>1</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 2（2）m 的立方与 2 的差，怎么表示？</summary>
+        <div class="acc-body">
+          <span class="work">m³ − 2<br>项是 <mark>m³</mark> 与 <mark>−2</mark>，常数项是 −2；次数是 <mark>3</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 2（3）共享单车：前两年每年投放 a 辆，第三年起每月回收 b 辆，第三年年底共有多少辆？</summary>
+        <div class="acc-body">
+          <p>前两年共投放 2a 辆；第三年 12 个月回收 12b 辆，要减去。</p>
+          <span class="work">2a − 12b<br>项是 <mark>2a</mark> 与 <mark>−12b</mark>；次数是 <mark>1</mark>。</span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 2（4）独孤信印章：18 个正方形与 8 个等边三角形围成，边长都为 a，三角形高为 b，表面积是多少？</summary>
+        <div class="acc-body">
+          <p>18 个正方形面积 18a²；8 个等边三角形面积 8 × 1/2 ab = 4ab。</p>
+          <span class="work">S = <mark>18a² + 4ab</mark><br>项是 18a² 与 4ab；两项次数都是 2，所以多项式次数是 <mark>2</mark>，是二次二项式。</span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">07</span><h2>六个常见错误</h2></div>
+    <p class="sec-sub">这些错都出在「零件没认全」，不是计算能力问题。</p>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>系数漏掉负号</h3><p>−3x²y 的系数是 <b>−3</b>，不是 3。系数要连同前面的符号一起看。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>把系数也乘进次数</h3><p>−3x²y 的次数是 2+1 = <b>3</b>；系数 −3 不参与次数计算。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>2πr 的次数算成 2</h3><p>π 是数不是字母，只有 r 的指数 1，所以次数是 <b>1</b>，系数是 2π。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>多项式的项不带符号</h3><p>2x²−3x+1 的项是 2x²、<b>−3x</b>、1；写成 3x 就把项改变了。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 05</div><h3>多项式次数取第一项</h3><p>多项式次数是<b>次数最高的项</b>的次数，不是第一项的次数，也不是各项次数相加。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 06</div><h3>把 1/x、√x 当整式</h3><p>分母含字母、字母在根号里，都不是整式；a/2 的分母是数 2，反而是整式。</p></div>
+    </div>
+  </section>
+
+  <section id="selfcheck">
+    <div class="sec-head"><span class="sec-no">08</span><h2>复述自检：说给同桌听</h2></div>
+    <p class="sec-sub">概念课不判分。先自己说或写，再点「看参考表述」对照；说不清的地方回到对应小节。</p>
+    <div class="self" id="selfBox">
+      <div class="self-q">
+        <h3>1. 什么叫单项式？单独一个数或字母算吗？</h3>
+        <textarea placeholder="用自己的话写一两句…"></textarea>
+        <select><option>很有把握</option><option>基本会说</option><option>还说不清</option></select>
+        <button class="btn" type="button" data-ref="0">看参考表述</button>
+        <div class="self-ref"><b>参考：</b>表示数或字母的积的式子叫单项式；单独一个数或一个字母也是单项式，例如 −6、x、π。</div>
+      </div>
+      <div class="self-q">
+        <h3>2. 2πr 的系数和次数分别是多少？为什么不是 2 和 2？</h3>
+        <textarea placeholder="先说系数，再说次数…"></textarea>
+        <select><option>很有把握</option><option>基本会说</option><option>还说不清</option></select>
+        <button class="btn" type="button" data-ref="1">看参考表述</button>
+        <div class="self-ref"><b>参考：</b>系数是 2π，次数是 1。π 是一个数，不是字母，所以字母只有 r，指数是 1。</div>
+      </div>
+      <div class="self-q">
+        <h3>3. 2x²−3x+1 的项、常数项、次数分别是什么？</h3>
+        <textarea placeholder="项要带符号…"></textarea>
+        <select><option>很有把握</option><option>基本会说</option><option>还说不清</option></select>
+        <button class="btn" type="button" data-ref="2">看参考表述</button>
+        <div class="self-ref"><b>参考：</b>项是 2x²、−3x、1；常数项是 1；最高次项 2x² 的次数是 2，所以多项式次数是 2，是二次三项式。</div>
+      </div>
+      <div class="self-q">
+        <h3>4. 单项式和多项式什么关系？举一个不是整式的例子。</h3>
+        <textarea placeholder="用「统称」这个词…"></textarea>
+        <select><option>很有把握</option><option>基本会说</option><option>还说不清</option></select>
+        <button class="btn" type="button" data-ref="3">看参考表述</button>
+        <div class="self-ref"><b>参考：</b>单项式与多项式统称整式。1/x 不是整式，因为分母含字母；√x 也不是，因为字母在根号里。</div>
+      </div>
+      <div class="self-q">
+        <h3>5. 为什么说「项要带着符号」？用 3x−2y+7 说明。</h3>
+        <textarea placeholder="想一想减号属于谁…"></textarea>
+        <select><option>很有把握</option><option>基本会说</option><option>还说不清</option></select>
+        <button class="btn" type="button" data-ref="4">看参考表述</button>
+        <div class="self-ref"><b>参考：</b>3x−2y+7 是 3x 与 −2y 与 7 的和，所以第二项是 −2y，系数 −2；如果写成 2y，就把这一项的意思改了。</div>
+      </div>
+    </div>
+    <p class="self-note">自检只为你自己服务，不记录、不评分。说不清的题，回到第 03、04 节再点一遍。</p>
+  </section>
+
+  <section id="summary">
+    <div class="sec-head"><span class="sec-no">09</span><h2>小结与中考连接</h2></div>
+    <div class="conclusion">
+      一个式子先看两件事：<b>能不能写成数或字母的积</b>（单项式），<b>是不是几个单项式的和</b>（多项式）。单项式抓系数与次数，多项式抓项、常数项与最高次项。
+      <p class="transfer"><b>最容易丢分的地方：</b>系数漏负号、把 π 当字母、多项式项不带符号、次数取错项。</p>
+      <div class="exam">
+        <b>长春真题回看（2024 第 9 题，填空 3 分）：</b>单项式 −2a²b 的次数是 ____。<br>
+        解：字母 a 的指数是 2，b 的指数是 1，2+1 = <b>3</b>。系数 −2 不影响次数。
+      </div>
+      <p class="transfer"><b>命题落点：</b>长春卷近年在本章固定有 1 道 3 分概念选填（2024 考单项式次数，2025 考同类项），再在解答题第 15 题考「先化简再求值」。本节的概念是那 6 分的地基：认不清项和系数，后面的合并与去括号一定出错。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 4 章 4.1 整式</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0（按 2024 版正文与例题制作）</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 4.1 整式</h2>
+  <p>2024 人教版七上第 4 章，教材安排约 2 课时（单项式 1 课时、多项式与整式 1 课时）。核对日期 2026-11-26。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能判断一个式子是不是单项式或多项式，能说出单项式的系数与次数、多项式的项与次数，并知道单项式与多项式统称整式。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「港珠澳大桥上，汽车开 t 小时走了 92t 千米。这个 92t 里，92 是速度，t 是时间。今天我们先不研究怎么算它，先把这种式子拆开看清楚：数字是谁、字母是谁、字母头上有没有指数。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「92t 里的 92 叫什么？」期望：系数。</li>
+    <li>「2πr 的次数为什么是 1？」期望：π 是数，只有 r 的指数 1。</li>
+    <li>「−3x²y 的次数是多少？」期望：3，系数不参与。</li>
+    <li>「2x²−3x+1 有几项？第二项是什么？」期望：3 项，第二项是 −3x。</li>
+    <li>「1/x 为什么不是整式？」期望：分母含字母。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：从大桥的 92t 和系数开始；易错例：直接看 2πr 与 −3x²y；挑战例：跳到复述自检。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「π 不是字母吗？」→ 让他在计算器里按 π，看到 3.1415…，明确它是数。</li>
+    <li>「次数是不是把系数也乘进去？」→ 用 −3x²y 与 3x²y 对比，次数都是 3。</li>
+    <li>「2x²−3x+1 的项是 2x²、3x、1。」→ 让他把式子改写成 2x²+(−3x)+1 再看。</li>
+    <li>「a/2 分母有 2，所以不是整式。」→ 分母是数不是字母，仍是单项式。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>板书只留三行：单项式（积）、系数（数字因数）、次数（字母指数和）；多项式（和）、项（带符号）、次数（最高次项）。题单 6 题：4 题判断系数次数、2 题说项与次数。逐题让学生说理由，不追求速度。</p>
+
+  <h3>课后 1 题</h3>
+  <p>说出 −5a²b 与 3x²−2x+5 的系数、次数（或项、常数项），并各写一个同类结构的式子。</p>
+
+  <h3>长春落点</h3>
+  <p>2024 第 9 题：单项式 −2a²b 的次数，答案 3，3 分。2025 第 10 题：写出一个同类项，开放，3 分。概念题只考最基础的定义，但它是第 15 题 6 分化简求值的前提。</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  function fmt(v) {
+    if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v)).replace("-", "−");
+    return String(Math.round(v * 100) / 100).replace("-", "−");
+  }
+  function setPressed(group, el) {
+    group.forEach(function (b) { b.setAttribute("aria-pressed", b === el ? "true" : "false"); });
+  }
+
+  /* 01 三个问题 */
+  var qTabs = Array.prototype.slice.call(document.querySelectorAll("#qTabs .tab"));
+  var panes = [document.getElementById("pane1"), document.getElementById("pane2"), document.getElementById("pane3")];
+  var segs = Array.prototype.slice.call(document.querySelectorAll("#bridgeSegs .bridge__seg"));
+  function showQ(n) {
+    qTabs.forEach(function (t) { t.setAttribute("aria-pressed", t.getAttribute("data-q") === String(n) ? "true" : "false"); });
+    panes.forEach(function (p, i) { p.classList.toggle("is-hidden", i !== n - 1); });
+    segs.forEach(function (s) {
+      var k = Number(s.getAttribute("data-seg"));
+      var on = (n === 1 && k === 3) || (n === 2 && k !== 3) || (n === 3 && k !== 1);
+      s.classList.toggle("is-on", on);
+    });
+  }
+  qTabs.forEach(function (t) {
+    t.addEventListener("click", function () { showQ(Number(t.getAttribute("data-q"))); });
+  });
+
+  var tSlider = document.getElementById("tSlider");
+  var tVal = document.getElementById("tVal");
+  var tReadout = document.getElementById("tReadout");
+  function updateT() {
+    var t = Number(tSlider.value);
+    tVal.textContent = t.toFixed(1) + " h";
+    tReadout.innerHTML = "92 × " + t.toFixed(1) + " = " + fmt(92 * t) + " km<small>t = " + t.toFixed(1) + " h 时，在主桥上行驶 " + fmt(92 * t) + " km</small>";
+  }
+  tSlider.addEventListener("input", updateT);
+
+  var aSlider = document.getElementById("aSlider");
+  var aVal = document.getElementById("aVal");
+  var aReadout = document.getElementById("aReadout");
+  function updateA() {
+    var a = Number(aSlider.value);
+    aVal.textContent = a.toFixed(1) + " h";
+    aReadout.innerHTML = "72×" + a.toFixed(1) + " + 120×" + a.toFixed(1) + " = " + fmt(72 * a) + " + " + fmt(120 * a) + " = " + fmt(192 * a) + " km<small>a = " + a.toFixed(1) + " h 时，口岸到西人工岛全长 " + fmt(192 * a) + " km</small>";
+  }
+  aSlider.addEventListener("input", updateA);
+
+  var bSlider = document.getElementById("bSlider");
+  var bVal = document.getElementById("bVal");
+  var bReadout = document.getElementById("bReadout");
+  function updateB() {
+    var b = Number(bSlider.value);
+    var tunnel = b - 0.15;
+    var sum = 92 * b + 72 * tunnel;
+    var bs = fmt(b);
+    bVal.textContent = bs + " h";
+    bReadout.innerHTML = "92×" + bs + " + 72×(" + bs + "−0.15) = " + fmt(92 * b) + " + " + fmt(72 * tunnel) + " = " + fmt(sum) + " km<small>b = " + bs + " h 时，主桥与海底隧道长度之和是 " + fmt(sum) + " km</small>";
+  }
+  bSlider.addEventListener("input", updateB);
+
+  showQ(1);
+  updateT();
+  updateA();
+  updateB();
+
+  /* 02 单项式判断 */
+  var monoChips = Array.prototype.slice.call(document.querySelectorAll("#monoChips .chip"));
+  var monoFb = document.getElementById("monoFb");
+  monoChips.forEach(function (b) {
+    b.addEventListener("click", function () {
+      monoChips.forEach(function (x) { x.classList.remove("is-ok", "is-bad"); });
+      var ok = b.getAttribute("data-ok") === "1";
+      b.classList.add(ok ? "is-ok" : "is-bad");
+      monoFb.innerHTML = "<b>" + (ok ? "是单项式。" : "不是单项式。") + "</b>" + b.getAttribute("data-why");
+    });
+  });
+
+  /* 03 系数与次数 */
+  var monos = [
+    { html: '<span class="coef">92</span>t', c: "92", d: "1", why: "t 的指数是 1，所以是 1 次单项式。" },
+    { html: '<span class="coef">−3</span>x<span class="exp">²</span>y<span class="exp">³</span>', c: "−3", d: "5", why: "2 + 3 = 5，系数 −3 不参与次数。" },
+    { html: 'a<span class="exp">²</span>', c: "1", d: "2", why: "系数 1 省略不写；a 的指数是 2。" },
+    { html: '<span class="coef">−</span>x', c: "−1", d: "1", why: "系数 −1 省略了 1；x 的指数是 1。" },
+    { html: '<span class="coef">1/3</span> a<span class="exp">²</span>h', c: "1/3", d: "3", why: "2 + 1 = 3；系数是分数 1/3。" },
+    { html: '<span class="coef">2π</span>r', c: "2π", d: "1", why: "π 是数，只有 r 的指数 1。" },
+    { html: '<span class="coef">−6</span>', c: "−6", d: "0", why: "单独一个非零常数，次数规定为 0。" }
+  ];
+  var monoBig = document.getElementById("monoBig");
+  var monoReadout = document.getElementById("monoReadout");
+  var monoPick = Array.prototype.slice.call(document.querySelectorAll("#monoPick .chip"));
+  monoPick.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var m = monos[Number(b.getAttribute("data-i"))];
+      setPressed(monoPick, b);
+      monoBig.innerHTML = m.html;
+      var cn = m.d === "0" ? "零次单项式" : (m.d === "1" ? "一次单项式" : (m.d === "2" ? "二次单项式" : m.d + " 次单项式"));
+      monoReadout.innerHTML = "系数 " + m.c + " · 次数 " + m.d + "<small>" + cn + "。" + m.why + "</small>";
+    });
+  });
+
+  /* 04 多项式拆项 */
+  var polys = [
+    { terms: ["2x²", "−3x", "+1"], c: ["2", "−3", "1"], d: [2, 1, 0], deg: 2, top: 0 },
+    { terms: ["−a³", "+2a²b", "−b³", "+5"], c: ["−1", "2", "−1", "5"], d: [3, 3, 3, 0], deg: 3, top: 0 },
+    { terms: ["3x", "−2y", "+7"], c: ["3", "−2", "7"], d: [1, 1, 0], deg: 1, top: 0 }
+  ];
+  var polyPick = Array.prototype.slice.call(document.querySelectorAll("#polyPick .chip"));
+  var polyTerms = document.getElementById("polyTerms");
+  var polyReadout = document.getElementById("polyReadout");
+  var polyFb = document.getElementById("polyFb");
+  var curPoly = 0;
+  function renderPoly(idx) {
+    curPoly = idx;
+    var p = polys[idx];
+    polyTerms.innerHTML = "";
+    p.terms.forEach(function (t, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "term" + (i === p.top ? " is-top" : "");
+      b.textContent = t;
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(polyTerms.children, function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+        polyFb.innerHTML = "<b>这一项是 " + t + "：</b>系数 " + p.c[i] + "，次数 " + p.d[i] + (i === p.top ? "；它是次数最高的项，决定多项式的次数。" : "。");
+      });
+      polyTerms.appendChild(b);
+    });
+    var cn = p.deg === 1 ? "一次" : (p.deg === 2 ? "二次" : "三次");
+    polyReadout.innerHTML = p.terms.length + " 项 · 次数 " + p.deg + "<small>最高次项是 " + p.terms[p.top] + "，所以这是" + cn + (p.terms.length === 2 ? "二项式" : (p.terms.length === 3 ? "三项式" : "四项式")) + "</small>";
+    polyFb.innerHTML = "点其中一个项，看它的系数和次数。";
+  }
+  polyPick.forEach(function (b) {
+    b.addEventListener("click", function () {
+      setPressed(polyPick, b);
+      renderPoly(Number(b.getAttribute("data-i")));
+    });
+  });
+  renderPoly(0);
+
+  /* 05 整式判断 */
+  var integralChips = Array.prototype.slice.call(document.querySelectorAll("#integralChips .chip"));
+  var integralFb = document.getElementById("integralFb");
+  integralChips.forEach(function (b) {
+    b.addEventListener("click", function () {
+      integralChips.forEach(function (x) { x.classList.remove("is-ok", "is-bad"); });
+      var ok = b.getAttribute("data-ok") === "1";
+      b.classList.add(ok ? "is-ok" : "is-bad");
+      integralFb.innerHTML = "<b>" + (ok ? "是整式。" : "不是整式。") + "</b>" + b.getAttribute("data-why");
+    });
+  });
+
+  /* 08 复述自检 */
+  document.querySelectorAll("[data-ref]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var refs = document.querySelectorAll("#selfBox .self-ref");
+      var el = refs[Number(b.getAttribute("data-ref"))];
+      if (el) el.classList.toggle("is-open");
+    });
+  });
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  document.getElementById("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      var targetId = preset === "standard" ? "situation" : (preset === "error" ? "coefdeg" : "selfcheck");
+      var label = preset === "standard" ? "标准例：从大桥的 92t 和系数开始。" : (preset === "error" ? "易错例：直接看 2πr 与 −3x²y。" : "挑战例：跳到复述自检。");
+      document.getElementById("presetNote").textContent = label;
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  /* 键盘 */
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>

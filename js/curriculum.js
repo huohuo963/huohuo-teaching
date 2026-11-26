@@ -26,7 +26,7 @@ window.CURRICULUM = [
             ]
           },
           { id: "1.2-rd", title: "图说数学史：漫漫长路识负数", type: "reading" },
-          { id: "1-rv", title: "小结、复习题1", type: "review" }
+          { id: "1-rv", title: "数学活动、小结、复习题1", type: "review" }
         ]
       },
       {
@@ -55,7 +55,7 @@ window.CURRICULUM = [
             ]
           },
           { id: "2-rd", title: "我国古代正负数加减法则", type: "reading" },
-          { id: "2-rv", title: "小结、复习题2", type: "review" },
+          { id: "2-rv", title: "数学活动、小结、复习题2", type: "review" },
           { id: "2-pj", title: "进位制的认识与探究", type: "project" }
         ]
       },
@@ -65,29 +65,16 @@ window.CURRICULUM = [
           { id: "3.1", title: "列代数式表示数量关系", ready: true },
           { id: "3-rd", title: "数字1与字母x的对话", type: "reading" },
           { id: "3.2", title: "代数式的值", ready: true },
-          { id: "3-rv", title: "小结、复习题3", type: "review" }
+          { id: "3-rv", title: "数学活动、小结、复习题3", type: "review" }
         ]
       },
       {
         no: 4, title: "整式的加减",
         sections: [
-          {
-            id: "4.1", title: "整式",
-            children: [
-              { id: "4.1.1", title: "单项式" },
-              { id: "4.1.2", title: "多项式" }
-            ]
-          },
-          {
-            id: "4.2", title: "整式的加法与减法",
-            children: [
-              { id: "4.2.1", title: "同类项、合并同类项" },
-              { id: "4.2.2", title: "去括号" },
-              { id: "4.2.3", title: "整式加减运算" }
-            ]
-          },
-          { id: "4-tc", title: "电子表格与数据计算", type: "tech" },
-          { id: "4-rv", title: "数学活动、小结、复习题4", type: "review" }
+          { id: "4.1", title: "整式", ready: true },
+          { id: "4.2", title: "整式的加法与减法", ready: true },
+          { id: "4-tc", title: "用电子表格进行数据计算", type: "tech" },
+          { id: "4-rv", title: "数学活动（月历中的奥秘、被3整除的规律）、小结、复习题4", type: "review" }
         ]
       },
       {

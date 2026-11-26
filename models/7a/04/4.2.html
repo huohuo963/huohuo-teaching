@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.2 整式的加法与减法 · 七上 第4章 整式的加减</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button, summary { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 72px; }
+  .hero { padding: 8px 0 4px; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; letter-spacing: .02em; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 20px 0 0; padding: 14px 18px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+
+  section { margin-top: 40px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .card b { color: var(--brand-deep); }
+  .note { margin-top: 12px !important; font-size: 13.5px; color: var(--ink2); }
+  .note b { color: var(--brand-deep); }
+
+  .definition { font-family: var(--serif); font-size: 24px; line-height: 1.8; }
+  .definition mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 3px; }
+  .is-hidden { display: none !important; }
+
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tab { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; cursor: pointer; min-height: 40px; }
+  .tab[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  .eqline { display: flex; align-items: baseline; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 16px 8px 8px; font-family: var(--serif); font-size: 36px; line-height: 1.35; }
+  .readout { margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: #fbf5e8; font-family: var(--serif); font-size: 20px; text-align: center; color: var(--brand-deep); }
+  .readout small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .slider-row label { font-size: 13px; color: var(--ink2); min-width: 82px; }
+  .slider-row input[type="range"] { flex: 1 1 220px; min-width: 160px; accent-color: var(--brand); height: 32px; }
+  .slider-val { font-family: var(--serif); font-size: 17px; color: var(--brand-deep); min-width: 78px; text-align: right; }
+
+  .switch-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; justify-content: center; }
+  .switch-row .btn { font-family: var(--serif); font-size: 18px; min-width: 66px; }
+  .switch-row .btn[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+
+  .pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .pair { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; cursor: pointer; text-align: left; }
+  .pair:hover { border-color: var(--ochre); }
+  .pair b { display: block; font-family: var(--serif); font-size: 19px; }
+  .pair span { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink3); }
+  .pair.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .pair.is-bad { border-color: var(--err); background: #fbeee9; }
+  .pair-fb { margin-top: 10px !important; padding: 10px 12px; border-radius: 8px; background: #fdfaf2; font-size: 13.5px; color: var(--ink2); }
+  .pair-fb b { color: var(--brand-deep); }
+
+  .steps { margin-top: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-family: var(--serif); font-size: 22px; line-height: 2; }
+  .step { margin: 0; opacity: .12; transition: opacity .18s ease; }
+  .step.is-on { opacity: 1; }
+  .step b { color: var(--brand-deep); }
+  .step mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 2px; }
+  .step--hint { font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+  .step-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  .work { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); font-family: var(--serif); font-size: 19px; line-height: 1.9; color: var(--ink); }
+  .work mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 2px; }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+
+  .paren-box { margin-top: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; }
+  .paren-box .line { margin: 0; font-family: var(--serif); font-size: 24px; line-height: 2; }
+  .paren-box .line .fac { color: var(--orange); font-weight: 700; }
+  .paren-box .line .res { color: var(--brand-deep); font-weight: 700; }
+
+  .boat-wrap { margin-top: 14px; padding: 8px 8px 0; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; }
+  .boat-wrap svg { display: block; width: 100%; height: auto; }
+
+  .cal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 300px; margin: 14px auto 0; }
+  .cal div { padding: 10px 0; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: center; font-family: var(--serif); font-size: 18px; }
+  .cal div.is-center { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); font-weight: 700; }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .mis p b { color: var(--ink); }
+
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+
+  .conclusion { margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 10px !important; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam { margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--ochre); border-radius: 8px; background: #fffdf8; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam b { color: var(--ink); }
+
+  footer { max-width: 1080px; margin: 0 auto; padding: 0 22px 42px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(420px, 92vw); padding: 22px 22px 40px; overflow-y: auto; background: #fffdf8; border-left: 1px solid var(--line); transform: translateX(104%); transition: transform .22s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 22px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 7px; }
+  .teacher .tool-btn { float: right; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .definition { font-size: 33px; }
+  body.is-projector .eqline { font-size: 50px; }
+  body.is-projector .steps, body.is-projector .paren-box .line { font-size: 30px; }
+  body.is-projector .card, body.is-projector .q { padding: 24px 26px; }
+  body.is-projector .mis p, body.is-projector .acc-body, body.is-projector .q__stem { font-size: 18px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 20px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 760px) {
+    main { padding: 22px 16px 60px; }
+    h1 { font-size: 29px; }
+    .eqline { font-size: 28px; }
+    .definition { font-size: 21px; }
+    .steps { font-size: 18px; }
+    .paren-box .line { font-size: 20px; }
+    .pairs { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .tool-btn, .btn, .tab, .q__opts button { min-height: 44px; }
+    .quiz__bar button { margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher, .step { transition: none; }
+  }
+
+  @media print {
+    .bar, .teacher, .tool-btn, .btn, .step-btns, .preset-row, .quiz__bar, .switch-row { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    section { break-inside: avoid; }
+    .card, .mis, .q, .conclusion, .paren-box { border-color: #bbb; background: #fff; }
+    .q__fb { display: block !important; }
+    .step { opacity: 1; }
+    footer { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#s=4.2" target="_top">← 返回 4.2</a>
+  <span class="bar__crumb">七上 · 第4章 整式的加减 · 4.2</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">运算与算理 · 2024 人教版 · 七上第 4 章</p>
+    <h1>整式的加法与减法<small>不是背「负号全变」，而是用分配律把括号外的因数乘到每一项。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">S 旗舰样板</span>
+      <span class="badge">运算型 · 5 题检测</span>
+      <span class="badge">3 课时内容（合并 · 去括号 · 加减）</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">本节只追一件事：你能按「去括号 → 找同类项 → 合并」把整式化到最简，并说清每一步的依据是分配律。</p>
+  </header>
+
+  <section id="analogy">
+    <div class="sec-head"><span class="sec-no">01</span><h2>先看数，再看式：同一条分配律</h2></div>
+    <p class="sec-sub">港珠澳大桥问题 (2) 得到 72a+120a。计算它之前，先看熟悉的数：72×2+120×2。把方框里的数换成 a，算法一样吗？</p>
+    <div class="card">
+      <div class="eqline"><span>72 × □ + 120 × □ = (72 + 120) × □</span></div>
+      <div class="switch-row" id="boxSwitch">
+        <button class="btn" type="button" data-box="2" aria-pressed="true">□ = 2</button>
+        <button class="btn" type="button" data-box="-2" aria-pressed="false">□ = −2</button>
+        <button class="btn" type="button" data-box="a" aria-pressed="false">□ = a</button>
+      </div>
+      <div class="readout" id="boxReadout">72×2 + 120×2 = 144 + 240 = 384<small>先各自乘，再把积相加；也可以先加 72+120=192，再乘 2</small></div>
+      <p class="note"><b>关键：</b>字母 a 表示数，所以数的分配律对含字母的式子同样成立。<b>72a 与 120a 是同类项</b>，可以合成 (72+120)a = 192a。这就是「数式通性」。</p>
+      <p class="note"><b>回到大桥：</b>口岸到东人工岛 96×1.25a = 120a，海底隧道 72a，两段路程一共 72a+120a = <b>192a</b> km。a = 1 时是 192 km，与第 01 节算出的数值一致。</p>
+    </div>
+  </section>
+
+  <section id="liketerms">
+    <div class="sec-head"><span class="sec-no">02</span><h2>同类项：字母相同，指数也相同</h2></div>
+    <p class="sec-sub">所含字母相同，并且相同字母的指数也相同的项，叫做同类项。几个常数项也是同类项。</p>
+    <div class="card">
+      <p class="definition"><mark>两相同</mark>：字母相同、相同字母的指数相同。<mark>两无关</mark>：与系数无关、与字母顺序无关。</p>
+      <p class="note"><b>点一对，判断它们是不是同类项：</b></p>
+      <div class="pairs" id="pairBox">
+        <button class="pair" type="button" data-ok="1" data-why="字母都是 x、y，x 的指数都是 2，y 的指数都是 1；系数 3 与 −5 不影响。">
+          <b>3x²y 与 −5x²y</b><span>系数不同</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="第二个含字母 c，字母不相同，不是同类项。">
+          <b>2ab 与 2abc</b><span>字母不同</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="几个常数项都是同类项，可以合并成 −2。">
+          <b>5 与 −7</b><span>常数项</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="x 的指数一个是 2、一个是 3，相同字母的指数不同。">
+          <b>x² 与 x³</b><span>指数不同</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="字母都只有 r，指数都是 1；2π 与 3 都是系数，π 是数。">
+          <b>2πr 与 3r</b><span>π 是数，不是字母</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="字母相同、指数相同，顺序不同不影响，交换律把它们变成 ab。">
+          <b>ab 与 ba</b><span>字母顺序不同</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="字母分别是 m 与 n，不相同。">
+          <b>3m 与 3n</b><span>字母不同</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="−2a²b 与 a²b 的字母和指数完全一致。">
+          <b>−2a²b 与 a²b</b><span>只看字母部分</span>
+        </button>
+      </div>
+      <p class="pair-fb" id="pairFb">点一对，看判断与理由。</p>
+    </div>
+  </section>
+
+  <section id="combine">
+    <div class="sec-head"><span class="sec-no">03</span><h2>合并同类项：系数相加，字母不变</h2></div>
+    <p class="sec-sub">把多项式中的同类项合并成一项，叫做合并同类项。法则：系数相加，所得结果作为系数，字母连同它的指数不变。</p>
+    <div class="card">
+      <p class="definition">合并同类项，本质是<mark>逆用分配律</mark>：4a² − 4a² = (4−4)a² = 0·a² = 0。</p>
+      <div class="steps" id="combineSteps">
+        <p class="step is-on">4a² + 3b² + 2ab − 4a² − 4b²</p>
+        <p class="step">找同类项：<mark>4a² 与 −4a²</mark>；<mark>3b² 与 −4b²</mark>；2ab 没有同伴。</p>
+        <p class="step">交换、结合：(4a² − 4a²) + (3b² − 4b²) + 2ab</p>
+        <p class="step">系数相加：(4−4)a² + (3−4)b² + 2ab</p>
+        <p class="step">= 0·a² + (−1)b² + 2ab</p>
+        <p class="step"><b>= −b² + 2ab</b></p>
+        <p class="step step--hint">注意：字母和指数全程没变；2ab 与 b² 不是同类项，不能再并。</p>
+      </div>
+      <div class="step-btns">
+        <button class="btn btn--primary" type="button" id="combineNext">下一步</button>
+        <button class="btn" type="button" id="combineReset">重来</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="example1">
+    <div class="sec-head"><span class="sec-no">04</span><h2>教材例：先合并，再看结果</h2></div>
+    <p class="sec-sub">两问都只做一件事：找到同类项，把系数相加，字母部分照抄。</p>
+    <div class="accordion">
+      <details class="acc-item" open>
+        <summary>（1）合并 xy² − 1/5 xy²</summary>
+        <div class="acc-body">
+          <p>两项字母都是 x、y，y 的指数都是 2，是同类项。系数是 1 与 −1/5。</p>
+          <span class="work">xy² − 1/5 xy²<br>= (1 − 1/5) xy²<br>= <b>4/5 xy²</b></span>
+          <p><b>提醒：</b>xy² 前面的系数是 1，不是 0；写的时候要把 1 补出来再减。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>（2）合并 4a² + 3b² + 2ab − 4a² − 4b²</summary>
+        <div class="acc-body">
+          <span class="work">4a² + 3b² + 2ab − 4a² − 4b²<br>= (4−4)a² + (3−4)b² + 2ab<br>= <b>−b² + 2ab</b></span>
+          <p><b>提醒：</b>系数相加时要把符号带上：3 + (−4) = −1；4 + (−4) = 0，这一项直接消失，不是写成 0a²。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="evaluate">
+    <div class="sec-head"><span class="sec-no">05</span><h2>先化简，再求值：为什么要多这一步</h2></div>
+    <p class="sec-sub">同一个式子，直接代入和先化简，结果一样，但过程长度差很多。切换看看。</p>
+    <div class="card">
+      <div class="tabs" id="evalTabs">
+        <button class="tab" type="button" data-eval="simplify" aria-pressed="true">先化简再求值</button>
+        <button class="tab" type="button" data-eval="direct" aria-pressed="false">直接代入</button>
+      </div>
+
+      <div id="evalSimplify">
+        <p class="note"><b>例：</b>求 2x² − 5x + x² + 4x − 3x² − 2 的值，其中 x = 1/2。</p>
+        <span class="work">原式 = (2+1−3)x² + (−5+4)x − 2<br>= 0·x² − x − 2<br>= <b>−x − 2</b><br>当 x = 1/2 时，原式 = −1/2 − 2 = <b>−5/2</b></span>
+        <p class="note"><b>先合并的好处：</b>六项变成两项，代值时只算一次乘法和一次减法。</p>
+      </div>
+
+      <div id="evalDirect" class="is-hidden">
+        <p class="note"><b>同一个式子，直接代入 x = 1/2：</b></p>
+        <span class="work">2×(1/2)² − 5×(1/2) + (1/2)² + 4×(1/2) − 3×(1/2)² − 2<br>= 2×1/4 − 5/2 + 1/4 + 2 − 3×1/4 − 2<br>= 1/2 − 5/2 + 1/4 + 2 − 3/4 − 2<br>= <b>−5/2</b></span>
+        <p class="note"><b>结果一样，但：</b>六个分数要算，每一步都可能错。<b>先化简再求值</b>不是形式要求，是在减少计算量。</p>
+      </div>
+
+      <details class="acc-item" style="margin-top:16px">
+        <summary>再看一题：3a + abc − 1/3 c² − 3a + 1/3 c²，其中 a = −1/6，b = 2，c = −3</summary>
+        <div class="acc-body">
+          <p>先找同类项：3a 与 −3a；−1/3 c² 与 1/3 c²；abc 没有同伴。</p>
+          <span class="work">原式 = (3−3)a + abc + (−1/3 + 1/3)c²<br>= <b>abc</b><br>当 a = −1/6，b = 2，c = −3 时，<br>原式 = (−1/6)×2×(−3) = <b>1</b></span>
+          <p><b>提醒：</b>化简后只剩 abc，这说明原式里很多项是「互相抵消」的；如果直接代入，会白算很多。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="parentheses">
+    <div class="sec-head"><span class="sec-no">06</span><h2>去括号：括号外的因数乘每一项</h2></div>
+    <p class="sec-sub">2024 版教材的表述：一般地，一个数与一个多项式相乘，需要去括号，去括号就是用括号外的因数乘括号内的每一项，再把所得的积相加。</p>
+    <div class="card">
+      <p class="definition">去括号的依据是<mark>分配律</mark>，不是口诀。<mark>符号变不变，是乘出来的结果。</mark></p>
+      <div class="paren-box">
+        <p class="line">+(a + b) = <span class="fac">+1</span>×(a+b) = a + b</p>
+        <p class="line">−(a + b) = <span class="fac">−1</span>×(a+b) = −a − b</p>
+        <p class="line">−(a − b) = <span class="fac">−1</span>×(a−b) = −a + b</p>
+      </div>
+      <p class="note"><b>最容易错的一条：</b>−(a−b) 里，−1 要乘 a，也要乘 −b；(−1)×(−b) = +b，所以结果是 −a+b，不是 −a−b。</p>
+
+      <p class="note" style="margin-top:16px"><b>跟着做：</b>去括号 −3(1 − 2y)。</p>
+      <div class="steps" id="parenSteps">
+        <p class="step is-on">−3(1 − 2y)</p>
+        <p class="step">括号外的因数是 <mark>−3</mark>，括号内有两项：1 与 −2y。</p>
+        <p class="step">−3 × 1 = <mark>−3</mark></p>
+        <p class="step">−3 × (−2y) = <mark>+6y</mark></p>
+        <p class="step"><b>= −3 + 6y</b></p>
+        <p class="step step--hint">不是「负号全变」四个字，而是 −3 分别乘了两项；第二项两个负号相乘得正。</p>
+      </div>
+      <div class="step-btns">
+        <button class="btn btn--primary" type="button" id="parenNext">下一步</button>
+        <button class="btn" type="button" id="parenReset">重来</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="example3">
+    <div class="sec-head"><span class="sec-no">07</span><h2>教材例：去括号后再合并</h2></div>
+    <p class="sec-sub">括号前什么都没有，就是「+1 乘」；括号前是减号，就是「−1 乘」。</p>
+    <div class="accordion">
+      <details class="acc-item" open>
+        <summary>（1）化简 8a + 2b + (5a − b)</summary>
+        <div class="acc-body">
+          <p>(5a−b) 前面是加号，相当于 +1×(5a−b)，括号内符号都不变。</p>
+          <span class="work">8a + 2b + (5a − b)<br>= 8a + 2b + <mark>5a − b</mark><br>= (8+5)a + (2−1)b<br>= <b>13a + b</b></span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>（2）化简 (4y − 5) − 3(1 − 2y)</summary>
+        <div class="acc-body">
+          <p>−3 要乘括号里的 1 和 −2y 两项，不能只乘第一项。</p>
+          <span class="work">(4y − 5) − 3(1 − 2y)<br>= 4y − 5 <mark>− 3 + 6y</mark><br>= (4+6)y + (−5−3)<br>= <b>10y − 8</b></span>
+          <p><b>检查：</b>去括号后一共四项，合并成两项；如果只剩三项，多半是漏乘了。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="boat">
+    <div class="sec-head"><span class="sec-no">08</span><h2>教材例：两船相距多远</h2></div>
+    <p class="sec-sub">甲、乙两船同时从 A 港出发，甲顺水、乙逆水，静水速度都是 50 km/h，水流速度是 a km/h。1 小时后两船相距多少？</p>
+    <div class="card">
+      <div class="boat-wrap">
+        <svg id="boatSvg" viewBox="0 0 640 220" role="img" aria-label="甲船顺水、乙船逆水航行示意">
+          <line x1="60" y1="170" x2="580" y2="170" stroke="#d9c9a8" stroke-width="10" stroke-linecap="round"></line>
+          <line x1="60" y1="120" x2="580" y2="120" stroke="#e8dcc3" stroke-width="2" stroke-dasharray="6 6"></line>
+          <line x1="60" y1="80" x2="580" y2="80" stroke="#e8dcc3" stroke-width="2" stroke-dasharray="6 6"></line>
+          <circle cx="60" cy="120" r="6" fill="#2b2419"></circle>
+          <text x="60" y="108" text-anchor="middle" font-size="13" fill="#5f5443">A 港</text>
+          <text id="boatWater" x="320" y="200" text-anchor="middle" font-size="13" fill="#96886f">水流方向 →　水速 a = 0 km/h</text>
+          <g id="boatA">
+            <path d="M0 -12 L36 0 L0 12 Z" fill="#a3541f"></path>
+            <text id="boatALabel" x="0" y="-18" text-anchor="middle" font-size="13" fill="#83401a">甲 50 km</text>
+          </g>
+          <g id="boatB">
+            <path d="M0 -12 L-36 0 L0 12 Z" fill="#b9863c"></path>
+            <text id="boatBLabel" x="0" y="-18" text-anchor="middle" font-size="13" fill="#83401a">乙 50 km</text>
+          </g>
+        </svg>
+      </div>
+      <div class="slider-row">
+        <label for="waterSlider">水速 a</label>
+        <input id="waterSlider" type="range" min="0" max="20" step="1" value="0">
+        <span class="slider-val" id="waterVal">0 km/h</span>
+      </div>
+      <div class="readout" id="boatReadout">甲 (50+0) + 乙 (50−0) = 50 + 50 = 100 km<small>两船相距 100 km，与水速 a 无关</small></div>
+      <p class="note"><b>算理：</b>甲顺水速度 (50+a) km/h，1 小时走 (50+a) km；乙逆水速度 (50−a) km/h，1 小时走 (50−a) km。相距 = (50+a) + (50−a) = <b>100</b> km。a 被抵消了，所以不管水速多大，两船都相距 100 km。</p>
+    </div>
+  </section>
+
+  <section id="addsub">
+    <div class="sec-head"><span class="sec-no">09</span><h2>整式的加减：三步走</h2></div>
+    <p class="sec-sub">几个整式相加减，通常用括号把每个整式括起来，再去括号、合并同类项。</p>
+    <div class="card">
+      <p class="definition">第一步 <mark>去括号</mark> → 第二步 <mark>找同类项</mark> → 第三步 <mark>合并</mark>。结果仍然是整式。</p>
+      <p class="note"><b>教材例：计算</b></p>
+      <span class="work">(1) (2x − 3y) + (5x + 4y)<br>= 2x − 3y + 5x + 4y<br>= <b>7x + y</b><br><br>(2) (8a − 7b) − (4a − 5b)<br>= 8a − 7b <mark>− 4a + 5b</mark><br>= <b>4a − 2b</b></span>
+      <p class="note"><b>第 (2) 问的关键：</b>减号后面整个括号都要变号，−(−5b) = +5b；只把 4a 变号就错了。</p>
+    </div>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>教材例：大、小两个长方体纸盒的用料</summary>
+        <div class="acc-body">
+          <p>小纸盒长 a、宽 b、高 c；大纸盒长 1.5a、宽 2b、高 2c（单位：cm）。用料就是表面积。</p>
+          <span class="work">小盒：2(ab + bc + ac)<br>大盒：2(1.5a·2b + 2b·2c + 1.5a·2c)<br>　　= 2(3ab + 4bc + 3ac)<br>　　= 6ab + 8bc + 6ac</span>
+          <p><b>(1) 共用料：</b>2(ab+bc+ac) + 6ab+8bc+6ac = <b>8ab + 10bc + 8ac</b>（cm²）。</p>
+          <p><b>(2) 大盒比小盒多用料：</b>(6ab+8bc+6ac) − 2(ab+bc+ac) = <b>4ab + 6bc + 4ac</b>（cm²）。</p>
+          <p><b>提醒：</b>减去 2(ab+bc+ac) 时，2 要乘括号里的三项，三项都要变号。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>教材习题里的「与字母无关」：5 − (−3a+3) + (−a−2) − 2a + 2035</summary>
+        <div class="acc-body">
+          <span class="work">原式 = 5 + 3a − 3 − a − 2 − 2a + 2035<br>= (3−1−2)a + (5−3−2+2035)<br>= <b>2035</b></span>
+          <p>化简后 a 的系数是 0，所以 a 取任意有理数，结果都是 2035。这也是「去括号 + 合并」的直接应用。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="activity">
+    <div class="sec-head"><span class="sec-no">10</span><h2>数学活动：月历中的奥秘</h2></div>
+    <p class="sec-sub">2024 版本章数学活动有两个：活动 1 月历中的奥秘，活动 2 自然数被 3 整除的规律。它们都在做同一件事——用字母表示，再用整式运算说明道理。</p>
+    <div class="card">
+      <p class="note"><b>活动 1：</b>在月历上任意框出 3×3 的九个数，它们的和与中间的数有什么关系？</p>
+      <div class="cal" id="calGrid"></div>
+      <div class="slider-row">
+        <label for="calSlider">左上角 n</label>
+        <input id="calSlider" type="range" min="1" max="7" step="1" value="3">
+        <span class="slider-val" id="calVal">3</span>
+      </div>
+      <div class="readout" id="calReadout">九个数的和 = 9 × 中间数<small>中间数是 n+8，和是 9(n+8)</small></div>
+      <p class="note"><b>用字母说明：</b>设左上角为 n，九个数是 n、n+1、n+2；n+7、n+8、n+9；n+14、n+15、n+16。相加得 9n+72 = <b>9(n+8)</b>，正好是中间数的 9 倍。换一个框，结论仍然成立，因为字母 n 代表任意位置。</p>
+      <details class="acc-item" style="margin-top:14px">
+        <summary>活动 2：为什么「各数位数字之和能被 3 整除，这个数就能被 3 整除」？</summary>
+        <div class="acc-body">
+          <p>以两位数 ab（a 是十位、b 是个位）为例：</p>
+          <span class="work">ab = 10a + b = 9a + (a + b)</span>
+          <p>9a 一定能被 3 整除；所以只要 a+b 能被 3 整除，9a+(a+b) 就能被 3 整除。</p>
+          <p>三位数 abc = 100a+10b+c = 99a+9b+(a+b+c) = 3(33a+3b)+(a+b+c)。同理，只要 a+b+c 能被 3 整除，这个三位数就能被 3 整除。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">11</span><h2>六个常见错误</h2></div>
+    <p class="sec-sub">整式加减的错，八成集中在「去括号漏乘」和「强行合并」两类。</p>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>−(a−b) = −a−b</h3><p>−1 要乘两项：(−1)×(−b)=<b>+b</b>，正确结果是 −a+b。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>−3(1−2y) = −3−2y</h3><p>−3 只乘了第一项。第二项是 (−3)×(−2y)=<b>+6y</b>，结果 −3+6y。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>2a+3b = 5ab</h3><p>2a 与 3b 不是同类项，<b>不能合并</b>；结果就是 2a+3b。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>3x²−x² = 3</h3><p>系数 3−1=2，字母部分 x² 不变，结果是 <b>2x²</b>，不是 3。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 05</div><h3>2x²+3x² = 5x⁴</h3><p>合并时<b>指数不变</b>，只加系数，结果是 5x²。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 06</div><h3>去括号后忘记合并</h3><p>去括号只是第一步，最后要按同类项合并到最简；答案写成 4y−5−3+6y 不算完成。</p></div>
+    </div>
+  </section>
+
+  <section id="quizSec">
+    <div class="sec-head"><span class="sec-no">12</span><h2>当堂检测：5 题</h2></div>
+    <p class="sec-sub">选中即判对错，下面有解析。做完可重做；不计入任何记录。</p>
+    <div class="quiz" id="quiz">
+      <div class="q">
+        <p class="q__stem">1. 下列各组中，是同类项的是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="1">A. 2x²y 与 −3x²y</button>
+          <button type="button" data-ok="0">B. 2ab 与 2abc</button>
+          <button type="button" data-ok="0">C. x² 与 x³</button>
+          <button type="button" data-ok="0">D. 3m 与 3n</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>同类项要「字母相同、相同字母的指数相同」。A 中字母都是 x、y，指数也一致，系数不同不影响。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">2. 合并同类项 3a − 5a + 2a，结果是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="1">A. 0</button>
+          <button type="button" data-ok="0">B. a</button>
+          <button type="button" data-ok="0">C. −4a</button>
+          <button type="button" data-ok="0">D. 10a</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>(3−5+2)a = 0·a = 0。系数相加得 0 时，这一项就消失，不写 0a。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">3. 去括号 −(2x − 3)，结果是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. −2x − 3</button>
+          <button type="button" data-ok="0">B. 2x + 3</button>
+          <button type="button" data-ok="1">C. −2x + 3</button>
+          <button type="button" data-ok="0">D. 2x − 3</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>−1 要乘括号内两项：(−1)×2x = −2x，(−1)×(−3) = +3，所以是 −2x+3。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">4. 化简 (3x² − 2x + 1) − (2x² + x − 3)，结果是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. x² − x − 2</button>
+          <button type="button" data-ok="0">B. x² − 3x − 2</button>
+          <button type="button" data-ok="1">C. x² − 3x + 4</button>
+          <button type="button" data-ok="0">D. 5x² − x + 4</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>去括号：3x²−2x+1−2x²−x+3；合并：(3−2)x²+(−2−1)x+(1+3) = x²−3x+4。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">5. 先化简，再求值：3a + 2b − 5a − b，其中 a = −2，b = 1，结果是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. −5</button>
+          <button type="button" data-ok="1">B. 5</button>
+          <button type="button" data-ok="0">C. 3</button>
+          <button type="button" data-ok="0">D. 1</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>原式 = (3−5)a + (2−1)b = −2a+b；代入 a=−2，b=1，得 −2×(−2)+1 = 5。</div>
+      </div>
+    </div>
+    <div class="quiz__bar">
+      <span id="quizStat">已答 0 / 5 · 答对 0</span>
+      <button class="btn" type="button" id="quizReset">重做</button>
+    </div>
+  </section>
+
+  <section id="summary">
+    <div class="sec-head"><span class="sec-no">13</span><h2>小结与中考连接</h2></div>
+    <div class="conclusion">
+      整式加减只有三步：<b>去括号（分配律）→ 找同类项 → 合并（系数相加，字母不变）</b>。化简求值先化简、再代入，能少算很多步。
+      <p class="transfer"><b>最容易丢分的地方：</b>减号后面只变第一项、括号外有系数只乘第一项、把非同类项硬合并、合并时动了字母指数。</p>
+      <div class="exam">
+        <b>长春真题回看：</b><br>
+        2024 第 9 题（填空 3 分）：单项式 −2a²b 的次数是 <b>3</b>，属本章概念。<br>
+        2025 第 10 题（填空 3 分）：写出一个与 a²b 同类的项，答案开放，如 <b>2a²b</b>、−a²b。<br>
+        2022 第 15 题（6 分）：先化简再求值 (2+a)(2−a)+a(a+1)，化简得 a+4，a=√2−4 时原式 = √2。<br>
+        2023 第 15 题（6 分）：(a+1)²+a(1−a) 化简得 3a+1，a=√3/3 时原式 = √3+1。<br>
+        2025 第 15 题（6 分）：(1+x)²−2x 化简得 x²+1，x=√3 时原式 = <b>4</b>。
+      </div>
+      <p class="transfer"><b>命题落点：</b>长春卷在本章固定是「1 道 3 分概念选填 + 第 15 题 6 分化简求值」。第 15 题常会用到后面才学的乘法公式，但第一步的去括号、合并同类项，正是本节的内容；这一步不稳，后面全错。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 4 章 4.2 整式的加法与减法</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0（按 2024 版正文与例题制作）</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 4.2</h2>
+  <p>2024 人教版七上第 4 章，教材安排约 3 课时（合并同类项、去括号、整式加减）。核对日期 2026-11-26。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能判断同类项、按法则合并；能说出去括号的依据是分配律，并正确乘到括号内每一项；能按三步完成整式加减与化简求值。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「72×2+120×2 你会算：先加 72 和 120，再乘 2。现在把 2 换成 a，72a+120a 能不能也这么算？能，因为 a 表示数。今天我们就用这条分配律，把整式的加减打通。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「3x²y 与 −5x²y 为什么是同类项？」期望：字母相同、指数相同，系数不同不影响。</li>
+    <li>「2πr 与 3r 是同类项吗？」期望：是，π 是数，字母只有 r。</li>
+    <li>「合并时字母和指数动不动？」期望：不动，只把系数相加。</li>
+    <li>「−(a−b) 为什么等于 −a+b？」期望：−1 乘两项，第二项负负得正。</li>
+    <li>「为什么先化简再求值？」期望：项数变少，计算量小，出错少。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：从 72×2 与 72a 的类比开始；易错例：直接看 −3(1−2y)；挑战例：跳到检测题。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「同类项看系数。」→ 用 3x²y 与 −5x²y、2ab 与 2abc 对比，明确只看字母部分。</li>
+    <li>「−(a−b) 就是每一项都变号。」→ 追一句「为什么」，让他说 −1 乘 −b 得 +b。</li>
+    <li>「−3(1−2y) = −3−2y。」→ 让他把 −3 分别写在 1 和 −2y 下面，逐个乘。</li>
+    <li>「2a+3b 写成 5ab。」→ 用 a=1、b=2 代值，2+6=8，而 5ab=10，立刻看出不对。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>板书三行：同类项（两相同、两无关）；合并（系数加、字母指数不变）；去括号（括号外因数乘每一项）。题单 8 题：2 题判断同类项、2 题合并、2 题去括号、2 题化简求值。批改只看「有没有乘到每一项」。</p>
+
+  <h3>课后 1 题</h3>
+  <p>化简 (5a+4c+7b)+(5c−3b−6a)，并说出每一步用了什么依据。答案：−a+4b+9c。</p>
+
+  <h3>长春落点</h3>
+  <p>2024 第 9 题考单项式次数（3 分）；2025 第 10 题考同类项（开放，3 分）；2022/2023/2025 第 15 题都是 6 分化简求值。结论：概念 3 分 + 化简 6 分，去括号是本章最关键的失分点。</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  function fmt(v) {
+    if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v)).replace("-", "−");
+    return String(Math.round(v * 100) / 100).replace("-", "−");
+  }
+  function setPressed(group, el) {
+    group.forEach(function (b) { b.setAttribute("aria-pressed", b === el ? "true" : "false"); });
+  }
+
+  /* 01 数式类比 */
+  var boxBtns = Array.prototype.slice.call(document.querySelectorAll("#boxSwitch .btn"));
+  var boxReadout = document.getElementById("boxReadout");
+  boxBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var v = b.getAttribute("data-box");
+      setPressed(boxBtns, b);
+      if (v === "a") {
+        boxReadout.innerHTML = "72a + 120a = (72+120)a = <b>192a</b><small>把 a 提出来，系数相加；字母 a 不变</small>";
+      } else {
+        var n = Number(v);
+        var p1 = 72 * n;
+        var p2 = 120 * n;
+        boxReadout.innerHTML = "72×" + fmt(n) + " + 120×" + fmt(n) + " = " + fmt(p1) + " + " + fmt(p2) + " = " + fmt(p1 + p2) + "<small>先各自乘，再把积相加；也可以先加 72+120=192，再乘 " + fmt(n) + "</small>";
+      }
+    });
+  });
+
+  /* 02 同类项 */
+  var pairBox = document.getElementById("pairBox");
+  var pairFb = document.getElementById("pairFb");
+  Array.prototype.forEach.call(pairBox.querySelectorAll(".pair"), function (b) {
+    b.addEventListener("click", function () {
+      Array.prototype.forEach.call(pairBox.querySelectorAll(".pair"), function (x) { x.classList.remove("is-ok", "is-bad"); });
+      var ok = b.getAttribute("data-ok") === "1";
+      b.classList.add(ok ? "is-ok" : "is-bad");
+      pairFb.innerHTML = "<b>" + (ok ? "是同类项。" : "不是同类项。") + "</b>" + b.getAttribute("data-why");
+    });
+  });
+
+  /* 03 合并演示 */
+  function stepDemo(prefix, nextId, resetId) {
+    var els = document.querySelectorAll("#" + prefix + " .step");
+    var next = document.getElementById(nextId);
+    var reset = document.getElementById(resetId);
+    var idx = 0;
+    function paint() {
+      els.forEach(function (el, i) { el.classList.toggle("is-on", i <= idx); });
+      next.textContent = idx >= els.length - 1 ? "已完成" : "下一步";
+    }
+    next.addEventListener("click", function () {
+      if (idx < els.length - 1) { idx += 1; paint(); }
+    });
+    reset.addEventListener("click", function () { idx = 0; paint(); });
+    paint();
+  }
+  stepDemo("combineSteps", "combineNext", "combineReset");
+  stepDemo("parenSteps", "parenNext", "parenReset");
+
+  /* 05 化简求值切换 */
+  var evalTabs = Array.prototype.slice.call(document.querySelectorAll("#evalTabs .tab"));
+  var evalSimplify = document.getElementById("evalSimplify");
+  var evalDirect = document.getElementById("evalDirect");
+  evalTabs.forEach(function (t) {
+    t.addEventListener("click", function () {
+      setPressed(evalTabs, t);
+      var mode = t.getAttribute("data-eval");
+      evalSimplify.classList.toggle("is-hidden", mode !== "simplify");
+      evalDirect.classList.toggle("is-hidden", mode !== "direct");
+    });
+  });
+
+  /* 08 两船 */
+  var waterSlider = document.getElementById("waterSlider");
+  var waterVal = document.getElementById("waterVal");
+  var boatReadout = document.getElementById("boatReadout");
+  var boatA = document.getElementById("boatA");
+  var boatB = document.getElementById("boatB");
+  var boatALabel = document.getElementById("boatALabel");
+  var boatBLabel = document.getElementById("boatBLabel");
+  var boatWater = document.getElementById("boatWater");
+  function updateBoat() {
+    var a = Number(waterSlider.value);
+    waterVal.textContent = a + " km/h";
+    boatWater.textContent = "水流方向 →　水速 a = " + a + " km/h";
+    // 位置：A 港在 x=60；甲顺水向右，乙逆水向左。比例 1 km = 4.4 px
+    var scale = 4.4;
+    var xa = Math.min(60 + (50 + a) * scale, 620);
+    var xb = Math.max(60 - (50 - a) * scale, 16);
+    boatA.setAttribute("transform", "translate(" + xa + ",120)");
+    boatB.setAttribute("transform", "translate(" + xb + ",120)");
+    boatALabel.textContent = "甲 " + (50 + a) + " km";
+    boatBLabel.textContent = "乙 " + (50 - a) + " km";
+    boatReadout.innerHTML = "甲 (" + (50 + a) + ") + 乙 (" + (50 - a) + ") = " + (50 + a) + " + " + (50 - a) + " = <b>100</b> km<small>两船相距 100 km，与水速 a 无关</small>";
+  }
+  waterSlider.addEventListener("input", updateBoat);
+  updateBoat();
+
+  /* 10 月历 */
+  var calSlider = document.getElementById("calSlider");
+  var calVal = document.getElementById("calVal");
+  var calGrid = document.getElementById("calGrid");
+  var calReadout = document.getElementById("calReadout");
+  function updateCal() {
+    var n = Number(calSlider.value);
+    calVal.textContent = String(n);
+    calGrid.innerHTML = "";
+    for (var r = 0; r < 3; r++) {
+      for (var c = 0; c < 3; c++) {
+        var v = n + r * 7 + c;
+        var d = document.createElement("div");
+        d.textContent = String(v);
+        if (r === 1 && c === 1) d.className = "is-center";
+        calGrid.appendChild(d);
+      }
+    }
+    var sum = 9 * n + 72;
+    calReadout.innerHTML = "九个数的和 = " + sum + " = 9 × " + (n + 8) + "<small>中间数是 " + (n + 8) + "，和正好是中间数的 9 倍</small>";
+  }
+  calSlider.addEventListener("input", updateCal);
+  updateCal();
+
+  /* 12 检测 */
+  var qs = document.querySelectorAll("#quizSec .q");
+  var quizStat = document.getElementById("quizStat");
+  var quizReset = document.getElementById("quizReset");
+  var answered = 0;
+  var correct = 0;
+  function updateStat() {
+    quizStat.textContent = "已答 " + answered + " / " + qs.length + " · 答对 " + correct;
+  }
+  qs.forEach(function (q) {
+    var opts = q.querySelectorAll(".q__opts button");
+    opts.forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (q.dataset.done) return;
+        q.dataset.done = "1";
+        var ok = b.getAttribute("data-ok") === "1";
+        opts.forEach(function (x) { x.classList.add("is-locked"); });
+        b.classList.add(ok ? "is-ok" : "is-bad");
+        if (!ok) {
+          opts.forEach(function (x) {
+            if (x.getAttribute("data-ok") === "1") x.classList.add("is-ok");
+          });
+        }
+        q.querySelector(".q__fb").classList.add("is-open");
+        answered += 1;
+        if (ok) correct += 1;
+        updateStat();
+      });
+    });
+  });
+  quizReset.addEventListener("click", function () {
+    answered = 0;
+    correct = 0;
+    qs.forEach(function (q) {
+      delete q.dataset.done;
+      q.querySelectorAll(".q__opts button").forEach(function (b) {
+        b.classList.remove("is-ok", "is-bad", "is-locked");
+      });
+      q.querySelector(".q__fb").classList.remove("is-open");
+    });
+    updateStat();
+  });
+  updateStat();
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  document.getElementById("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      var targetId = preset === "standard" ? "analogy" : (preset === "error" ? "parentheses" : "quizSec");
+      var label = preset === "standard" ? "标准例：从 72×2 与 72a 的类比开始。" : (preset === "error" ? "易错例：直接看 −3(1−2y)。" : "挑战例：跳到检测题。");
+      document.getElementById("presetNote").textContent = label;
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  /* 键盘 */
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>
