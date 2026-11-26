@@ -17,7 +17,7 @@ window.CURRICULUM = [
           {
             id: "1.2", title: "有理数",
             children: [
-              { id: "1.2.1", title: "有理数的概念" },
+              { id: "1.2.1", title: "有理数的概念", ready: true },
               { id: "1.2.2", title: "数轴", ready: true },
               { id: "1.2.3", title: "相反数" },
               { id: "1.2.4", title: "绝对值" },

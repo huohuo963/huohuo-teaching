@@ -3,315 +3,1026 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1.2.2 数轴 · 相反数与绝对值 | 七上 第1章 有理数</title>
+<title>1.2.2 数轴 · 七上 第1章 有理数</title>
 <script>
-  // 站点以 iframe 嵌入时带 ?embed=1，隐藏这一层自带的顶栏，避免出现两条返回栏
   if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
 </script>
 <style>
   :root {
     --bg: #f5efe2;
+    --paper: #efe6d1;
     --panel: #fffdf8;
     --ink: #2b2419;
     --ink2: #5f5443;
     --ink3: #96886f;
     --line: #e0d5be;
+    --line-soft: #ece3d0;
     --brand: #a3541f;
     --brand-deep: #83401a;
-    --ghost: #c46a2b;
+    --ochre: #b9863c;
+    --orange: #cd6a2e;
+    --ok: #4f6b3a;
     --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
     --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   html, body { margin: 0; }
   body {
     background: var(--bg);
     color: var(--ink);
     font-family: var(--sans);
+    font-size: 16px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
   .bar {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 18px;
-    background: rgba(245, 239, 226, .95);
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 18px;
+    background: rgba(245, 239, 226, .96);
     border-bottom: 1px solid var(--line);
     font-size: 13px;
-  }
-  .bar a { color: var(--brand); font-weight: 600; text-decoration: none; }
-  .bar a:hover { color: var(--brand-deep); }
-  .bar .crumb { color: var(--ink3); }
-
-  .embed .bar { display: none; }
-  .embed main { padding-top: 18px; }
-
-  main { max-width: 960px; margin: 0 auto; padding: 30px 20px 64px; }
-
-  h1 {
-    margin: 0 0 6px;
-    font-family: var(--serif);
-    font-size: 30px;
-    line-height: 1.4;
-    letter-spacing: .02em;
-  }
-  h1 span { margin-left: 8px; font-size: 15px; font-weight: 400; color: var(--ink3); }
-  .lead { margin: 0 0 22px; font-size: 14px; color: var(--ink2); }
-
-  .stage {
-    padding: 10px 6px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    touch-action: none;
-  }
-  svg { display: block; width: 100%; height: auto; cursor: grab; user-select: none; }
-  svg:active { cursor: grabbing; }
-
-  .readout {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 16px 0 0;
-  }
-  .card {
-    padding: 14px 16px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .card dt { font-size: 12px; letter-spacing: .06em; color: var(--ink3); }
-  .card dd {
-    margin: 4px 0 0;
-    font-family: var(--serif);
-    font-size: 26px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--ink);
-  }
-  .card.is-neg dd { color: var(--brand); }
-  .card.is-abs dd { color: var(--ghost); }
-
-  .controls {
-    display: flex;
-    align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 16px;
   }
-  .controls button {
-    padding: 8px 16px;
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn {
+    padding: 5px 11px;
     border: 1px solid var(--line);
     border-radius: 999px;
     background: var(--panel);
-    font: inherit;
-    font-size: 13.5px;
-    color: var(--ink);
+    font-size: 12px;
+    color: var(--ink2);
     cursor: pointer;
-    transition: border-color .15s ease, color .15s ease;
   }
-  .controls button:hover { border-color: var(--brand); color: var(--brand); }
-  .controls button.primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
-  .controls button.primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
-  input[type="range"] { flex: 1; min-width: 160px; accent-color: var(--brand); }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
 
-  .explain {
-    min-height: 56px;
-    margin: 18px 0 0;
-    padding: 14px 18px;
-    background: #fbf5e8;
-    border: 1px solid #e6d8bc;
-    border-radius: 10px;
-    font-size: 14px;
-    color: #4a3d2c;
+  main { max-width: 1100px; margin: 0 auto; padding: 26px 22px 70px; }
+
+  .hero { padding: 6px 0 0; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163, 84, 31, .35); color: var(--brand); }
+  .goal {
+    margin: 18px 0 0; padding: 12px 16px;
+    border-left: 3px solid var(--brand); background: #fbf5e8;
+    font-family: var(--serif); font-size: 18px;
   }
-  .explain b { color: var(--brand-deep); }
 
-  .note {
-    margin: 22px 0 0;
-    padding-top: 14px;
-    border-top: 1px dashed var(--line);
-    font-size: 12.5px;
-    color: var(--ink3);
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; margin-top: 22px; align-items: start; }
+  .board-wrap { position: relative; padding: 10px 8px 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .board-wrap svg { display: block; width: 100%; height: auto; touch-action: pan-y; cursor: grab; }
+  .board-wrap svg:active { cursor: grabbing; }
+  .board__warn {
+    position: absolute; top: 12px; left: 14px;
+    padding: 5px 10px; border: 1px solid rgba(163, 84, 31, .3); border-radius: 6px;
+    background: #fbf5e8; color: var(--brand-deep); font-size: 12px;
   }
-  .note b { color: var(--ink2); }
+  .board__legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 6px 12px 10px; font-size: 12px; color: var(--ink3); }
+  .board__legend b { color: var(--ink2); }
 
+  .controls { padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .control + .control { margin-top: 18px; }
+  .control__head { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--ink2); }
+  .control__head output { margin-left: auto; font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--brand-deep); }
+  .control input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--brand); }
+  .control__hint { margin: 4px 0 0; font-size: 11.5px; color: var(--ink3); }
+  .segmented { display: flex; gap: 6px; margin-top: 8px; }
+  .segmented button {
+    flex: 1; padding: 7px 8px; border: 1px solid var(--line); border-radius: 7px;
+    background: #fff; font-size: 13px; cursor: pointer;
+  }
+  .segmented button[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  fieldset { margin: 18px 0 0; padding: 10px 12px 12px; border: 1px solid var(--line); border-radius: 8px; }
+  legend { padding: 0 4px; font-size: 12px; color: var(--ink3); }
+  .toggle { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; color: var(--ink2); }
+  .toggle input { width: 18px; height: 18px; accent-color: var(--brand); }
+  .btn {
+    padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--panel); font-size: 12.5px; cursor: pointer;
+  }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+
+  .readout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+  .readout div { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fdfaf2; }
+  .readout dt { font-size: 11.5px; color: var(--ink3); }
+  .readout dd { margin: 2px 0 0; font-family: var(--serif); font-size: 22px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .readout div:nth-child(2) dd { color: var(--orange); }
+  .readout div:nth-child(3) dd { color: var(--brand); font-size: 17px; }
+
+  .predict { margin-top: 18px; }
+  .predict__q { margin: 0; font-size: 14px; color: var(--ink); }
+  .predict__opts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .predict__opts button {
+    padding: 7px 10px; border: 1px solid var(--line); border-radius: 7px;
+    background: #fff; font-size: 12.5px; cursor: pointer;
+  }
+  .predict__opts button[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  .predict__answer { margin-top: 10px; padding: 10px 12px; background: #fbf5e8; border-radius: 7px; font-size: 13px; color: var(--ink2); }
+  .predict__answer b { color: var(--brand-deep); }
+
+  .section { margin-top: 44px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+
+  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+  .three button {
+    padding: 14px 16px; text-align: left; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--panel); cursor: pointer;
+  }
+  .three button:hover, .three button[aria-pressed="true"] { border-color: var(--ochre); background: #fbf5e8; }
+  .three b { display: block; font-family: var(--serif); font-size: 18px; color: var(--ink); }
+  .three span { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink3); }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+  .step { padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .step__no { font-family: var(--serif); font-size: 24px; color: var(--brand); }
+  .step h3 { margin: 4px 0; font-size: 16px; }
+  .step p { margin: 0; font-size: 13px; color: var(--ink2); }
+
+  .conclusion {
+    margin-top: 16px; padding: 16px 20px; border: 1px solid rgba(163, 84, 31, .28); border-radius: 10px;
+    background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8;
+  }
+  .conclusion b { color: var(--brand-deep); }
+  .conclusion .transfer { margin: 8px 0 0; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+
+  .errors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+  .err { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .err h3 { margin: 0 0 6px; font-size: 15px; }
+  .err p { margin: 0; font-size: 13px; color: var(--ink2); }
+
+  .accordion { margin-top: 16px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 13px 4px; cursor: pointer; list-style: none;
+    font-size: 14.5px; font-weight: 500;
+  }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 14px 28px; font-size: 13.5px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 14.5px; font-weight: 600; }
+  .q__opts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .q__opts button {
+    padding: 7px 11px; border: 1px solid var(--line); border-radius: 7px;
+    background: #fff; font-size: 13px; cursor: pointer; text-align: left;
+  }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-correct { border-color: var(--ok); background: #f1f5ea; color: var(--ok); }
+  .q__opts button.is-wrong { border-color: var(--brand); background: #fbeee7; color: var(--brand-deep); }
+  .q__fb { margin-top: 10px; padding: 9px 11px; border-radius: 7px; background: #fbf5e8; font-size: 12.5px; color: var(--ink2); }
+  .q__fb b { color: var(--brand-deep); }
+  .q__point { margin-top: 8px; overflow-x: hidden; }
+  .q__point svg { display: block; width: 100%; max-width: 430px; height: auto; }
+  .q-dot { cursor: pointer; }
+  .q-dot:hover { stroke: var(--brand); stroke-width: 3; }
+  .q-dot.is-correct { stroke: var(--ok); stroke-width: 4; }
+  .q-dot.is-wrong { stroke: var(--brand); stroke-width: 4; }
+
+  .spark { margin-top: 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .spark > summary { padding: 14px 18px; cursor: pointer; list-style: none; font-size: 14px; font-weight: 600; color: var(--brand-deep); }
+  .spark > summary::-webkit-details-marker { display: none; }
+  .spark__body { padding: 0 18px 16px; font-size: 13.5px; color: var(--ink2); }
+  .spark__body p { margin: 8px 0 0; }
+  .spark__step { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); }
+
+  footer { max-width: 1100px; margin: 0 auto; padding: 0 22px 40px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 70;
+    width: min(420px, 94vw); padding: 22px 22px 40px; overflow-y: auto;
+    background: #fffdf8; border-left: 1px solid var(--line);
+    transform: translateX(104%); transition: transform .22s ease;
+  }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 20px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 6px; }
+  .teacher .tool-btn { float: right; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .readout dd { font-size: 30px; }
+  body.is-projector .control__head output { font-size: 24px; }
+  body.is-projector .step p, body.is-projector .err p, body.is-projector .q__stem { font-size: 17px; }
+  body.is-projector .q__opts button { font-size: 16px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 18px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    .controls { order: 2; }
+    .three, .steps, .errors { grid-template-columns: 1fr; }
+    .tool-btn, .btn, .segmented button, .q__opts button, .predict__opts button { min-height: 44px; }
+  }
   @media (max-width: 640px) {
-    h1 { font-size: 24px; }
-    .readout { grid-template-columns: 1fr; gap: 8px; }
-    .card { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; }
-    .card dd { margin: 0; font-size: 20px; }
+    main { padding: 20px 14px 58px; }
+    h1 { font-size: 29px; }
+    .readout { grid-template-columns: 1fr; }
+    .readout div { display: flex; align-items: baseline; justify-content: space-between; }
+    .readout dd { margin: 0; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .q__point { overflow-x: hidden; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher { transition: none; }
+  }
+  @media print {
+    .bar, .teacher, .controls, .tool-btn, .btn-row, .predict__opts, .q__opts { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    .layout { display: block; }
+    .section { break-inside: avoid; }
+    .board-wrap, .q, .step, .err, .conclusion { border-color: #bbb; background: #fff; }
+    footer { padding: 0; }
   }
 </style>
 </head>
 <body>
 
 <header class="bar">
-  <a href="../../../index.html#ch=1" target="_top">← 返回第 1 章目录</a>
-  <span class="crumb">七年级上册 · 第 1 章 有理数 · 1.2.2</span>
+  <a class="bar__back" href="../../../index.html#s=1.2.2" target="_top">← 返回 1.2.2</a>
+  <span class="bar__crumb">七上 · 第1章 有理数 · 1.2.2</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
 </header>
 
 <main>
-  <h1>数轴 <span>相反数与绝对值</span></h1>
-  <p class="lead">拖动数轴上的圆点，或使用下方按钮，观察「表示的数、相反数、绝对值」三者如何变化。</p>
+  <header class="hero">
+    <p class="eyebrow">关系与操作 · 2024 人教版 · 七上第 1 章</p>
+    <h1>数轴<small>一条线，把「数」和「位置」对应起来。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">S 旗舰样板</span>
+      <span class="badge">三要素可拆开看</span>
+      <span class="badge">建议 10 分钟：预测—拖动—结论</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">拖一拖点 P，再改一改单位长度和正方向，看看同一个点表示的数会不会变。</p>
+  </header>
 
-  <section class="stage">
-    <svg id="line" viewBox="0 0 900 230" aria-label="可交互数轴">
-      <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" fill="#96886f"></path>
-        </marker>
-      </defs>
-      <g id="ticks"></g>
-      <line x1="66" y1="120" x2="832" y2="120" stroke="#96886f" stroke-width="2" marker-end="url(#arrow)"></line>
-      <text x="842" y="112" font-size="13" fill="#96886f">x</text>
-      <line id="distSeg" x1="450" y1="174" x2="450" y2="174" stroke="#c46a2b" stroke-width="4" stroke-linecap="round"></line>
-      <text id="distLabel" x="450" y="200" font-size="13" fill="#c46a2b" text-anchor="middle"></text>
-      <circle id="ghost" cx="450" cy="120" r="7" fill="none" stroke="#c46a2b" stroke-width="2" stroke-dasharray="4 3" opacity="0"></circle>
-      <g id="handle" transform="translate(450,120)">
-        <circle r="11" fill="#fffdf8" stroke="#a3541f" stroke-width="2.5"></circle>
-        <circle r="4" fill="#a3541f"></circle>
-        <text y="-24" font-size="14" font-weight="700" fill="#a3541f" text-anchor="middle">P</text>
-      </g>
-    </svg>
-  </section>
+  <div class="layout">
+    <div>
+      <div class="board-wrap">
+        <svg id="board" viewBox="0 60 720 220" role="img" aria-label="可交互数轴">
+          <defs>
+            <marker id="arrowHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#96886f"></path>
+            </marker>
+          </defs>
+          <line id="axis" x1="40" y1="130" x2="680" y2="130" stroke="#96886f" stroke-width="2" marker-end="url(#arrowHead)"></line>
+          <g id="gTicks"></g>
+          <g id="gUnit">
+            <line id="unitLine" x1="360" y1="222" x2="408" y2="222" stroke="#b9863c" stroke-width="2"></line>
+            <line id="unitTick1" x1="360" y1="216" x2="360" y2="228" stroke="#b9863c" stroke-width="2"></line>
+            <line id="unitTick2" x1="408" y1="216" x2="408" y2="228" stroke="#b9863c" stroke-width="2"></line>
+            <text id="unitLabel" x="384" y="248" font-size="12" fill="#96886f" text-anchor="middle">1 个单位长度</text>
+          </g>
+          <g id="gOrigin">
+            <circle id="originDot" cx="360" cy="130" r="4" fill="#fffdf8" stroke="#83401a" stroke-width="2"></circle>
+            <text id="originLabel" x="360" y="176" font-size="13" fill="#83401a" text-anchor="middle">原点 O</text>
+          </g>
+          <line id="distLine" x1="360" y1="186" x2="360" y2="186" stroke="#cd6a2e" stroke-width="3" stroke-linecap="round"></line>
+          <text id="distLabel" x="360" y="208" font-size="12" fill="#cd6a2e" text-anchor="middle"></text>
+          <circle id="ghostDot" cx="360" cy="130" r="6" fill="none" stroke="#b9863c" stroke-width="2" stroke-dasharray="4 3" opacity="0"></circle>
+          <text id="ghostLabel" x="360" y="116" font-size="11" fill="#b9863c" text-anchor="middle" opacity="0">刚才</text>
+          <g id="gPoint">
+            <circle id="pointHit" cx="360" cy="130" r="26" fill="transparent"></circle>
+            <text id="pointLabel" x="360" y="100" font-size="18" fill="#a3541f" text-anchor="middle" font-weight="700">P = −3</text>
+            <circle id="pointDot" cx="360" cy="130" r="9" fill="#fffdf8" stroke="#a3541f" stroke-width="3"></circle>
+            <circle id="pointCore" cx="360" cy="130" r="3.5" fill="#a3541f"></circle>
+          </g>
+        </svg>
+        <div class="board__warn" id="boardWarn" hidden>三要素不完整，坐标读不出来</div>
+        <div class="board__legend">
+          <span><b>P</b> 可拖动</span>
+          <span><b>橙色</b> 是 P 到原点的距离</span>
+          <span><b>虚线圆</b> 是刚才记住的位置</span>
+        </div>
+      </div>
 
-  <dl class="readout">
-    <div class="card"><dt>点 P 表示的数 a</dt><dd id="vA">-3</dd></div>
-    <div class="card is-neg"><dt>它的相反数 −a</dt><dd id="vN">+3</dd></div>
-    <div class="card is-abs"><dt>绝对值 |a|（到原点距离）</dt><dd id="vAbs">3</dd></div>
-  </dl>
+      <dl class="readout">
+        <div><dt>点 P 表示的数</dt><dd id="vP">−3</dd></div>
+        <div><dt>P 到原点的距离</dt><dd id="vDist">3</dd></div>
+        <div><dt>P 在原点</dt><dd id="vSide">左侧</dd></div>
+      </dl>
+    </div>
 
-  <div class="controls">
-    <button type="button" data-act="minus">− 1</button>
-    <input type="range" id="slider" min="-6" max="6" step="1" value="-3" aria-label="点的位置">
-    <button type="button" data-act="plus">+ 1</button>
-    <button type="button" data-act="flip" class="primary">取相反数</button>
-    <button type="button" data-act="reset">回到原点</button>
+    <aside class="controls" aria-label="控制面板">
+      <div class="control">
+        <label class="control__head" for="pRange">点 P 的位置 <output id="pOut">−3</output></label>
+        <input id="pRange" type="range" min="-5" max="5" step="0.5" value="-3">
+        <p class="control__hint">也可以直接拖动画布上的点 P。</p>
+      </div>
+
+      <div class="control">
+        <label class="control__head" for="unitRange">单位长度（格宽） <output id="unitOut">48</output></label>
+        <input id="unitRange" type="range" min="24" max="52" step="1" value="48">
+        <p class="control__hint">只改「一格有多宽」，P 表示的数不变。</p>
+      </div>
+
+      <div class="control">
+        <label class="control__head" for="originRange">原点位置 <output id="originOut">居中</output></label>
+        <input id="originRange" type="range" min="320" max="400" step="10" value="360">
+        <p class="control__hint">原点只是「0 放哪儿」，可以移动。</p>
+      </div>
+
+      <div class="control">
+        <span class="control__head">正方向</span>
+        <div class="segmented" id="dirBtns">
+          <button type="button" data-dir="1" aria-pressed="true">向右 →</button>
+          <button type="button" data-dir="-1" aria-pressed="false">← 向左</button>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>三要素显示</legend>
+        <label class="toggle"><input type="checkbox" id="showOrigin" checked> 原点</label>
+        <label class="toggle"><input type="checkbox" id="showUnit" checked> 单位长度（刻度）</label>
+        <label class="toggle"><input type="checkbox" id="showArrow" checked> 正方向（箭头）</label>
+      </fieldset>
+
+      <div class="btn-row">
+        <button class="btn btn--primary" type="button" id="typicalBtn">典型值</button>
+        <button class="btn" type="button" id="resetBtn">复位</button>
+        <button class="btn" type="button" id="lockBtn">记住当前点</button>
+        <button class="btn" type="button" id="clearBtn">清除对照</button>
+      </div>
+
+      <div class="predict">
+        <p class="predict__q"><b>先猜：</b>把单位长度从 48 调到 24，点 P（还是 −3）会往哪边移动？</p>
+        <div class="predict__opts" id="predictOpts">
+          <button type="button" data-pick="near" aria-pressed="false">更靠近原点</button>
+          <button type="button" data-pick="far" aria-pressed="false">更远离原点</button>
+          <button type="button" data-pick="same" aria-pressed="false">不动</button>
+        </div>
+        <button class="btn" type="button" id="seeResult" style="margin-top:8px" disabled>看结果</button>
+        <div class="predict__answer" id="predictAnswer" hidden></div>
+      </div>
+    </aside>
   </div>
 
-  <p class="explain" id="explain" aria-live="polite"></p>
+  <section class="section" id="elements">
+    <div class="sec-head"><span class="sec-no">01</span><h2>三要素，缺一不可</h2></div>
+    <p class="sec-sub">点每一个要素，主图会把其他部分变暗，帮你看清它到底管什么。</p>
+    <div class="three" id="threeBtns">
+      <button type="button" data-el="origin" aria-pressed="false"><b>原点</b><span>0 放在哪里；没有它，不知道从哪儿数。</span></button>
+      <button type="button" data-el="unit" aria-pressed="false"><b>单位长度</b><span>一格代表多少；没有它，数不出距离。</span></button>
+      <button type="button" data-el="arrow" aria-pressed="false"><b>正方向</b><span>往哪边数变大；没有它，分不清正负。</span></button>
+    </div>
+  </section>
 
-  <p class="note"><b>结论：</b>数轴三要素是原点、正方向、单位长度；互为相反数的两个点在原点两侧，且到原点的距离相等；绝对值就是点到原点的距离，永远不小于 0。</p>
+  <section class="section" id="howto">
+    <div class="sec-head"><span class="sec-no">02</span><h2>读一个点，三步</h2></div>
+    <p class="sec-sub">先看原点，再看点在原点的哪一边，最后数它离原点几格。</p>
+    <div class="steps">
+      <div class="step"><div class="step__no">1</div><h3>找原点</h3><p>原点是 0。先确认 0 在哪儿，别从最左边开始数。</p></div>
+      <div class="step"><div class="step__no">2</div><h3>看方向</h3><p>点在原点右边，数是正的；在左边，数是负的；在原点，就是 0。</p></div>
+      <div class="step"><div class="step__no">3</div><h3>数单位</h3><p>一格是一个单位长度。数几格，绝对值就是几，再配上方向。</p></div>
+    </div>
+    <div class="conclusion">
+      数轴是一条规定了<b>原点、正方向、单位长度</b>的直线。每个有理数都能在数轴上找到唯一的点；但数轴上的点不全是正数，也不全是有理数。
+      <p class="transfer">迁移问题：如果正方向改成向左，−3 会跑到原点的哪一边？先猜，再改上面的按钮验证。</p>
+      <p class="transfer"><b>中考连接：</b>数轴读数常与相反数、绝对值结合考查；先定原点与正方向，再数距离，不要从最左边开始数。</p>
+    </div>
+  </section>
+
+  <section class="section" id="textbook">
+    <div class="sec-head"><span class="sec-no">02b</span><h2>教材例题回看</h2></div>
+    <p class="sec-sub">教材里的画图题和读数题，先按这三步走一遍，再动笔。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>例 1：画数轴，并表示 −3、0、2.5</summary>
+        <div class="acc-body"><p>先画一条直线，标出原点 0、向右的正方向和单位长度；再从原点向左数 3 格标 −3，原点标 0，向右数 2.5 格标 2.5。</p><p><b>易错：</b>三要素没画全，或每格长度不一样。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>例 2：点 A 在原点左边 2 格，点 B 在原点右边 3 格，分别表示什么数？</summary>
+        <div class="acc-body"><p>A 表示 −2，B 表示 3。原点左边是负数，右边是正数；离原点几格，绝对值就是几。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>变式：正方向改成向左，−2 在原点的哪一边？表示什么数？</summary>
+        <div class="acc-body"><p>−2 仍在原点右边 2 格；它表示的数还是 −2，因为「正方向向左」只改变哪边变大，不改变 −2 这个数本身。可以用上面的「正方向」按钮验证。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section" id="errors">
+    <div class="sec-head"><span class="sec-no">03</span><h2>三个常见错误</h2></div>
+    <p class="sec-sub">这些错误在课堂上一抓一个准。看到了，先问「你觉得缺了哪一要素」。</p>
+    <div class="errors">
+      <div class="err"><h3>只看格子，不看原点</h3><p>从纸的最左边开始数，数出来的不是坐标。坐标必须从原点 0 开始数。</p></div>
+      <div class="err"><h3>一格的长度不统一</h3><p>同一根数轴上，每格必须一样长；否则 1 到 2 和 4 到 5 的距离就不相等了。</p></div>
+      <div class="err"><h3>以为数轴上的点都是正数</h3><p>原点左边是负数，原点是 0。正方向只决定「哪边变大」，不代表整条线都是正数。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="sec-head"><span class="sec-no">04</span><h2>当堂检测：5 题，可重做</h2></div>
+    <p class="sec-sub">不排名、不计时、不上传。答完一题立即看一句解释，想重来就点最下面。</p>
+    <div class="quiz" id="quizBox"></div>
+    <div class="btn-row"><button class="btn" type="button" id="quizReset">重做检测</button></div>
+  </section>
+
+  <section class="section" id="spark">
+    <details class="spark">
+      <summary>卡住了？按「提问 → 线索 → 解释」慢慢来</summary>
+      <div class="spark__body">
+        <p><b>先问自己：</b>点 P 在原点哪一边？离原点几格？一格代表多少？</p>
+        <span class="spark__step"><b>线索 1：</b>先找原点，不要从最左边开始数。</span>
+        <span class="spark__step"><b>线索 2：</b>在原点右边，数就是正的；左边就是负的。</span>
+        <span class="spark__step"><b>解释：</b>数轴上的点用「方向 + 距离」读数：方向定正负，距离就是绝对值。原点、正方向、单位长度三样缺一不可。</span>
+        <p><b>两个常见错误：</b>① 忘记原点，直接从最左边数；② 单位长度不统一，导致同一格代表不同的数。</p>
+      </div>
+    </details>
+  </section>
 </main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 1 章 1.2.2</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 1.2.2</h2>
+  <p>2024 人教版七上第 1 章；核对 2026-11-26。按 T 可随时开关。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能说出数轴三要素，能在数轴上读出点的坐标，并解释「单位长度变了，同一个数在纸上的位置也会变」。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「温度计上有 0，有正有负，还能看出离 0 多远。数学里也有一条这样的线，叫数轴。今天先不看答案，我拖一个点，你猜它表示几；猜完我们再找规律。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「数轴必须有哪三样？」期望：原点、正方向、单位长度。</li>
+    <li>「点 P 在原点左边 3 格，表示几？」期望：−3。</li>
+    <li>「把单位长度调小，点 P 表示的数变了吗？」期望：没变，但它在纸上的位置变了。</li>
+    <li>「正方向改成向左，−3 在哪边？」期望：原点右边；负数在正方向的反方向。</li>
+    <li>「数轴上的点都是正数吗？」期望：不是，原点左边是负数，原点是 0。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：三要素齐全，P = −3；易错例：藏起原点和箭头，让学生发现读不出坐标；挑战例：正方向向左、单位长度变小。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「从最左边开始数。」→ 把原点藏起来，让他发现没有 0 就无法读数。</li>
+    <li>「单位长度变了，数也变了。」→ 观察读数卡片：数没变，变的是纸上距离。</li>
+    <li>「正方向向左，负数也在左边。」→ 让他点 P，看它在原点哪一侧。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>模型用到「三要素」停，接着在黑板上画一条标准数轴；题单只做「读数 + 说方向」，不要求复杂计算。</p>
+
+  <h3>课后 1 题</h3>
+  <p>画一条数轴，标出 −3、0、2.5，并回答：−3 在原点哪一边？离原点几个单位长度？</p>
+
+  <h3>检测答案</h3>
+  <ol>
+    <li>原点、正方向、单位长度。</li>
+    <li>错。原点表示 0，原点左边是负数。</li>
+    <li>−2.5。</li>
+    <li>−4。</li>
+    <li>点 D（表示 2.5）。</li>
+  </ol>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
 
 <script>
 (function () {
-  var CX = 450;
-  var UNIT = 63.33;
-  var MIN = -6;
-  var MAX = 6;
+  "use strict";
 
-  var svg = document.getElementById("line");
-  var ticks = document.getElementById("ticks");
-  var handle = document.getElementById("handle");
-  var ghost = document.getElementById("ghost");
-  var seg = document.getElementById("distSeg");
+  var SVG_W = 720;
+  var AXIS_Y = 130;
+
+  var state = {
+    p: -3,
+    unit: 48,
+    origin: 360,
+    dir: 1,
+    showOrigin: true,
+    showUnit: true,
+    showArrow: true,
+    ghostX: null
+  };
+
+  var board = document.getElementById("board");
+  var gTicks = document.getElementById("gTicks");
+  var gUnit = document.getElementById("gUnit");
+  var gOrigin = document.getElementById("gOrigin");
+  var gPoint = document.getElementById("gPoint");
+  var axis = document.getElementById("axis");
+  var unitLine = document.getElementById("unitLine");
+  var unitTick1 = document.getElementById("unitTick1");
+  var unitTick2 = document.getElementById("unitTick2");
+  var unitLabel = document.getElementById("unitLabel");
+  var originDot = document.getElementById("originDot");
+  var originLabel = document.getElementById("originLabel");
+  var distLine = document.getElementById("distLine");
   var distLabel = document.getElementById("distLabel");
-  var slider = document.getElementById("slider");
-  var vA = document.getElementById("vA");
-  var vN = document.getElementById("vN");
-  var vAbs = document.getElementById("vAbs");
-  var explain = document.getElementById("explain");
+  var ghostDot = document.getElementById("ghostDot");
+  var ghostLabel = document.getElementById("ghostLabel");
+  var pointDot = document.getElementById("pointDot");
+  var pointCore = document.getElementById("pointCore");
+  var pointHit = document.getElementById("pointHit");
+  var pointLabel = document.getElementById("pointLabel");
+  var boardWarn = document.getElementById("boardWarn");
 
-  var a = -3;
+  var pRange = document.getElementById("pRange");
+  var unitRange = document.getElementById("unitRange");
+  var originRange = document.getElementById("originRange");
+  var pOut = document.getElementById("pOut");
+  var unitOut = document.getElementById("unitOut");
+  var originOut = document.getElementById("originOut");
+  var vP = document.getElementById("vP");
+  var vDist = document.getElementById("vDist");
+  var vSide = document.getElementById("vSide");
 
-  function xOf(v) { return CX + v * UNIT; }
-  function fmt(v) { return v > 0 ? "+" + v : String(v); }
+  var showOrigin = document.getElementById("showOrigin");
+  var showUnit = document.getElementById("showUnit");
+  var showArrow = document.getElementById("showArrow");
 
-  var NS = "http://www.w3.org/2000/svg";
-  for (var v = MIN; v <= MAX; v++) {
-    var tick = document.createElementNS(NS, "line");
-    tick.setAttribute("x1", xOf(v));
-    tick.setAttribute("x2", xOf(v));
-    tick.setAttribute("y1", v === 0 ? 108 : 114);
-    tick.setAttribute("y2", v === 0 ? 132 : 126);
-    tick.setAttribute("stroke", v === 0 ? "#5f5443" : "#cdbb9b");
-    tick.setAttribute("stroke-width", v === 0 ? 2 : 1.5);
-    ticks.appendChild(tick);
+  function fmt(n) {
+    if (n === 0) return "0";
+    var s = (Math.round(n * 10) / 10).toString();
+    return n > 0 ? "+" + s : s.replace("-", "−");
+  }
 
-    var label = document.createElementNS(NS, "text");
-    label.setAttribute("x", xOf(v));
-    label.setAttribute("y", 150);
-    label.setAttribute("text-anchor", "middle");
-    label.setAttribute("font-size", "13");
-    label.setAttribute("fill", v === 0 ? "#5f5443" : "#96886f");
-    label.textContent = v;
-    ticks.appendChild(label);
+  function fmtAbs(n) { return String(Math.round(Math.abs(n) * 10) / 10); }
+
+  function xOf(v) { return state.origin + v * state.unit * state.dir; }
+
+  function clampP(v) {
+    v = Math.round(v * 2) / 2;
+    return Math.max(-5, Math.min(5, v));
+  }
+
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+    return el;
+  }
+
+  function drawTicks() {
+    while (gTicks.firstChild) gTicks.removeChild(gTicks.firstChild);
+    if (!state.showUnit) return;
+
+    for (var i = -5; i <= 5; i++) {
+      if (i === 0 && !state.showOrigin) continue;
+      var x = xOf(i);
+      if (x < 36 || x > 684) continue;
+
+      var tick = svgEl("line", {
+        x1: x, x2: x,
+        y1: i === 0 ? 118 : 124,
+        y2: i === 0 ? 142 : 136,
+        stroke: i === 0 ? "#83401a" : "#cdbb9b",
+        "stroke-width": i === 0 ? 2.2 : 1.4
+      });
+      gTicks.appendChild(tick);
+
+      var label = svgEl("text", {
+        x: x, y: 158,
+        "text-anchor": "middle",
+        "font-size": "12",
+        fill: i === 0 ? "#83401a" : "#96886f"
+      });
+      label.textContent = i === 0 ? "0" : String(i).replace("-", "−");
+      gTicks.appendChild(label);
+    }
   }
 
   function render() {
-    handle.setAttribute("transform", "translate(" + xOf(a) + ",120)");
-    slider.value = a;
+    var x = xOf(state.p);
+    var ox = state.origin;
 
-    vA.textContent = fmt(a);
-    vN.textContent = fmt(-a);
-    vAbs.textContent = Math.abs(a);
+    // 轴与箭头
+    axis.setAttribute("x1", state.dir > 0 ? 40 : 680);
+    axis.setAttribute("x2", state.dir > 0 ? 680 : 40);
+    axis.setAttribute("marker-end", state.showArrow ? "url(#arrowHead)" : "");
 
-    if (a === 0) {
-      ghost.setAttribute("opacity", "0");
+    // 原点
+    originDot.setAttribute("cx", ox);
+    originDot.setAttribute("cy", AXIS_Y);
+    originLabel.setAttribute("x", ox);
+    originLabel.setAttribute("y", 176);
+    gOrigin.style.display = state.showOrigin ? "" : "none";
+
+    // 刻度
+    drawTicks();
+
+    // 单位长度括号
+    gUnit.style.display = state.showUnit ? "" : "none";
+    var ux2 = ox + state.unit * state.dir;
+    var u1 = Math.min(ox, ux2);
+    var u2 = Math.max(ox, ux2);
+    unitLine.setAttribute("x1", u1);
+    unitLine.setAttribute("x2", u2);
+    unitTick1.setAttribute("x1", ox);
+    unitTick1.setAttribute("x2", ox);
+    unitTick2.setAttribute("x1", ux2);
+    unitTick2.setAttribute("x2", ux2);
+    unitLabel.setAttribute("x", (ox + ux2) / 2);
+    unitLabel.textContent = "1 个单位长度";
+
+    // 点 P
+    pointDot.setAttribute("cx", x);
+    pointCore.setAttribute("cx", x);
+    pointHit.setAttribute("cx", x);
+    pointLabel.setAttribute("x", x);
+    pointLabel.textContent = "P = " + fmt(state.p);
+
+    // 距离
+    var x0 = ox;
+    distLine.setAttribute("x1", Math.min(x0, x));
+    distLine.setAttribute("x2", Math.max(x0, x));
+    distLabel.setAttribute("x", (x0 + x) / 2);
+    distLabel.textContent = state.p === 0 ? "距离 0" : "距离 " + fmtAbs(state.p);
+
+    // 对照点
+    if (state.ghostX === null) {
+      ghostDot.setAttribute("opacity", "0");
+      ghostLabel.setAttribute("opacity", "0");
     } else {
-      ghost.setAttribute("opacity", "1");
-      ghost.setAttribute("cx", xOf(-a));
+      ghostDot.setAttribute("cx", state.ghostX);
+      ghostDot.setAttribute("opacity", "1");
+      ghostLabel.setAttribute("x", state.ghostX);
+      ghostLabel.setAttribute("opacity", "1");
     }
 
-    var x0 = xOf(0);
-    var xa = xOf(a);
-    seg.setAttribute("x1", Math.min(x0, xa));
-    seg.setAttribute("x2", Math.max(x0, xa));
-    distLabel.setAttribute("x", (x0 + xa) / 2);
-    distLabel.textContent = a === 0 ? "" : "距离 = " + Math.abs(a);
+    // 控制与读数
+    pRange.value = state.p;
+    unitRange.value = state.unit;
+    originRange.value = state.origin;
+    pOut.textContent = fmt(state.p);
+    unitOut.textContent = state.unit;
+    originOut.textContent = state.origin < 350 ? "偏左" : (state.origin > 370 ? "偏右" : "居中");
+    vP.textContent = fmt(state.p);
+    vDist.textContent = fmtAbs(state.p);
+    vSide.textContent = state.p === 0 ? "原点" : (state.p > 0 ? (state.dir > 0 ? "右侧" : "左侧") : (state.dir > 0 ? "左侧" : "右侧"));
 
-    var where = a > 0 ? "<b>原点右侧</b>" : (a < 0 ? "<b>原点左侧</b>" : "与<b>原点重合</b>");
-    var dist = Math.abs(a);
-    explain.innerHTML =
-      "点 P 在数轴上位于" + where + "，到原点的距离为 " + dist + " 个单位长度，" +
-      "所以它表示的数 a = <b>" + fmt(a) + "</b>，相反数 −a = <b>" + fmt(-a) + "</b>，" +
-      "绝对值 |a| = <b>" + dist + "</b>。";
+    boardWarn.hidden = state.showOrigin && state.showUnit && state.showArrow;
   }
 
-  function setA(v) {
-    a = Math.max(MIN, Math.min(MAX, Math.round(v)));
+  function setState(patch) {
+    Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
     render();
   }
 
-  var dragging = false;
+  pRange.addEventListener("input", function () { setState({ p: clampP(+pRange.value) }); });
+  unitRange.addEventListener("input", function () { setState({ unit: +unitRange.value }); });
+  originRange.addEventListener("input", function () { setState({ origin: +originRange.value }); });
 
-  function valFromClientX(clientX) {
-    var rect = svg.getBoundingClientRect();
-    var sx = (clientX - rect.left) / rect.width * 900;
-    return (sx - CX) / UNIT;
+  document.getElementById("dirBtns").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-dir]");
+    if (!b) return;
+    var dir = +b.getAttribute("data-dir");
+    document.querySelectorAll("#dirBtns button").forEach(function (x) {
+      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+    });
+    setState({ dir: dir });
+  });
+
+  showOrigin.addEventListener("change", function () { setState({ showOrigin: showOrigin.checked }); });
+  showUnit.addEventListener("change", function () { setState({ showUnit: showUnit.checked }); });
+  showArrow.addEventListener("change", function () { setState({ showArrow: showArrow.checked }); });
+
+  var typical = { p: -3, unit: 48, origin: 360, dir: 1, showOrigin: true, showUnit: true, showArrow: true, ghostX: null };
+
+  function applyState(s) {
+    state.p = s.p;
+    state.unit = s.unit;
+    state.origin = s.origin;
+    state.dir = s.dir;
+    state.showOrigin = s.showOrigin;
+    state.showUnit = s.showUnit;
+    state.showArrow = s.showArrow;
+    state.ghostX = s.ghostX;
+
+    showOrigin.checked = state.showOrigin;
+    showUnit.checked = state.showUnit;
+    showArrow.checked = state.showArrow;
+    document.querySelectorAll("#dirBtns button").forEach(function (b) {
+      b.setAttribute("aria-pressed", +b.getAttribute("data-dir") === state.dir ? "true" : "false");
+    });
+    render();
   }
 
-  svg.addEventListener("pointerdown", function (e) {
+  document.getElementById("typicalBtn").addEventListener("click", function () { applyState(typical); });
+  document.getElementById("resetBtn").addEventListener("click", function () { applyState(typical); });
+
+  document.getElementById("lockBtn").addEventListener("click", function () {
+    state.ghostX = xOf(state.p);
+    render();
+  });
+  document.getElementById("clearBtn").addEventListener("click", function () {
+    state.ghostX = null;
+    render();
+  });
+
+  // 拖动画布
+  var dragging = false;
+
+  function pFromEvent(e) {
+    var rect = board.getBoundingClientRect();
+    var lx = (e.clientX - rect.left) / rect.width * SVG_W;
+    return clampP((lx - state.origin) / (state.unit * state.dir));
+  }
+
+  gPoint.addEventListener("pointerdown", function (e) {
     dragging = true;
-    svg.setPointerCapture(e.pointerId);
-    setA(valFromClientX(e.clientX));
+    if (gPoint.setPointerCapture) gPoint.setPointerCapture(e.pointerId);
+    setState({ p: pFromEvent(e) });
+  });
+  gPoint.addEventListener("pointermove", function (e) {
+    if (dragging) setState({ p: pFromEvent(e) });
+  });
+  gPoint.addEventListener("pointerup", function () { dragging = false; });
+  gPoint.addEventListener("pointercancel", function () { dragging = false; });
+
+  // 三要素高亮
+  var threeBtns = document.getElementById("threeBtns");
+  threeBtns.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-el]");
+    if (!b) return;
+    var el = b.getAttribute("data-el");
+    var on = b.getAttribute("aria-pressed") !== "true";
+    threeBtns.querySelectorAll("button").forEach(function (x) {
+      x.setAttribute("aria-pressed", x === b && on ? "true" : "false");
+    });
+    var map = { origin: gOrigin, unit: gUnit, arrow: axis };
+    Object.keys(map).forEach(function (k) {
+      map[k].style.opacity = (!on || k === el) ? "" : "0.22";
+    });
+    gTicks.style.opacity = (!on || el === "unit") ? "" : "0.22";
   });
 
-  svg.addEventListener("pointermove", function (e) {
-    if (dragging) setA(valFromClientX(e.clientX));
+  // 先猜后看
+  var predictPick = null;
+  var predictAnswer = document.getElementById("predictAnswer");
+  var seeResult = document.getElementById("seeResult");
+  var predictText = {
+    near: "你猜「更靠近原点」。单位长度从 48 调到 24，一格变窄，点 P 表示的数不变，但它在纸上的位置确实更靠近原点了。",
+    far: "你猜「更远离原点」。实际是更靠近：一格变窄，同样的 3 个单位长度占的纸面更少。",
+    same: "你猜「不动」。数没变，但当一格变窄时，同一个数在纸上的位置会更靠近原点。"
+  };
+
+  document.getElementById("predictOpts").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-pick]");
+    if (!b) return;
+    predictPick = b.getAttribute("data-pick");
+    document.querySelectorAll("#predictOpts button").forEach(function (x) {
+      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+    });
+    seeResult.disabled = false;
   });
 
-  svg.addEventListener("pointerup", function () { dragging = false; });
-  svg.addEventListener("pointercancel", function () { dragging = false; });
-
-  slider.addEventListener("input", function () { setA(+slider.value); });
-
-  document.querySelector(".controls").addEventListener("click", function (e) {
-    var btn = e.target.closest("button[data-act]");
-    if (!btn) return;
-    var act = btn.getAttribute("data-act");
-    if (act === "minus") setA(a - 1);
-    if (act === "plus") setA(a + 1);
-    if (act === "flip") setA(-a);
-    if (act === "reset") setA(0);
+  seeResult.addEventListener("click", function () {
+    if (!predictPick) return;
+    setState({ unit: 24 });
+    predictAnswer.hidden = false;
+    predictAnswer.innerHTML = predictText[predictPick] + " <b>注意：读数卡片里的数仍然是 " + fmt(state.p) + "。</b>";
   });
 
+  /* ---------- 当堂检测 ---------- */
+  var quiz = [
+    {
+      type: "choice",
+      stem: "1. 数轴的三要素是（ ）。",
+      options: ["原点、正方向、单位长度", "原点、刻度、箭头", "正方向、单位长度、颜色", "原点、单位长度、刻度线"],
+      answer: 0,
+      explain: "三要素是原点、正方向、单位长度。刻度和箭头是它们的表现形式，不是第三条。"
+    },
+    {
+      type: "choice",
+      stem: "2. 判断：数轴上的点只能表示正数。",
+      options: ["对", "错"],
+      answer: 1,
+      explain: "错。原点表示 0，原点左边表示负数；正方向只决定哪边变大。"
+    },
+    {
+      type: "read",
+      stem: "3. 如图，点 A 表示（ ）。",
+      options: ["−2.5", "−1.5", "2.5", "1.5"],
+      answer: 0,
+      explain: "点 A 在原点左边 2.5 个单位长度，所以表示 −2.5。"
+    },
+    {
+      type: "choice",
+      stem: "4. 点 B 在原点左边 4 个单位长度，点 B 表示（ ）。",
+      options: ["−4", "4", "−1/4", "0.4"],
+      answer: 0,
+      explain: "原点左边是负数，离原点 4 个单位，所以是 −4。"
+    },
+    {
+      type: "point",
+      stem: "5. 在下面的数轴上，点出表示 2.5 的点。",
+      points: [-3, -1, 1, 2.5, 4],
+      answer: 3,
+      explain: "2.5 在原点右边 2.5 个单位长度，对应点 D。"
+    }
+  ];
+
+  var quizBox = document.getElementById("quizBox");
+
+  function miniAxis(values, showNumbers, labels, qIndex) {
+    var w = 420, y = 48, left = 40, right = 380;
+    var min = -4, max = 4;
+    function mx(v) { return left + (v - min) / (max - min) * (right - left); }
+    var html = '<svg viewBox="0 0 ' + w + ' 100" role="img" aria-label="小测数轴">';
+    html += '<line x1="' + left + '" y1="' + y + '" x2="' + right + '" y2="' + y + '" stroke="#96886f" stroke-width="1.6"></line>';
+    for (var i = min; i <= max; i++) {
+      var x = mx(i);
+      html += '<line x1="' + x + '" y1="' + (y - 4) + '" x2="' + x + '" y2="' + (y + 4) + '" stroke="' + (i === 0 ? "#83401a" : "#cdbb9b") + '" stroke-width="' + (i === 0 ? 2 : 1) + '"></line>';
+      if (showNumbers) {
+        html += '<text x="' + x + '" y="' + (y + 20) + '" text-anchor="middle" font-size="11" fill="#96886f">' + String(i).replace("-", "−") + '</text>';
+      }
+    }
+    values.forEach(function (v, idx) {
+      var cx = mx(v);
+      var qAttr = (typeof qIndex === "number") ? ' data-q="' + qIndex + '"' : "";
+      html += '<circle cx="' + cx + '" cy="' + y + '" r="8" fill="#fffdf8" stroke="#a3541f" stroke-width="2.5" class="q-dot"' + qAttr + ' data-i="' + idx + '"></circle>';
+      html += '<circle cx="' + cx + '" cy="' + y + '" r="3" fill="#a3541f" pointer-events="none"></circle>';
+      if (labels) {
+        html += '<text x="' + cx + '" y="' + (y - 16) + '" text-anchor="middle" font-size="12" fill="#83401a">' + labels[idx] + '</text>';
+      }
+    });
+    html += '</svg>';
+    return html;
+  }
+
+  function renderQuiz() {
+    quizBox.innerHTML = quiz.map(function (q, qi) {
+      var body = "";
+      if (q.type === "point") {
+        body = '<div class="q__point">' + miniAxis(q.points, false, ["A", "B", "C", "D", "E"], qi) + '</div>';
+      } else {
+        body = '<div class="q__opts">' + q.options.map(function (opt, oi) {
+          return '<button type="button" data-q="' + qi + '" data-i="' + oi + '">' + opt + '</button>';
+        }).join("") + '</div>';
+      }
+      var fig = q.type === "read" ? '<div class="q__point">' + miniAxis([-2.5], true, ["A"]) + '</div>' : "";
+      return '<div class="q" data-q="' + qi + '">'
+        + '<p class="q__stem">' + q.stem + '</p>'
+        + fig + body
+        + '<div class="q__fb" hidden></div>'
+        + '</div>';
+    }).join("");
+  }
+
+  quizBox.addEventListener("click", function (e) {
+    var target = e.target.closest("[data-q][data-i]");
+    if (!target) return;
+    var qi = +target.getAttribute("data-q");
+    var oi = +target.getAttribute("data-i");
+    var q = quiz[qi];
+    if (!q) return;
+
+    var card = quizBox.querySelector('.q[data-q="' + qi + '"]');
+    card.querySelectorAll(".q-dot, .q__opts button").forEach(function (x) {
+      x.classList.remove("is-correct", "is-wrong");
+    });
+
+    if (oi === q.answer) {
+      target.classList.add("is-correct");
+    } else {
+      target.classList.add("is-wrong");
+    }
+
+    var fb = card.querySelector(".q__fb");
+    fb.hidden = false;
+    if (oi === q.answer) {
+      fb.innerHTML = "<b>对了。</b>" + q.explain;
+    } else {
+      fb.innerHTML = "<b>再看一眼。</b>" + q.explain + " 可以点别的选项再试。";
+    }
+  });
+
+  document.getElementById("quizReset").addEventListener("click", function () {
+    renderQuiz();
+  });
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  teacherBtn.addEventListener("click", function () {
+    setTeacher(!teacher.classList.contains("is-open"));
+  });
+  document.getElementById("teacherClose").addEventListener("click", function () {
+    setTeacher(false);
+  });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      if (preset === "standard") {
+        applyState({ p: -3, unit: 48, origin: 360, dir: 1, showOrigin: true, showUnit: true, showArrow: true, ghostX: null });
+        document.getElementById("presetNote").textContent = "标准例：三要素齐全，P = −3。先让学生读数，再改单位长度。";
+      } else if (preset === "error") {
+        applyState({ p: 2, unit: 40, origin: 360, dir: 1, showOrigin: false, showUnit: true, showArrow: false, ghostX: null });
+        document.getElementById("presetNote").textContent = "易错例：藏起原点和箭头。问学生「现在还能读出坐标吗？缺了什么？」";
+      } else {
+        applyState({ p: -5, unit: 24, origin: 340, dir: -1, showOrigin: true, showUnit: true, showArrow: true, ghostX: null });
+        document.getElementById("presetNote").textContent = "挑战例：正方向向左、单位长度变小。问「−5 在原点的哪一边？为什么？」";
+      }
+      var boardWrap = document.querySelector(".board-wrap");
+      if (boardWrap) boardWrap.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      if (document.activeElement === pRange) return;
+      e.preventDefault();
+      setState({ p: clampP(state.p + (e.key === "ArrowRight" ? 0.5 * state.dir : -0.5 * state.dir)) });
+    }
+  });
+
+  renderQuiz();
   render();
 })();
 </script>
