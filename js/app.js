@@ -14,7 +14,7 @@
     experiment: { label: "实验与探究", mark: "验" },
     inquiry:    { label: "观察与猜想", mark: "猜" },
     tech:       { label: "信息技术应用", mark: "技" },
-    review:     { label: "数学活动 · 小结 · 复习题", mark: "习" },
+    review:     { label: "小结 · 复习题", mark: "习" },
     project:    { label: "综合与实践 · 课题学习", mark: "践" }
   };
 

@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.2 代数式的值 · 七上 第3章 代数式</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button, input { font: inherit; color: inherit; }
+  button, summary { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 72px; }
+  .hero { padding: 8px 0 4px; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; letter-spacing: .02em; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 20px 0 0; padding: 14px 18px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+
+  section { margin-top: 40px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .card b { color: var(--brand-deep); }
+  .note { margin-top: 12px !important; font-size: 13.5px; color: var(--ink2); }
+  .note b { color: var(--brand-deep); }
+
+  .eqline { display: flex; align-items: baseline; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 18px 8px 10px; font-family: var(--serif); font-size: 42px; line-height: 1.3; }
+  .eqline .op { color: var(--ink3); font-size: 30px; }
+  .eqline--small { font-size: 32px; padding-top: 6px; }
+  .readout { margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: #fbf5e8; font-family: var(--serif); font-size: 21px; text-align: center; color: var(--brand-deep); }
+  .readout small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .slider-row label { font-size: 13px; color: var(--ink2); min-width: 66px; }
+  .slider-row input[type="range"] { flex: 1 1 220px; min-width: 160px; accent-color: var(--brand); height: 32px; }
+  .slider-val { font-family: var(--serif); font-size: 18px; color: var(--brand-deep); min-width: 70px; text-align: right; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .is-hidden { display: none !important; }
+
+  .definition { font-family: var(--serif); font-size: 27px; line-height: 1.8; }
+  .four-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+  .fs { padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fdfaf2; }
+  .fs span { display: block; font-family: var(--serif); font-size: 12px; color: var(--brand); letter-spacing: .1em; }
+  .fs b { display: block; margin-top: 4px; font-size: 14px; color: var(--ink); }
+  .steps { margin-top: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-family: var(--serif); font-size: 23px; line-height: 2; }
+  .step { margin: 0; opacity: .12; transition: opacity .18s ease; }
+  .step.is-on { opacity: 1; }
+  .step b { color: var(--brand-deep); }
+  .step--hint { font-family: var(--sans); font-size: 13px; color: var(--ink2); }
+  .step-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tab { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; cursor: pointer; }
+  .tab[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+
+  .valtable-wrap { margin-top: 14px; overflow-x: auto; }
+  .valtable { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 420px; }
+  .valtable th, .valtable td { padding: 9px 10px; border: 1px solid var(--line); text-align: center; }
+  .valtable thead th { background: #fbf5e8; color: var(--brand-deep); font-weight: 600; }
+  .valtable tbody tr { cursor: pointer; }
+  .valtable tbody tr:hover td, .valtable tbody tr:hover th { background: #fdfaf2; }
+  .valtable tbody tr.is-now td, .valtable tbody tr.is-now th { background: #f3dfc0; color: var(--brand-deep); font-weight: 700; }
+  .valtable th[scope="row"] { background: #fffdf8; font-family: var(--serif); font-size: 16px; }
+  .table-hint { margin-top: 8px !important; font-size: 12.5px; color: var(--ink3); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+  .work { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); font-family: var(--serif); font-size: 19px; line-height: 1.9; color: var(--ink); }
+  .work mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 2px; }
+
+  .wrongbox { margin-top: 14px; padding: 16px 18px; border: 1px solid rgba(163,59,36,.3); border-left: 4px solid var(--err); border-radius: 10px; background: #fbeee9; }
+  .wrongbox h3 { margin: 0 0 8px; font-family: var(--serif); font-size: 18px; color: var(--err); }
+  .wrongbox .work { border-left-color: var(--err); color: var(--ink); }
+  .wrongbox__fb { margin-top: 10px !important; font-size: 13.5px; color: var(--ink2); display: none; }
+  .wrongbox__fb.is-open { display: block; }
+  .wrongbox__fb b { color: var(--brand-deep); }
+  .goodbox { margin-top: 10px; padding: 14px 16px; border: 1px solid rgba(79,107,58,.35); border-radius: 8px; background: #f0f4ea; font-size: 14px; color: var(--ink2); display: none; }
+  .goodbox.is-open { display: block; }
+  .goodbox b { color: var(--ok); }
+
+  .track-wrap { margin-top: 16px; padding: 8px 8px 0; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; }
+  .track-wrap svg { display: block; width: 100%; height: auto; }
+  .track-legend { display: flex; gap: 18px; flex-wrap: wrap; padding: 8px 14px 14px; font-size: 12.5px; color: var(--ink3); }
+  .track-legend b { color: var(--ink2); }
+
+  .match-wrap { margin-top: 16px; padding: 10px 8px 4px; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; }
+  .match-wrap svg { display: block; width: 100%; height: auto; max-height: 220px; }
+  .match-count { padding: 8px 14px 14px; font-family: var(--serif); font-size: 20px; color: var(--brand-deep); text-align: center; }
+  .match-count small { display: block; margin-top: 2px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .mis p b { color: var(--ink); }
+
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+
+  .conclusion { margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 10px !important; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam { margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--ochre); border-radius: 8px; background: #fffdf8; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam b { color: var(--ink); }
+
+  footer { max-width: 1080px; margin: 0 auto; padding: 0 22px 42px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(420px, 92vw); padding: 22px 22px 40px; overflow-y: auto; background: #fffdf8; border-left: 1px solid var(--line); transform: translateX(104%); transition: transform .22s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 22px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 7px; }
+  .teacher .tool-btn { float: right; }
+  .teacher .preset-row { margin-top: 8px; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .definition { font-size: 35px; }
+  body.is-projector .eqline { font-size: 54px; }
+  body.is-projector .card, body.is-projector .q { padding: 24px 26px; }
+  body.is-projector .mis p, body.is-projector .acc-body, body.is-projector .q__stem { font-size: 18px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 20px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 760px) {
+    main { padding: 22px 16px 60px; }
+    h1 { font-size: 29px; }
+    .eqline { font-size: 34px; }
+    .definition { font-size: 22px; }
+    .four-steps { grid-template-columns: 1fr 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    .steps { font-size: 19px; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .tool-btn, .btn, .tab, .q__opts button { min-height: 44px; }
+    .quiz__bar button { margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher, .step { transition: none; }
+  }
+
+  @media print {
+    .bar, .teacher, .tool-btn, .btn, .step-btns, .preset-row, .quiz__bar { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    section { break-inside: avoid; }
+    .card, .mis, .q, .conclusion, .wrongbox, .goodbox { border-color: #bbb; background: #fff; }
+    .q__fb, .wrongbox__fb, .goodbox { display: block !important; }
+    .step { opacity: 1; }
+    footer { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#s=3.2" target="_top">← 返回 3.2</a>
+  <span class="bar__crumb">七上 · 第3章 代数式 · 3.2</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">求值 + 规律 · 2024 人教版 · 七上第 3 章</p>
+    <h1>代数式的值<small>式子是一台机器：输入字母的值，按运算顺序输出一个结果。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">S 旗舰样板</span>
+      <span class="badge">运算型 · 5 题检测</span>
+      <span class="badge">建议 20 分钟新授 + 10 分钟检测</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">本节只追一件事：给你一个式子和字母的值，你能按四步写出规范过程，并说清为什么负数和分数代入要加括号。</p>
+  </header>
+
+  <section id="situation">
+    <div class="sec-head"><span class="sec-no">01</span><h2>先看一个会变的式子</h2></div>
+    <p class="sec-sub">学校购排球：每班配 5 个，学校另留 20 个。全校有 n 个班，一共需要 5n+20 个。</p>
+    <div class="card">
+      <div class="eqline"><span>5n + 20</span></div>
+      <div class="slider-row">
+        <label for="nSlider">班级数 n</label>
+        <input id="nSlider" type="range" min="1" max="30" step="1" value="15">
+        <span class="slider-val" id="nVal">15 个班</span>
+      </div>
+      <div class="readout" id="nReadout">5 × 15 + 20 = 95<small>n = 15 时，共需 95 个排球</small></div>
+      <div class="preset-row">
+        <button class="btn" type="button" data-n="15">n = 15（教材）</button>
+        <button class="btn" type="button" data-n="20">n = 20（教材）</button>
+        <button class="btn" type="button" data-n="24">n = 24</button>
+      </div>
+      <p class="note"><b>同一个式子，n 不同，算出的结果就不同。</b>n=15 得 95，n=20 得 120。代数式的值由字母所取的值决定。</p>
+    </div>
+  </section>
+
+  <section id="definition">
+    <div class="sec-head"><span class="sec-no">02</span><h2>什么叫代数式的值，怎么求</h2></div>
+    <p class="sec-sub">教材定义：用数值代替代数式中的字母，按照代数式中的运算关系计算得出的结果，叫做代数式的值。</p>
+    <div class="card">
+      <p class="definition">用数值代替代数式中的字母，按照代数式中的运算关系计算得出的结果，叫做代数式的值。</p>
+      <div class="four-steps">
+        <div class="fs"><span>STEP 1</span><b>写「当…时」</b></div>
+        <div class="fs"><span>STEP 2</span><b>抄一遍代数式</b></div>
+        <div class="fs"><span>STEP 3</span><b>代值，负数分数加括号</b></div>
+        <div class="fs"><span>STEP 4</span><b>按运算顺序算</b></div>
+      </div>
+      <div class="steps" id="stepDemo">
+        <p class="step is-on">当 x=15，y=12 时，</p>
+        <p class="step">2x + 3y</p>
+        <p class="step">= 2×15 + 3×12</p>
+        <p class="step">= 30 + 36</p>
+        <p class="step">= 66</p>
+        <p class="step step--hint is-on">提示：2x 就是 2×x，省略的乘号要还原。</p>
+      </div>
+      <div class="step-btns">
+        <button class="btn btn--primary" type="button" id="stepNext">下一步</button>
+        <button class="btn" type="button" id="stepReset">重来</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="explore">
+    <div class="sec-head"><span class="sec-no">03</span><h2>拖一拖：字母变，值怎么变</h2></div>
+    <p class="sec-sub">拖动 x，从 −2 到 3，看式子的值。下面只把值列成表，<b>不画图像</b>；图像要到学函数时才出现。</p>
+    <div class="card">
+      <div class="tabs">
+        <button class="tab" type="button" data-expr="linear" aria-pressed="true">2x + 3</button>
+        <button class="tab" type="button" data-expr="quad" aria-pressed="false">x² − 1</button>
+      </div>
+      <div class="slider-row">
+        <label for="xSlider">x 的值</label>
+        <input id="xSlider" type="range" min="-2" max="3" step="0.5" value="0">
+        <span class="slider-val" id="xVal">x = 0</span>
+      </div>
+      <div class="readout" id="xReadout">2×0 + 3 = 3<small>把 x=0 代进去，算出 3</small></div>
+      <div class="valtable-wrap">
+        <table class="valtable" id="valTable">
+          <thead><tr><th scope="col">x</th><th scope="col">−2</th><th scope="col">−1</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th></tr></thead>
+          <tbody id="valBody"></tbody>
+        </table>
+      </div>
+      <p class="table-hint">点表格里的某一列，滑块会跳到那个 x；拖到 0.5 这样的小数时，表里没有对应列，但上面的算式仍会更新。</p>
+      <p class="note"><b>观察：</b>2x+3 随 x 增大一直变大；x²−1 先变小、后变大，在 x=0 时取到 −1。<b>不是所有代数式都「x 越大值越大」。</b></p>
+    </div>
+  </section>
+
+  <section id="example1">
+    <div class="sec-head"><span class="sec-no">04</span><h2>教材例 1：两个字母的求值</h2></div>
+    <p class="sec-sub">根据 x、y 的值，分别求 2x+3y 的值。注意第 (2) 问的 y 是分数。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>(1) 当 x=15，y=12 时，求 2x+3y</summary>
+        <div class="acc-body">
+          <p>先写条件，再抄式子，然后代值，最后计算。</p>
+          <span class="work">当 x=15，y=12 时，<br>2x+3y<br>= 2×15 + 3×12<br>= 30 + 36<br>= <b>66</b></span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>(2) 当 x=1，y=1/2 时，求 2x+3y</summary>
+        <div class="acc-body">
+          <p>分数代入要加括号：3×<mark>(1/2)</mark>，不能写成 3×1/2 后把分子分母拆开乱算。</p>
+          <span class="work">当 x=1，y=1/2 时，<br>2x+3y<br>= 2×1 + 3×<mark>(1/2)</mark><br>= 2 + 3/2<br>= <b>7/2</b>（也可写 3.5）</span>
+          <p><b>提醒：</b>结果写 7/2 或 3.5 都可以；但过程里「3×(1/2)」的括号不能省，它提醒你 1/2 是一个整体。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="example2">
+    <div class="sec-head"><span class="sec-no">05</span><h2>教材例 2：负数代入，最容易错</h2></div>
+    <p class="sec-sub">求 a²−b/4 的值。先看一份「小明的解法」，找一找错在哪一步。</p>
+    <div class="wrongbox">
+      <h3>小明的解法（当 a=−3，b=2 时）</h3>
+      <span class="work">a² − b/4<br>= −3² − 2/4<br>= −9 − 0.5<br>= −9.5</span>
+      <p class="wrongbox__fb" id="wrongFb"><b>错在第 2 行：</b>−3² 表示「3 的平方的相反数」，等于 −9；而 a² 里的 a 是 −3，代入应写 <b>(−3)²</b>，等于 9。负数代入平方，必须加括号。</p>
+      <div class="goodbox" id="goodBox"><b>正确过程：</b>当 a=−3，b=2 时，a²−b/4 = (−3)² − 2/4 = 9 − 1/2 = <b>17/2</b>（即 8.5）。</div>
+      <div class="preset-row">
+        <button class="btn" type="button" id="findErr">错在哪一步？</button>
+        <button class="btn" type="button" id="showRight">看正确过程</button>
+      </div>
+    </div>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>(1) 当 a=4，b=12 时，求 a²−b/4</summary>
+        <div class="acc-body">
+          <span class="work">当 a=4，b=12 时，<br>a² − b/4<br>= 4² − 12/4<br>= 16 − 3<br>= <b>13</b></span>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>(2) 当 a=−3，b=2 时，求 a²−b/4</summary>
+        <div class="acc-body">
+          <p>两处要小心：a 是负数，平方要加括号；b/4 表示 b÷4，不是 b 减 4。</p>
+          <span class="work">当 a=−3，b=2 时，<br>a² − b/4<br>= <mark>(−3)²</mark> − 2/4<br>= 9 − 1/2<br>= <b>17/2</b></span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="example3">
+    <div class="sec-head"><span class="sec-no">06</span><h2>教材例 3：把公式用到跑道上</h2></div>
+    <p class="sec-sub">跑道由两段直道（各长 a）和两段半圆弯道（直径 b）组成。周长 = 2a + πb。拖 a、b 看结果。</p>
+    <div class="card">
+      <div class="track-wrap">
+        <svg id="trackSvg" viewBox="0 0 640 240" role="img" aria-label="跑道示意：两段直道和两段半圆弯道">
+          <path d="M170 70 L470 70 A50 50 0 0 1 470 170 L170 170 A50 50 0 0 0 170 70 Z" fill="none" stroke="#a3541f" stroke-width="4"></path>
+          <line x1="170" y1="55" x2="470" y2="55" stroke="#96886f" stroke-width="1.2" stroke-dasharray="5 5"></line>
+          <text x="320" y="47" text-anchor="middle" font-size="13" fill="#5f5443">直道 a</text>
+          <line x1="150" y1="70" x2="150" y2="170" stroke="#96886f" stroke-width="1.2" stroke-dasharray="5 5"></line>
+          <text x="138" y="125" text-anchor="middle" font-size="13" fill="#5f5443" transform="rotate(-90 138 125)">直径 b</text>
+          <text id="aLabel" x="320" y="212" text-anchor="middle" font-size="13" fill="#83401a">a = 67.3 m</text>
+          <text id="bLabel" x="80" y="125" text-anchor="middle" font-size="13" fill="#83401a">b = 52.6 m</text>
+        </svg>
+        <div class="track-legend">
+          <span><b>2a</b> 两段直道</span>
+          <span><b>πb</b> 两段半圆弯道合成一个整圆</span>
+          <span>π 取 3.14，结果取整数（教材约定）</span>
+        </div>
+      </div>
+      <div class="slider-row">
+        <label for="aSlider">直道 a</label>
+        <input id="aSlider" type="range" min="40" max="100" step="0.1" value="67.3">
+        <span class="slider-val" id="aVal">67.3 m</span>
+      </div>
+      <div class="slider-row">
+        <label for="bSlider">直径 b</label>
+        <input id="bSlider" type="range" min="20" max="80" step="0.1" value="52.6">
+        <span class="slider-val" id="bVal">52.6 m</span>
+      </div>
+      <div class="readout" id="trackReadout">2×67.3 + 3.14×52.6 = 134.6 + 165.164 = 299.764 ≈ 300 m<small>这条跑道的周长约为 300 m</small></div>
+      <div class="preset-row">
+        <button class="btn" type="button" id="trackPreset">教材数值：a=67.3，b=52.6</button>
+      </div>
+      <p class="note"><b>顺序：</b>先列公式 2a+πb，再代值。不要一上来就把 a、b 换成数，公式写对了，后面只是计算。</p>
+    </div>
+  </section>
+
+  <section id="pattern">
+    <div class="sec-head"><span class="sec-no">07</span><h2>规律：火柴棒搭三角形</h2></div>
+    <p class="sec-sub">按图这样连排搭下去：第 1 个三角形用 3 根，以后每多搭一个，只多用 2 根。拖 n 看要多少根。</p>
+    <div class="card">
+      <div class="match-wrap">
+        <svg id="matchSvg" viewBox="0 0 470 160" role="img" aria-label="火柴棒搭三角形示意"></svg>
+        <div class="match-count" id="matchCount">n = 5，需要 2×5+1 = 11 根<small>每多一个三角形，多 2 根</small></div>
+      </div>
+      <div class="slider-row">
+        <label for="matchSlider">三角形个数 n</label>
+        <input id="matchSlider" type="range" min="1" max="12" step="1" value="5">
+        <span class="slider-val" id="matchVal">5 个</span>
+      </div>
+      <div class="valtable-wrap">
+        <table class="valtable">
+          <thead><tr><th scope="col">n</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th></tr></thead>
+          <tbody><tr><th scope="row">火柴棒</th><td>3</td><td>5</td><td>7</td><td>9</td><td>11</td><td>13</td></tr></tbody>
+        </table>
+      </div>
+      <p class="note"><b>怎么得到 2n+1：</b>第 1 个用 3 根；后面 n−1 个，每个只用添 2 根。所以总数 = 3 + 2(n−1) = <b>2n+1</b>。也可以说：n 个三角形各有 3 条边，共 3n 条，其中 n−1 条是共用的，每条被算了两遍，减去 (n−1)，得 3n−(n−1)=2n+1。</p>
+      <p class="note"><b>规律题的正确用法：</b>先列表看前几个，再猜想含 n 的式子，最后代 n 验证。它是「用字母表示第 n 个」的训练，不是长春卷固定题型。</p>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">08</span><h2>六个常见错误</h2></div>
+    <p class="sec-sub">求值错，多半不是不会算，而是代入这一步没写规范。每条都给出错因。</p>
+    <div class="mis-grid">
+      <div class="mis">
+        <div class="mis__wrong">错误 01</div>
+        <h3>a=−3 代入 a²，写成 −3²</h3>
+        <p>−3² = −9，是「3 的平方的相反数」；a² 应为 <b>(−3)²=9</b>。负数代入平方、乘方，必须加括号。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">错误 02</div>
+        <h3>2x 代入 x=3，写成 23</h3>
+        <p>省略的乘号要还原：2x = <b>2×3 = 6</b>，不是二十三。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">错误 03</div>
+        <h3>2x² 代入 x=3，算成 (2×3)²</h3>
+        <p>乘方先算：2x² = 2×3² = <b>18</b>；(2×3)² = 36，多乘了一次 2。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">错误 04</div>
+        <h3>分数代入不加括号</h3>
+        <p>如 3/(x+1) 中 x=1/2，应写 3/((1/2)+1)=2。不加括号，分母到底是谁就说不清。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">错误 05</div>
+        <h3>把「值」写成式子</h3>
+        <p>代数式的值是一个<b>数</b>，不是「2x+3」这样的式子。算完要落成一个数（或一个确定的分数、小数）。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">错误 06</div>
+        <h3>由值反推字母，认定只有一个答案</h3>
+        <p>x²=4 时，x 可以是 2，也可以是 −2。值相同，不代表字母只有一种取法。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="quizSec">
+    <div class="sec-head"><span class="sec-no">09</span><h2>当堂检测：5 题</h2></div>
+    <p class="sec-sub">选中即判对错，下面有解析。做完可重做；不计入任何记录。</p>
+    <div class="quiz" id="quiz">
+      <div class="q">
+        <p class="q__stem">1. 当 a=−2 时，代数式 3a+1 的值是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="1">A. −5</button>
+          <button type="button" data-ok="0">B. −7</button>
+          <button type="button" data-ok="0">C. 5</button>
+          <button type="button" data-ok="0">D. 7</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>3a+1 = 3×(−2)+1 = −6+1 = −5。负数代入要加括号。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">2. 当 x=1/2，y=−2 时，代数式 2x−y 的值是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. −1</button>
+          <button type="button" data-ok="0">B. 1</button>
+          <button type="button" data-ok="1">C. 3</button>
+          <button type="button" data-ok="0">D. −3</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>2x−y = 2×(1/2)−(−2) = 1+2 = 3。减去负数等于加正数。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">3. 已知 a²+a=3，则 2a²+2a−1 的值是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="1">A. 5</button>
+          <button type="button" data-ok="0">B. 6</button>
+          <button type="button" data-ok="0">C. 7</button>
+          <button type="button" data-ok="0">D. 8</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>整体代入：2a²+2a−1 = 2(a²+a)−1 = 2×3−1 = 5。不需要先求出 a。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">4. 按本节图示的方式连排搭 n 个三角形，需要火柴棒（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. 3n 根</button>
+          <button type="button" data-ok="1">B. (2n+1) 根</button>
+          <button type="button" data-ok="0">C. (2n+3) 根</button>
+          <button type="button" data-ok="0">D. (3n−1) 根</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>第 1 个 3 根，以后每多一个添 2 根：3+2(n−1)=2n+1。代 n=2 验证：5 根，正确。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">5. 当 x=−3 时，代数式 x²−2x 的值是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. 3</button>
+          <button type="button" data-ok="0">B. 9</button>
+          <button type="button" data-ok="1">C. 15</button>
+          <button type="button" data-ok="0">D. −15</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>x²−2x = (−3)²−2×(−3) = 9+6 = 15。两处负数代入都要加括号。</div>
+      </div>
+    </div>
+    <div class="quiz__bar">
+      <span id="quizStat">已答 0 / 5 · 答对 0</span>
+      <button class="btn" type="button" id="quizReset">重做</button>
+    </div>
+  </section>
+
+  <section id="summary">
+    <div class="sec-head"><span class="sec-no">10</span><h2>小结与中考连接</h2></div>
+    <div class="conclusion">
+      求值四步：<b>当…时 → 抄式 → 代值加括号 → 按顺序算</b>。字母取值不同，代数式的值一般也不同；值相同，不代表字母只有一种取法。
+      <p class="transfer"><b>最容易丢分的地方：</b>负数平方不加括号、省略乘号不还原、分数代入不括起来、算完不落成一个数。</p>
+      <div class="exam">
+        <b>长春真题回看（2025 第 11 题，填空 3 分）：</b>已知 a²+2a=4，则代数式 7−a²−2a 的值为 ____。<br>
+        解：7−a²−2a = 7−(a²+2a) = 7−4 = <b>3</b>。这里用的是<b>整体代入</b>：把 a²+2a 看成一个整体，不必先求出 a。
+      </div>
+      <p class="transfer"><b>命题落点：</b>长春卷近年在本章通常考 1 道 3 分选填——2023 第 11 题考列代数式，2025 第 11 题考整体代入求值。更常见的是把求值嵌进后续「先化简再求值」和实际应用题里。把四步写规范，比多刷十道题有用。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 3 章 3.2</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0（按 2024 版目录与例题制作）</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 3.2</h2>
+  <p>2024 人教版七上第 3 章；核对 2026-11-26。按 T 可随时开关。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能说出代数式的值的定义，按四步求值；能在负数、分数、乘方代入时加括号；能用列表观察值随字母变化，并用 2n+1 表示火柴棒规律。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「同一个式子 5n+20，n=15 时是 95，n=20 时是 120。式子没变，变的是 n。今天我们就学：给字母一个数，怎样把式子的结果算出来，而且写得让人挑不出毛病。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「2x 里的乘号去哪了？代 x=3 时怎么写？」期望：省略了，要还原成 2×3。</li>
+    <li>「a=−3 时，a² 等于多少？」期望：9；写成 −3² 就错了。</li>
+    <li>「y=1/2 代入 3y，括号要不要加？」期望：要，3×(1/2)。</li>
+    <li>「2x² 和 (2x)² 一样吗？」期望：不一样，18 与 36。</li>
+    <li>「已知 a²+a=3，能不能不求 a 就算 2a²+2a−1？」期望：能，整体代入得 5。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：从 5n+20 和四步开始；易错例：直接看负数平方；挑战例：跳到检测题。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「直接心算，不写过程。」→ 先要求写「当…时」和代值那一行，过程分就在这里。</li>
+    <li>「−3² 和 (−3)² 差不多。」→ 让他在同一题里各算一遍，看到 −9 与 9。</li>
+    <li>「值算出来是 2x+3。」→ 强调值是一个数，不是式子。</li>
+    <li>「规律题靠猜。」→ 要求列表、代 n=1,2,3 验证，再写含 n 的式子。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>黑板只留四步和三个括号提醒（负数、分数、乘方）。题单选 6 题：2 题直接求值、2 题负数/分数、1 题整体代入、1 题规律。做完当堂对答案，重点看过程而不是结果。</p>
+
+  <h3>课后 1 题</h3>
+  <p>当 a=−2，b=3 时，求 a²−2ab 的值。要求写出四步，并在负数代入处标出括号。</p>
+
+  <h3>长春落点</h3>
+  <p>2025 第 11 题：已知 a²+2a=4，求 7−a²−2a，答案 3，考整体代入。2023 第 11 题考列代数式 7.5−10x。本章通常 1 道 3 分选填，后续解答题的「先化简再求值」也以本节四步为地基。</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  function fmt(v) {
+    if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v)).replace("-", "−");
+    return v.toFixed(1).replace("-", "−");
+  }
+  function subst(v) {
+    return v < 0 ? "(" + fmt(v) + ")" : fmt(v);
+  }
+
+  /* 01 排球 */
+  var nSlider = document.getElementById("nSlider");
+  var nVal = document.getElementById("nVal");
+  var nReadout = document.getElementById("nReadout");
+  function updateN() {
+    var n = Number(nSlider.value);
+    nVal.textContent = n + " 个班";
+    nReadout.innerHTML = "5 × " + n + " + 20 = " + (5 * n + 20) + "<small>n = " + n + " 时，共需 " + (5 * n + 20) + " 个排球</small>";
+  }
+  nSlider.addEventListener("input", updateN);
+  document.querySelectorAll("[data-n]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      nSlider.value = b.getAttribute("data-n");
+      updateN();
+    });
+  });
+  updateN();
+
+  /* 02 四步演示 */
+  var stepEls = document.querySelectorAll("#stepDemo .step");
+  var stepNext = document.getElementById("stepNext");
+  var stepReset = document.getElementById("stepReset");
+  var stepIdx = 0;
+  function showSteps() {
+    stepEls.forEach(function (el, i) {
+      el.classList.toggle("is-on", i <= stepIdx);
+    });
+    stepNext.textContent = stepIdx >= stepEls.length - 1 ? "已完成" : "下一步";
+  }
+  stepNext.addEventListener("click", function () {
+    if (stepIdx < stepEls.length - 1) {
+      stepIdx += 1;
+      showSteps();
+    }
+  });
+  stepReset.addEventListener("click", function () {
+    stepIdx = 0;
+    showSteps();
+  });
+  showSteps();
+
+  /* 03 滑块与取值表 */
+  var xSlider = document.getElementById("xSlider");
+  var xVal = document.getElementById("xVal");
+  var xReadout = document.getElementById("xReadout");
+  var valBody = document.getElementById("valBody");
+  var exprKind = "linear";
+  var tableXs = [-2, -1, 0, 1, 2, 3];
+
+  function exprValue(kind, x) {
+    return kind === "linear" ? 2 * x + 3 : x * x - 1;
+  }
+  function exprText(kind, x) {
+    if (kind === "linear") return "2×" + subst(x) + " + 3";
+    return subst(x) + "² − 1";
+  }
+  function renderTable() {
+    valBody.innerHTML = "";
+    var tr = document.createElement("tr");
+    var th = document.createElement("th");
+    th.setAttribute("scope", "row");
+    th.textContent = "值";
+    tr.appendChild(th);
+    tableXs.forEach(function (x) {
+      var td = document.createElement("td");
+      td.textContent = fmt(exprValue(exprKind, x));
+      tr.appendChild(td);
+    });
+    valBody.appendChild(tr);
+    highlightRow();
+  }
+  function highlightRow() {
+    var x = Number(xSlider.value);
+    var tr = valBody.querySelector("tr");
+    if (!tr) return;
+    Array.prototype.forEach.call(tr.children, function (cell, i) {
+      if (i === 0) return;
+      cell.classList.toggle("is-now", tableXs[i - 1] === x);
+    });
+  }
+  function updateX() {
+    var x = Number(xSlider.value);
+    xVal.textContent = "x = " + fmt(x);
+    var val = exprValue(exprKind, x);
+    xReadout.innerHTML = exprText(exprKind, x) + " = " + fmt(val) + "<small>把 x=" + fmt(x) + " 代进去，算出 " + fmt(val) + "</small>";
+    highlightRow();
+  }
+  xSlider.addEventListener("input", updateX);
+  valBody.addEventListener("click", function (e) {
+    var cell = e.target.closest("td");
+    if (!cell) return;
+    var tr = cell.parentNode;
+    var idx = Array.prototype.indexOf.call(tr.children, cell) - 1;
+    if (idx >= 0 && tableXs[idx] !== undefined) {
+      xSlider.value = tableXs[idx];
+      updateX();
+    }
+  });
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      exprKind = t.getAttribute("data-expr");
+      document.querySelectorAll(".tab").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === t ? "true" : "false");
+      });
+      renderTable();
+      updateX();
+    });
+  });
+  renderTable();
+  updateX();
+
+  /* 05 找错 */
+  document.getElementById("findErr").addEventListener("click", function () {
+    document.getElementById("wrongFb").classList.add("is-open");
+  });
+  document.getElementById("showRight").addEventListener("click", function () {
+    document.getElementById("goodBox").classList.add("is-open");
+  });
+
+  /* 06 跑道 */
+  var aSlider = document.getElementById("aSlider");
+  var bSlider = document.getElementById("bSlider");
+  var aVal = document.getElementById("aVal");
+  var bVal = document.getElementById("bVal");
+  var aLabel = document.getElementById("aLabel");
+  var bLabel = document.getElementById("bLabel");
+  var trackReadout = document.getElementById("trackReadout");
+  function updateTrack() {
+    var a = parseFloat(aSlider.value);
+    var b = parseFloat(bSlider.value);
+    var pa = 2 * a;
+    var pb = 3.14 * b;
+    var sum = pa + pb;
+    aVal.textContent = a.toFixed(1) + " m";
+    bVal.textContent = b.toFixed(1) + " m";
+    aLabel.textContent = "a = " + a.toFixed(1) + " m";
+    bLabel.textContent = "b = " + b.toFixed(1) + " m";
+    trackReadout.innerHTML = "2×" + a.toFixed(1) + " + 3.14×" + b.toFixed(1) + " = " + pa.toFixed(1) + " + " + pb.toFixed(3) + " = " + sum.toFixed(3) + " ≈ " + Math.round(sum) + " m<small>这条跑道的周长约为 " + Math.round(sum) + " m</small>";
+  }
+  aSlider.addEventListener("input", updateTrack);
+  bSlider.addEventListener("input", updateTrack);
+  document.getElementById("trackPreset").addEventListener("click", function () {
+    aSlider.value = "67.3";
+    bSlider.value = "52.6";
+    updateTrack();
+  });
+  updateTrack();
+
+  /* 07 火柴棒 */
+  var matchSlider = document.getElementById("matchSlider");
+  var matchSvg = document.getElementById("matchSvg");
+  var matchCount = document.getElementById("matchCount");
+  var matchVal = document.getElementById("matchVal");
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  function drawMatches(n) {
+    while (matchSvg.firstChild) matchSvg.removeChild(matchSvg.firstChild);
+    var S = 52;
+    var H = 0.866;
+    var offsetX = 22;
+    var baseY = 138;
+    var up = true;
+    var cursor = 0;
+    for (var i = 0; i < n; i++) {
+      var pts;
+      if (up) {
+        pts = [[cursor, 0], [cursor + 1, 0], [cursor + 0.5, H]];
+        cursor += 0.5;
+        up = false;
+      } else {
+        pts = [[cursor, H], [cursor + 1, H], [cursor + 0.5, 0]];
+        cursor += 0.5;
+        up = true;
+      }
+      for (var k = 0; k < 3; k++) {
+        var p1 = pts[k];
+        var p2 = pts[(k + 1) % 3];
+        var line = document.createElementNS(SVG_NS, "line");
+        line.setAttribute("x1", offsetX + p1[0] * S);
+        line.setAttribute("y1", baseY - p1[1] * S);
+        line.setAttribute("x2", offsetX + p2[0] * S);
+        line.setAttribute("y2", baseY - p2[1] * S);
+        line.setAttribute("stroke", "#a3541f");
+        line.setAttribute("stroke-width", "4");
+        line.setAttribute("stroke-linecap", "round");
+        matchSvg.appendChild(line);
+      }
+    }
+    var w = offsetX + (n * 0.5 + 1) * S + 22;
+    matchSvg.setAttribute("viewBox", "0 0 " + w + " 160");
+    matchCount.innerHTML = "n = " + n + "，需要 2×" + n + "+1 = " + (2 * n + 1) + " 根<small>每多一个三角形，多 2 根</small>";
+    matchVal.textContent = n + " 个";
+  }
+  matchSlider.addEventListener("input", function () {
+    drawMatches(Number(matchSlider.value));
+  });
+  drawMatches(Number(matchSlider.value));
+
+  /* 09 检测 */
+  var qs = document.querySelectorAll("#quizSec .q");
+  var quizStat = document.getElementById("quizStat");
+  var quizReset = document.getElementById("quizReset");
+  var answered = 0;
+  var correct = 0;
+  function updateStat() {
+    quizStat.textContent = "已答 " + answered + " / " + qs.length + " · 答对 " + correct;
+  }
+  qs.forEach(function (q) {
+    var opts = q.querySelectorAll(".q__opts button");
+    opts.forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (q.dataset.done) return;
+        q.dataset.done = "1";
+        var ok = b.getAttribute("data-ok") === "1";
+        opts.forEach(function (x) { x.classList.add("is-locked"); });
+        b.classList.add(ok ? "is-ok" : "is-bad");
+        if (!ok) {
+          opts.forEach(function (x) {
+            if (x.getAttribute("data-ok") === "1") x.classList.add("is-ok");
+          });
+        }
+        q.querySelector(".q__fb").classList.add("is-open");
+        answered += 1;
+        if (ok) correct += 1;
+        updateStat();
+      });
+    });
+  });
+  quizReset.addEventListener("click", function () {
+    answered = 0;
+    correct = 0;
+    qs.forEach(function (q) {
+      delete q.dataset.done;
+      q.querySelectorAll(".q__opts button").forEach(function (b) {
+        b.classList.remove("is-ok", "is-bad", "is-locked");
+      });
+      q.querySelector(".q__fb").classList.remove("is-open");
+    });
+    updateStat();
+  });
+  updateStat();
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  document.getElementById("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      var targetId = preset === "standard" ? "situation" : (preset === "error" ? "example2" : "quizSec");
+      var label = preset === "standard" ? "标准例：从 5n+20 和四步开始。" : (preset === "error" ? "易错例：直接看负数平方。" : "挑战例：跳到检测题。");
+      document.getElementById("presetNote").textContent = label;
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  /* 键盘 */
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    }
+  });
+
+  /* 打印展开 */
+  var openedForPrint = [];
+  window.addEventListener("beforeprint", function () {
+    openedForPrint = [];
+    document.querySelectorAll("details:not([open])").forEach(function (d) {
+      openedForPrint.push(d);
+      d.open = true;
+    });
+  });
+  window.addEventListener("afterprint", function () {
+    openedForPrint.forEach(function (d) { d.open = false; });
+  });
+})();
+</script>
+</body>
+</html>

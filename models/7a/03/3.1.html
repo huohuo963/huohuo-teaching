@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.1 列代数式表示数量关系 · 七上 第3章 代数式</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button, input { font: inherit; color: inherit; }
+  button, summary { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 72px; }
+  .hero { padding: 8px 0 4px; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; letter-spacing: .02em; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 20px 0 0; padding: 14px 18px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+
+  section { margin-top: 40px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .card b { color: var(--brand-deep); }
+  .note { margin-top: 12px !important; font-size: 13.5px; color: var(--ink2); }
+  .note b { color: var(--brand-deep); }
+
+  .eqline { display: flex; align-items: baseline; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 18px 8px 10px; font-family: var(--serif); font-size: 42px; line-height: 1.3; }
+  .eqline .op { color: var(--ink3); font-size: 30px; }
+  .part { padding: 0 3px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: inherit; cursor: pointer; }
+  .part:hover, .part[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); background: #fbf5e8; }
+  .eqline--small { font-size: 32px; padding-top: 6px; }
+
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .slider-row label { font-size: 13px; color: var(--ink2); min-width: 74px; }
+  .slider-row input[type="range"] { flex: 1 1 220px; min-width: 160px; accent-color: var(--brand); height: 32px; }
+  .readout { margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: #fbf5e8; font-family: var(--serif); font-size: 20px; text-align: center; color: var(--brand-deep); }
+  .readout small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+
+  .map-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+  .chipcard { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .chipcard h3 { margin: 0 0 4px; font-size: 12px; letter-spacing: .08em; color: var(--brand); font-weight: 600; }
+  .chipcard p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .chipcard b { color: var(--ink); }
+  .map-note { margin-top: 14px !important; padding: 12px 14px; border-left: 3px solid var(--ochre); background: #fbf5e8; font-size: 13.5px; color: var(--ink2); min-height: 48px; }
+  .map-note b { color: var(--brand-deep); }
+  .mode-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .is-hidden { display: none !important; }
+
+  .definition { font-family: var(--serif); font-size: 26px; line-height: 1.8; }
+  .seg { padding: 0 4px 2px; border: 0; border-bottom: 2px dashed var(--line); background: transparent; font-family: inherit; font-size: inherit; color: var(--ink); cursor: pointer; }
+  .seg:hover, .seg[aria-pressed="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+  .seg-note { margin-top: 14px !important; font-size: 14px; color: var(--ink2); min-height: 48px; }
+  .seg-note b { color: var(--brand-deep); }
+  .boundary { margin-top: 16px; padding: 14px 16px; border: 1px solid rgba(163,84,31,.3); border-radius: 10px; background: #fbf5e8; font-size: 14.5px; color: var(--ink2); }
+  .boundary b { color: var(--brand-deep); }
+
+  .examples { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 16px; }
+  .ex-col { padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .ex-col h3 { margin: 0 0 4px; font-family: var(--serif); font-size: 18px; }
+  .ex-col--yes h3 { color: var(--ok); }
+  .ex-col--no h3 { color: var(--brand); }
+  .ex-col > p { margin: 0 0 10px; font-size: 12.5px; color: var(--ink3); }
+  .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ex { padding: 9px 10px; border: 1px solid var(--line-soft); border-radius: 8px; background: #fdfaf2; text-align: left; cursor: pointer; }
+  .ex:hover { border-color: var(--ochre); }
+  .ex__num { display: block; font-family: var(--serif); font-size: 18px; color: var(--ink); }
+  .ex__why { display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.5; color: var(--ink3); }
+  .ex[aria-expanded="true"] { border-color: var(--ochre); background: #fbf5e8; }
+  .ex[aria-expanded="true"] .ex__why { color: var(--ink2); }
+
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tab { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; cursor: pointer; }
+  .tab[aria-pressed="true"] { border-color: var(--brand); background: #fbf5e8; color: var(--brand-deep); }
+  .meaning-list { display: grid; gap: 10px; margin-top: 14px; }
+  .meaning { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--ochre); border-radius: 8px; background: #fff; cursor: pointer; text-align: left; }
+  .meaning:hover { border-color: var(--ochre); }
+  .meaning__text { font-size: 14px; color: var(--ink2); }
+  .meaning__text b { color: var(--ink); }
+  .meaning__eq { font-family: var(--serif); font-size: 26px; color: var(--brand-deep); white-space: nowrap; }
+  .meaning[aria-pressed="true"] { background: #fbf5e8; border-color: var(--brand); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+  .acc-eq { display: block; margin-top: 8px; font-family: var(--serif); font-size: 20px; color: var(--brand-deep); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .tree-box { padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .tree-box h3 { margin: 0 0 10px; font-family: var(--serif); font-size: 26px; color: var(--brand-deep); }
+  .tree-step { display: block; margin-top: 8px; padding: 8px 10px; border-radius: 6px; background: #fdfaf2; font-size: 13px; color: var(--ink2); }
+  .tree-step b { color: var(--ink); }
+  .tree-out { margin-top: 10px !important; font-size: 14px; color: var(--ink2); }
+  .tree-out b { color: var(--brand-deep); }
+
+  .rw-list { display: grid; gap: 8px; margin-top: 14px; }
+  .rw { display: grid; grid-template-columns: 116px 28px 1fr auto; gap: 8px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .rw__in { font-family: var(--serif); font-size: 20px; color: var(--ink); }
+  .rw__arrow { text-align: center; color: var(--ink3); }
+  .rw__out { font-family: var(--serif); font-size: 20px; color: var(--brand-deep); }
+  .rw__rule { grid-column: 1 / -1; font-size: 12.5px; color: var(--ink2); display: none; }
+  .rw.is-open .rw__rule { display: block; }
+  .rw__btn { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 12px; cursor: pointer; min-height: 36px; }
+  .rw__btn:hover { border-color: var(--brand); color: var(--brand); }
+  .rw__out.is-muted { color: var(--ink3); font-family: var(--sans); font-size: 13px; }
+
+  .cyls { display: flex; align-items: flex-end; justify-content: center; gap: clamp(10px, 4vw, 26px); height: 190px; padding: 18px 12px 6px; border: 1px solid var(--line); border-radius: 10px; background: #fdfaf2; }
+  .cyl { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .cyl__body { width: var(--w); height: var(--h); background: linear-gradient(180deg, #efd9b6, #e2c294); border: 1px solid var(--ochre); border-top: 0; border-radius: 0 0 7px 7px; }
+  .cyl__label { margin-top: 6px; font-size: 11px; color: var(--ink3); text-align: center; line-height: 1.35; }
+  .cyl__label b { display: block; color: var(--ink2); font-weight: 600; }
+
+  .reading { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .reading > summary { padding: 14px 18px; cursor: pointer; list-style: none; font-size: 14px; color: var(--brand-deep); font-weight: 600; }
+  .reading > summary::-webkit-details-marker { display: none; }
+  .reading__body { padding: 0 18px 16px; font-size: 13.5px; color: var(--ink2); }
+  .reading__body p { margin: 8px 0 0; }
+  .reading__body b { color: var(--ink); }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .mis p b { color: var(--ink); }
+
+  .self-list { margin-top: 16px; display: grid; gap: 12px; }
+  .self { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .self__q { margin: 0; font-size: 15px; font-weight: 600; }
+  .self textarea { display: block; width: 100%; min-height: 64px; margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; font-size: 14px; color: var(--ink); resize: vertical; }
+  .self__row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  .self__rate { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .rate-btn { padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .rate-btn[aria-pressed="true"] { border-color: var(--ochre); color: var(--brand-deep); background: #fbf5e8; }
+  .ref { margin-top: 10px; padding: 12px 14px; border-left: 3px solid var(--ochre); background: #fbf5e8; font-size: 13.5px; color: var(--ink2); display: none; }
+  .ref.is-open { display: block; }
+  .ref b { color: var(--brand-deep); }
+  .self-note { margin-top: 12px; font-size: 12.5px; color: var(--ink3); }
+
+  .conclusion { margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 10px !important; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam { margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--ochre); border-radius: 8px; background: #fffdf8; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam b { color: var(--ink); }
+
+  footer { max-width: 1080px; margin: 0 auto; padding: 0 22px 42px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(420px, 92vw); padding: 22px 22px 40px; overflow-y: auto; background: #fffdf8; border-left: 1px solid var(--line); transform: translateX(104%); transition: transform .22s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 22px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 7px; }
+  .teacher .tool-btn { float: right; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .definition { font-size: 34px; }
+  body.is-projector .eqline { font-size: 54px; }
+  body.is-projector .card, body.is-projector .self { padding: 24px 26px; }
+  body.is-projector .mis p, body.is-projector .acc-body, body.is-projector .reading__body { font-size: 17px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 20px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 760px) {
+    main { padding: 22px 16px 60px; }
+    h1 { font-size: 29px; }
+    .eqline { font-size: 34px; }
+    .definition { font-size: 22px; }
+    .examples, .mis-grid, .two-col { grid-template-columns: 1fr; }
+    .map-chips { grid-template-columns: 1fr; }
+    .ex-grid { grid-template-columns: 1fr 1fr; }
+    .rw { grid-template-columns: 1fr auto; }
+    .rw__arrow { display: none; }
+    .rw__out { grid-column: 1; }
+    .self__rate { margin-left: 0; width: 100%; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .tool-btn, .btn, .tab, .rate-btn, .ex, .rw__btn, .meaning { min-height: 44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher { transition: none; }
+  }
+
+  @media print {
+    .bar, .teacher, .tool-btn, .btn, .mode-row, .self textarea, .self__row, .rate-btn, .rw__btn { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    section { break-inside: avoid; }
+    .card, .ex-col, .mis, .self, .conclusion, .tree-box { border-color: #bbb; background: #fff; }
+    .ref, .rw__rule { display: block !important; }
+    footer { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#s=3.1" target="_top">← 返回 3.1</a>
+  <span class="bar__crumb">七上 · 第3章 代数式 · 3.1</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">概念 + 列式 · 2024 人教版 · 七上第 3 章</p>
+    <h1>列代数式表示数量关系<small>字母不是一道谜，是可以变的数；式子是压缩过的一句话。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">S 旗舰样板</span>
+      <span class="badge">概念型 · 不判分</span>
+      <span class="badge">建议 18 分钟新授 + 8 分钟追问</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">本节只追一件事：看到一个式子，能说出每个字母在情境里代表什么；看到一句话，能把它翻译成式子，并知道括号加在哪。</p>
+  </header>
+
+  <section id="map">
+    <div class="sec-head"><span class="sec-no">01</span><h2>情境与式子，来回翻译</h2></div>
+    <p class="sec-sub">教材开场：一台苹果采摘机器人平均每秒识别 5 m²。点式子的三个部位，看它们各自对应情境里的什么。</p>
+    <div class="card">
+      <div class="eqline" id="eqForward">
+        <button class="part" type="button" data-part="rate" aria-pressed="false">5</button>
+        <span class="op">×</span>
+        <button class="part" type="button" data-part="time" aria-pressed="false">t</button>
+        <span class="op">=</span>
+        <button class="part" type="button" data-part="total" aria-pressed="false">5t</button>
+      </div>
+      <div class="eqline eqline--small is-hidden" id="eqReverse">
+        <button class="part" type="button" data-part="r-total" aria-pressed="false">n</button>
+        <span class="op">÷</span>
+        <button class="part" type="button" data-part="r-rate" aria-pressed="false">5</button>
+        <span class="op">=</span>
+        <button class="part" type="button" data-part="r-time" aria-pressed="false">n/5</button>
+      </div>
+
+      <div class="slider-row">
+        <label id="sliderLabel" for="amountSlider">时间 t</label>
+        <input id="amountSlider" type="range" min="0" max="60" step="5" value="20">
+        <span id="sliderVal" style="font-family:var(--serif);font-size:18px;color:var(--brand-deep);min-width:64px;text-align:right;">20 s</span>
+      </div>
+      <div class="readout" id="sliderReadout">5 × 20 = 100<small>t = 20 s 时，机器人识别 100 m²</small></div>
+
+      <div class="map-chips">
+        <div class="chipcard"><h3>效率</h3><p><b>5</b> m²/s：每秒识别 5 平方米</p></div>
+        <div class="chipcard"><h3>时间</h3><p><b>t</b> s：工作了 t 秒</p></div>
+        <div class="chipcard"><h3>总量</h3><p><b>5t</b> m²：t 秒一共识别多少</p></div>
+      </div>
+      <p class="map-note" id="mapNote">点上面的 <b>5</b>、<b>t</b> 或 <b>5t</b>，看它在情境里对应什么。</p>
+
+      <div class="mode-row">
+        <button class="btn btn--primary" type="button" id="modeBtn">反过来：已知面积 n，求时间</button>
+        <button class="btn" type="button" id="resetBtn">回到 20 秒</button>
+      </div>
+      <p class="note"><b>同一个关系，两个方向：</b>知道时间求面积，用乘法 <b>5t</b>；知道面积求时间，用除法 <b>n÷5 = n/5</b>。字母换了位置，意思也跟着换。</p>
+    </div>
+  </section>
+
+  <section id="definition">
+    <div class="sec-head"><span class="sec-no">02</span><h2>什么叫代数式</h2></div>
+    <p class="sec-sub">2024 版教材：用运算符号把数或表示数的字母连接起来的式子，叫做代数式。点句子里的三段，看各自管什么。</p>
+    <div class="card">
+      <p class="definition">
+        <button class="seg" type="button" data-seg="op" aria-pressed="false">用运算符号</button>
+        <button class="seg" type="button" data-seg="what" aria-pressed="false">把数或表示数的字母</button>
+        <button class="seg" type="button" data-seg="link" aria-pressed="false">连接起来</button>的式子，叫做代数式。
+      </p>
+      <p class="seg-note" id="segNote" aria-live="polite">点一段，看看它在定义里承担什么任务。</p>
+      <div class="boundary">
+        <b>边界，必须单独记住：</b>单独一个数或一个字母也是代数式。例如 <b>5</b>、<b>t</b> 都是代数式。它们看起来没有「连接」，但已经满足「是数或字母」这一条。
+      </div>
+      <p class="note"><b>不算代数式的：</b>含等号的 <b>x+1=3</b>、含不等号的 <b>a&gt;b</b>、带单位的量 <b>5 kg</b>。它们不是「用运算符号连接起来的式子」这个意义上的代数式。</p>
+    </div>
+
+    <div class="examples">
+      <div class="ex-col ex-col--yes">
+        <h3>这些是代数式</h3>
+        <p>点每个卡片，看它为什么算。</p>
+        <div class="ex-grid">
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">5</span><span class="ex__why">单独一个数，也是代数式</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">t</span><span class="ex__why">单独一个字母，也是代数式</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">3x</span><span class="ex__why">数 3 与字母 x 用乘法连接</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">a+b</span><span class="ex__why">两个字母用加法连接</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">2n−10</span><span class="ex__why">乘法与减法连接</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">x/2</span><span class="ex__why">除法写成分数，仍是连接</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">a²</span><span class="ex__why">乘方也是运算符号</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">(2x+4y)</span><span class="ex__why">括号里的整体，仍是代数式</span></button>
+        </div>
+      </div>
+      <div class="ex-col ex-col--no">
+        <h3>这些不是代数式</h3>
+        <p>点每个卡片，看它缺了哪一条。</p>
+        <div class="ex-grid">
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">x+1=3</span><span class="ex__why">含等号，是方程，不是代数式</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">a&gt;b</span><span class="ex__why">含不等号，是关系式</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">2+3=5</span><span class="ex__why">含等号，是一个等式</span></button>
+          <button class="ex" type="button" aria-expanded="false"><span class="ex__num">5 kg</span><span class="ex__why">带单位的量；只写 5 才是代数式</span></button>
+        </div>
+        <p class="note">判断口诀：<b>先看有没有等号、不等号；再看是不是只有数、字母和运算符号。</b></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="same">
+    <div class="sec-head"><span class="sec-no">03</span><h2>同一个式子，几种身份</h2></div>
+    <p class="sec-sub">教材例 1 的追问：<b>0.9p</b> 既能表示苹果售价，也能表示长方形面积。式子一样，字母的意思和单位可以不同。</p>
+    <div class="card">
+      <div class="tabs">
+        <button class="tab" type="button" data-tab="p" aria-pressed="true">0.9p 的三种身份</button>
+        <button class="tab" type="button" data-tab="n" aria-pressed="false">3n 的两种身份</button>
+      </div>
+
+      <div id="tabP">
+        <div class="meaning-list">
+          <button class="meaning" type="button" aria-pressed="true" data-detail="苹果原价 p 元/kg，打九折出售。折扣 0.9 乘原价 p，得到售价 0.9p 元/kg。这里的 p 是单价。">
+            <span class="meaning__text"><b>苹果售价：</b>原价 p 元/kg，九折出售</span>
+            <span class="meaning__eq">0.9p 元/kg</span>
+          </button>
+          <button class="meaning" type="button" aria-pressed="false" data-detail="长方形长 0.9 m、宽 p m。长乘宽，面积是 0.9p m²。这里的 p 是宽。">
+            <span class="meaning__text"><b>长方形面积：</b>长 0.9 m，宽 p m</span>
+            <span class="meaning__eq">0.9p m²</span>
+          </button>
+          <button class="meaning" type="button" aria-pressed="false" data-detail="速度 0.9 m/s，走了 p 秒。速度乘时间，路程是 0.9p m。这里的 p 是时间。">
+            <span class="meaning__text"><b>走路路程：</b>速度 0.9 m/s，走 p s</span>
+            <span class="meaning__eq">0.9p m</span>
+          </button>
+        </div>
+        <p class="map-note" id="pDetail">三句话里的 0.9 都是「倍数」，p 却分别是单价、宽、时间。式子相同，不代表情境相同；要看单位，也要看字母前面那句话。</p>
+      </div>
+
+      <div id="tabN" class="is-hidden">
+        <div class="meaning-list">
+          <button class="meaning" type="button" aria-pressed="true" data-detail="n 个 3 相加，写成乘法就是 3n。这里的 n 是「3 的个数」。">
+            <span class="meaning__text"><b>n 个 3：</b>3 连续加 n 次</span>
+            <span class="meaning__eq">3n</span>
+          </button>
+          <button class="meaning" type="button" aria-pressed="false" data-detail="正三角形每条边 n cm，三条边一共 n+n+n=3n cm。这里的 n 是边长。">
+            <span class="meaning__text"><b>正三角形周长：</b>边长 n cm</span>
+            <span class="meaning__eq">3n cm</span>
+          </button>
+        </div>
+        <p class="map-note" id="nDetail">同一个 3n，可以是「n 个 3」，也可以是「三条边各 n」。所以读式子时，先问一句：<b>这里的 n 表示什么？</b></p>
+      </div>
+
+      <p class="note"><b>课堂追问：</b>0.9p 还能表示什么？例如某人走路速度 0.9 m/s，走 p 秒，路程就是 0.9p m。答案不唯一，关键是说清字母和单位。</p>
+    </div>
+  </section>
+
+  <section id="translate">
+    <div class="sec-head"><span class="sec-no">04</span><h2>把一句话翻译成式子</h2></div>
+    <p class="sec-sub">教材例 1、例 3、例 4 的句子。先想「数量关系」，再点开式子；注意括号和单位。</p>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>前年产量 n 件，去年比前年的 2 倍少 10 件</summary>
+        <div class="acc-body"><p>数量关系：去年产量 = 前年产量 × 2 − 10。</p><span class="acc-eq">2n − 10</span><p>去年产量是 <b>(2n−10) 件</b>。式子后面带单位，且式子是差，要加括号。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>长方体水池底面长、宽都是 a m，高 h m，水占容积的 1/3</summary>
+        <div class="acc-body"><p>数量关系：容积 = 长 × 宽 × 高 = a·a·h = a²h；水的体积 = 容积 × 1/3。</p><span class="acc-eq">(1/3)a²h</span><p>池内水的体积是 <b>(1/3)a²h m³</b>。系数是分数时，直接写在字母前，不写乘号。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>买 2 个单价 a 元的面包和 3 瓶单价 b 元的饮料</summary>
+        <div class="acc-body"><p>数量关系：总价 = 面包钱 + 饮料钱 = 2a + 3b。</p><span class="acc-eq">(2a + 3b) 元</span><p>两个不同的量，用两个不同的字母；a 和 b 不能合并。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>a 元存银行 3 年，年利率 2.75%，求到期利息</summary>
+        <div class="acc-body"><p>数量关系：利息 = 本金 × 年利率 × 年数 = a × 2.75% × 3。</p><span class="acc-eq">8.25%a 元</span><p>2.75% × 3 = 8.25%，可以先算常数。百分数也是数，可以参与运算。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>商品进价 x 元，按进价的 1.1 倍标价，再降价 80 元</summary>
+        <div class="acc-body"><p>数量关系：售价 = 标价 − 80 = 1.1x − 80。</p><span class="acc-eq">(1.1x − 80) 元</span><p>先乘后减；写单位时整体加括号。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>甲、乙两地 240 km，汽车速度 v km/h；速度增加 3 km/h 后，早到多少小时</summary>
+        <div class="acc-body"><p>数量关系：时间 = 路程 ÷ 速度。原时间 240/v，加速后 240/(v+3)，早到的时间是两者之差。</p><span class="acc-eq">240/v − 240/(v+3)</span><p><b>括号关键：</b>v+3 是一个整体，必须写在分母里，写成 240/v+3 就变成了「240 除以 v，再加 3」，意思完全变了。</p></div>
+      </details>
+    </div>
+    <div class="conclusion" style="margin-top:16px">
+      列式的顺序：<b>先找数量关系 → 再定字母表示谁 → 最后按运算顺序写式子。</b>凡是「和、差」后面带单位，或「和、差」要当分母、要乘方，先加括号。
+    </div>
+  </section>
+
+  <section id="meaning">
+    <div class="sec-head"><span class="sec-no">05</span><h2>反过来：式子说的是什么意思</h2></div>
+    <p class="sec-sub">教材例 2。2a+3 和 2(a+3) 长得像，意思完全不同；差别就在括号改变了「先算谁」。</p>
+    <div class="two-col">
+      <div class="tree-box">
+        <h3>2a + 3</h3>
+        <span class="tree-step">先算 <b>2 × a</b>：a 的 2 倍</span>
+        <span class="tree-step">再 <b>+ 3</b>：与 3 相加</span>
+        <p class="tree-out">意义：<b>a 的 2 倍与 3 的和</b>。取 a=2，值是 2×2+3=<b>7</b>。</p>
+      </div>
+      <div class="tree-box">
+        <h3>2(a + 3)</h3>
+        <span class="tree-step">先算 <b>a + 3</b>：a 与 3 的和</span>
+        <span class="tree-step">再 <b>× 2</b>：把和乘 2</span>
+        <p class="tree-out">意义：<b>a 与 3 的和的 2 倍</b>。取 a=2，值是 2×(2+3)=<b>10</b>。</p>
+      </div>
+    </div>
+    <div class="accordion">
+      <details class="acc-item">
+        <summary>c/(ab) 的意义</summary>
+        <div class="acc-body"><p>先算 a 与 b 的积 ab，再用 c 除以这个积。意义是 <b>c 除以 a、b 的积的商</b>。不是「c 除以 a 再乘 b」。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>x² + 2x + 8 的意义</summary>
+        <div class="acc-body"><p>三部分相加：x 的平方、x 的 2 倍、8。意义是 <b>x 的平方、x 的 2 倍与 8 的和</b>。</p></div>
+      </details>
+      <details class="acc-item">
+        <summary>为什么同一个式子可以有两种实际意义？</summary>
+        <div class="acc-body"><p>因为字母可以代表不同的量。式子只规定「怎样运算」，不规定「字母一定是什么」。同一个 0.9p，p 可以是单价、宽或时间；只要情境说得通，式子就成立。</p><p><b>但要注意：</b>在同一个问题里，同一个字母必须代表同一个量；不同的量要用不同的字母。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="sec-head"><span class="sec-no">06</span><h2>书写规范：改写对照</h2></div>
+    <p class="sec-sub">教材要求：乘号通常省略，数写在字母前；除号写成分数线。点「改写」看规范写法和理由。</p>
+    <div class="rw-list">
+      <div class="rw">
+        <span class="rw__in">x × y</span><span class="rw__arrow">→</span><span class="rw__out">xy</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">字母与字母相乘，乘号省略；字母一般按顺序写。</span>
+      </div>
+      <div class="rw">
+        <span class="rw__in">1a</span><span class="rw__arrow">→</span><span class="rw__out">a</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">系数是 1 时，1 省略不写。</span>
+      </div>
+      <div class="rw">
+        <span class="rw__in">−1ab</span><span class="rw__arrow">→</span><span class="rw__out">−ab</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">系数是 −1 时，只留负号，1 省略。</span>
+      </div>
+      <div class="rw">
+        <span class="rw__in">1½ a</span><span class="rw__arrow">→</span><span class="rw__out">3/2 a</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">带分数系数要化成假分数，不能直接写在字母前。</span>
+      </div>
+      <div class="rw">
+        <span class="rw__in">m ÷ 3</span><span class="rw__arrow">→</span><span class="rw__out">m/3</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">除法运算的结果写成分数形式。</span>
+      </div>
+      <div class="rw">
+        <span class="rw__in">a × a</span><span class="rw__arrow">→</span><span class="rw__out">a²</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">相同字母相乘，写成幂的形式。</span>
+      </div>
+      <div class="rw">
+        <span class="rw__in">2x + 4y 千克</span><span class="rw__arrow">→</span><span class="rw__out">(2x + 4y) 千克</span>
+        <button class="rw__btn" type="button">改写</button>
+        <span class="rw__rule">式子是和我差、后面带单位时，整体加括号。</span>
+      </div>
+    </div>
+    <p class="note"><b>一句话记：</b>乘号能省则省，数在字母前；除号变分数线；带分数化假分数；和差带单位加括号。</p>
+  </section>
+
+  <section id="inverse">
+    <div class="sec-head"><span class="sec-no">07</span><h2>反比例关系：水高与底面积</h2></div>
+    <p class="sec-sub">教材例 5：四个容器各注入 300 cm³ 水。底面积越大，水越浅；底面积与水高的乘积始终是 300。</p>
+    <div class="card">
+      <div class="cyls" aria-label="四个圆柱形容器的水高示意">
+        <div class="cyl"><div class="cyl__body" style="--w:20px;--h:90px"></div><div class="cyl__label"><b>S=10</b>h=30</div></div>
+        <div class="cyl"><div class="cyl__body" style="--w:30px;--h:45px"></div><div class="cyl__label"><b>S=20</b>h=15</div></div>
+        <div class="cyl"><div class="cyl__body" style="--w:42px;--h:30px"></div><div class="cyl__label"><b>S=30</b>h=10</div></div>
+        <div class="cyl"><div class="cyl__body" style="--w:62px;--h:15px"></div><div class="cyl__label"><b>S=60</b>h=5</div></div>
+      </div>
+      <p class="note">单位：底面积 cm²，水高 cm，水的体积 300 cm³。图中水高按比例缩小示意，标注的是真实数值。</p>
+
+      <div class="eqline eqline--small" style="justify-content:flex-start;padding-left:0">y = 300 / x</div>
+      <div class="slider-row">
+        <label for="sSlider">底面积 x</label>
+        <input id="sSlider" type="range" min="5" max="100" step="5" value="10">
+        <span id="sVal" style="font-family:var(--serif);font-size:18px;color:var(--brand-deep);min-width:76px;text-align:right;">10 cm²</span>
+      </div>
+      <div class="readout" id="sReadout">x = 10 cm² 时，y = 300 ÷ 10 = 30 cm<small>底面积 × 水高 = 10 × 30 = 300，始终等于水的体积</small></div>
+
+      <p class="note"><b>观察：</b>x 从 5 变到 100，y 一直变小；但 x·y 始终等于 300。两个量的乘积一定，一个量随另一个量的增大而减小，就说它们成 <b>反比例关系</b>。</p>
+      <p class="note"><b>别提前跑：</b>这里只讲「反比例关系」和式子 y=300/x；反比例函数的图像与性质要到九年级下册才学。</p>
+    </div>
+  </section>
+
+  <section id="reading">
+    <div class="sec-head"><span class="sec-no">08</span><h2>读一读：数字 1 与字母 x 的对话</h2></div>
+    <p class="sec-sub">教材 3.1 之后、3.2 之前的「阅读与思考」。不长，但把「字母到底表示什么」说透了。</p>
+    <details class="reading">
+      <summary>展开：1 为什么不服气，x 又怎么解释</summary>
+      <div class="reading__body">
+        <p><b>1 的想法：</b>「我就是一个确定的数，你 x 一会儿大一会儿小，凭什么和我平起平坐？」</p>
+        <p><b>x 的解释：</b>「我可以代表很多数。需要我等于 1 时，我就是 1；需要我等于 2 时，我就是 2。正因为我可变，一个式子才能概括一类情况。」</p>
+        <p><b>要带走的三点：</b></p>
+        <p>① 字母可以代表不同的数，所以式子比「一个一个算」更一般。</p>
+        <p>② 在同一个问题里，同一个字母一旦取定，就代表那个数，不能这一处是 3、那一处是 5。</p>
+        <p>③ 不同问题里的同一个字母，可以代表不同的量；这正是 0.9p 能有多种身份的原因。</p>
+      </div>
+    </details>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">09</span><h2>六个常见误解</h2></div>
+    <p class="sec-sub">这些不是编出来的错，是课堂上真的会听到的说法。每条都配一句「为什么错」。</p>
+    <div class="mis-grid">
+      <div class="mis">
+        <div class="mis__wrong">误解 01</div>
+        <h3>「x+1=3 是代数式。」</h3>
+        <p>它含<b>等号</b>，是方程。代数式只由数、字母和运算符号连接，不含等号、不等号。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">误解 02</div>
+        <h3>「单独一个 5 不算代数式。」</h3>
+        <p>教材明确：<b>单独一个数或一个字母也是代数式</b>。5、t 都算。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">误解 03</div>
+        <h3>「3n 要写成 n3。」</h3>
+        <p>规范是<b>数写在字母前</b>：3n，不写 n3；乘号省略，也不写成 3·n（除非需要强调乘法）。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">误解 04</div>
+        <h3>「a 的 2 倍与 3 的和，就是 2(a+3)。」</h3>
+        <p>「a 的 2 倍与 3 的和」是先乘后加：<b>2a+3</b>。2(a+3) 是「a 与 3 的和的 2 倍」，先加后乘。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">误解 05</div>
+        <h3>「去年产量 2n−10 件，直接写 2n−10 件。」</h3>
+        <p>式子是差、后面带单位，要整体加括号：<b>(2n−10) 件</b>。不写括号，单位会只跟着 10。</p>
+      </div>
+      <div class="mis">
+        <div class="mis__wrong">误解 06</div>
+        <h3>「同一个式子，字母的意思肯定一样。」</h3>
+        <p>0.9p 里的 p 可以是单价、宽、时间。式子相同只说明<b>运算关系</b>相同，字母代表什么要看情境和单位。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="selfcheck">
+    <div class="sec-head"><span class="sec-no">10</span><h2>复述自检：不判分，只看能不能说清</h2></div>
+    <p class="sec-sub">先自己说或写，再点「看参考表述」。最后选一个你现在的把握程度，不用给任何人看。</p>
+    <div class="self-list" id="selfList">
+      <div class="self">
+        <p class="self__q">1. 什么是代数式？单独一个数或一个字母算吗？</p>
+        <textarea aria-label="第1题回答" placeholder="先自己写一句，再对照参考表述"></textarea>
+        <div class="self__row">
+          <button class="btn" type="button" data-ref="0">看参考表述</button>
+          <div class="self__rate" data-rate="0">
+            <button class="rate-btn" type="button" aria-pressed="false">我还不确定</button>
+            <button class="rate-btn" type="button" aria-pressed="false">基本会说</button>
+            <button class="rate-btn" type="button" aria-pressed="false">能举例</button>
+          </div>
+        </div>
+        <div class="ref"><b>参考：</b>用运算符号把数或表示数的字母连接起来的式子，叫做代数式。单独一个数或一个字母也是代数式，例如 5、t。含等号、不等号的不是代数式。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">2. 0.9p 可以表示哪两件不同的事？为什么同一个式子能表示不同的事？</p>
+        <textarea aria-label="第2题回答" placeholder="从字母代表什么、单位是什么入手"></textarea>
+        <div class="self__row">
+          <button class="btn" type="button" data-ref="1">看参考表述</button>
+          <div class="self__rate" data-rate="1">
+            <button class="rate-btn" type="button" aria-pressed="false">我还不确定</button>
+            <button class="rate-btn" type="button" aria-pressed="false">基本会说</button>
+            <button class="rate-btn" type="button" aria-pressed="false">能举例</button>
+          </div>
+        </div>
+        <div class="ref"><b>参考：</b>可以表示苹果九折后的售价（p 是原价，单位元/kg），也可以表示长 0.9 m、宽 p m 的长方形面积（单位 m²）。式子只规定运算关系，字母代表什么由情境决定，所以同一个式子可以表示不同的事。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">3. 2a+3 与 2(a+3) 的意义有什么不同？</p>
+        <textarea aria-label="第3题回答" placeholder="先说「先算谁」，再说意义"></textarea>
+        <div class="self__row">
+          <button class="btn" type="button" data-ref="2">看参考表述</button>
+          <div class="self__rate" data-rate="2">
+            <button class="rate-btn" type="button" aria-pressed="false">我还不确定</button>
+            <button class="rate-btn" type="button" aria-pressed="false">基本会说</button>
+            <button class="rate-btn" type="button" aria-pressed="false">能举例</button>
+          </div>
+        </div>
+        <div class="ref"><b>参考：</b>2a+3 先算 a 的 2 倍，再加 3，意义是「a 的 2 倍与 3 的和」；2(a+3) 先算 a 与 3 的和，再乘 2，意义是「a 与 3 的和的 2 倍」。取 a=2，前者 7，后者 10。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">4. 为什么 x×y 可以写成 xy，而 m÷3 要写成 m/3？</p>
+        <textarea aria-label="第4题回答" placeholder="想一想乘号和除号的不同处理"></textarea>
+        <div class="self__row">
+          <button class="btn" type="button" data-ref="3">看参考表述</button>
+          <div class="self__rate" data-rate="3">
+            <button class="rate-btn" type="button" aria-pressed="false">我还不确定</button>
+            <button class="rate-btn" type="button" aria-pressed="false">基本会说</button>
+            <button class="rate-btn" type="button" aria-pressed="false">能举例</button>
+          </div>
+        </div>
+        <div class="ref"><b>参考：</b>字母与字母相乘，乘号可以省略，所以 x×y 写成 xy；除法要写成分数形式，所以 m÷3 写成 m/3，不写除号。乘号可省，除号要变分数线。</div>
+      </div>
+      <div class="self">
+        <p class="self__q">5. 300/x 中，x 表示什么？x 变大时，水高怎么变？</p>
+        <textarea aria-label="第5题回答" placeholder="先从单位说 x 是什么量"></textarea>
+        <div class="self__row">
+          <button class="btn" type="button" data-ref="4">看参考表述</button>
+          <div class="self__rate" data-rate="4">
+            <button class="rate-btn" type="button" aria-pressed="false">我还不确定</button>
+            <button class="rate-btn" type="button" aria-pressed="false">基本会说</button>
+            <button class="rate-btn" type="button" aria-pressed="false">能举例</button>
+          </div>
+        </div>
+        <div class="ref"><b>参考：</b>x 表示容器内部的底面积（cm²），300 是水的体积（cm³），300/x 是水高（cm）。底面积 x 变大时，水高 y 变小；但 x·y 始终等于 300，所以它们成反比例关系。</div>
+      </div>
+    </div>
+    <p class="self-note">这里的输入只留在本机内存里，刷新就清空；不上传、不记录姓名、不计分。</p>
+  </section>
+
+  <section id="exam">
+    <div class="sec-head"><span class="sec-no">11</span><h2>中考连接与本节收束</h2></div>
+    <div class="conclusion">
+      列代数式真正难的，不是算出结果，而是<b>把一句话里的关系找准，再把括号放对</b>。判断一个式子对不对，先问：字母代表谁？单位是什么？该加括号的地方加了吗？
+      <p class="transfer"><b>本节收束：</b>说清「式子里的字母表示什么」，比背定义更重要。下一节 3.2 会把数代进去，算出代数式的值。</p>
+      <div class="exam">
+        <b>长春真题回看（2023 第 11 题，填空 3 分）：</b>7.5 公里健康跑，以平均每分钟 x 公里的速度跑了 10 分钟，此时离终点的路程为 ____ 公里。<br>
+        答案：<b>7.5 − 10x</b>。已跑路程是 10x，剩下用总路程减已跑路程。注意单位统一、式子整体表示「剩下的路程」。
+      </div>
+      <p class="transfer"><b>命题落点提醒：</b>本章在长春卷通常只占 1 道 3 分选填（列式或求值），更多时候是后续「先化简再求值」和实际应用题的地基。不要把这一章做成刷题页，先把「字母表示什么」说清。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 3 章 3.1</span>
+    <span>核对日期：2026-11-26</span>
+    <span>模型版本：1.0（按 2024 版目录与例题制作）</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 3.1</h2>
+  <p>2024 人教版七上第 3 章；核对 2026-11-26。按 T 可随时开关。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能说出代数式的定义与边界（单独一个数或字母也算），能把教材例 1、例 3、例 4 的情境翻译成式子，能解释 0.9p 的多重含义，知道 300/x 表示反比例关系。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「小学我们就用字母表示过数。今天换个问法：给你一个式子 5t，你能说出 5 是什么、t 是什么、5t 又是什么吗？说不清，式子就只是几个符号。今天我们把每个符号都对应回情境里的一件事。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「机器人每秒识别 5 m²，t 秒识别多少？」期望：5t。</li>
+    <li>「如果已知识别了 n m²，要多久？」期望：n÷5=n/5，除法写成分数。</li>
+    <li>「单独一个 5 算代数式吗？为什么？」期望：算，教材特别规定。</li>
+    <li>「0.9p 为什么可以表示两件不同的事？」期望：p 代表不同的量，单位不同。</li>
+    <li>「2a+3 和 2(a+3) 差在哪？」期望：括号改变了先算谁，意义不同。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：从情境映射开始；易错例：直接看六个误解；挑战例：跳到复述自检。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「字母就是未知数。」→ 补充：字母也可以表示可变的量，不一定非要求出来。</li>
+    <li>「5 不算代数式。」→ 回到教材「单独一个数或字母也是代数式」。</li>
+    <li>「2a+3 和 2(a+3) 差不多。」→ 代 a=2，算出 7 和 10，让差别落地。</li>
+    <li>「单位随便写。」→ 和差形式带单位必须整体加括号。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>模型停在「复述自检」后，黑板上只留三行：代数式定义（含边界）、列式三步（找关系→定字母→写式子）、括号提醒。题单只做「说字母含义 + 列式」，不刷大量计算。</p>
+
+  <h3>课后 1 题</h3>
+  <p>苹果原价 p 元/kg，九折出售；长方形长 0.9 m、宽 p m。分别写出售价和面积，并说明为什么两个式子都是 0.9p，单位有什么不同。</p>
+
+  <h3>长春落点</h3>
+  <p>2023 第 11 题考列代数式 7.5−10x；2025 第 11 题考求值（整体代入）。本章通常 1 道 3 分选填，重点是读情境、定字母、括号与单位。</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  /* 01 情境映射 */
+  var forward = document.getElementById("eqForward");
+  var reverse = document.getElementById("eqReverse");
+  var slider = document.getElementById("amountSlider");
+  var sliderLabel = document.getElementById("sliderLabel");
+  var sliderVal = document.getElementById("sliderVal");
+  var sliderReadout = document.getElementById("sliderReadout");
+  var modeBtn = document.getElementById("modeBtn");
+  var resetBtn = document.getElementById("resetBtn");
+  var mapNote = document.getElementById("mapNote");
+  var isReverse = false;
+
+  var partText = {
+    rate: "<b>5</b> 是效率：机器人每秒识别 5 m²。它是「每一秒」的量，不变。",
+    time: "<b>t</b> 是时间：工作了 t 秒。它变，总量就跟着变。",
+    total: "<b>5t</b> 是总量：t 秒一共识别 5×t 平方米。它由 5 和 t 相乘得到。",
+    "r-total": "<b>n</b> 是总量：要识别的面积是 n m²。",
+    "r-rate": "<b>5</b> 还是效率：每秒 5 m²。",
+    "r-time": "<b>n/5</b> 是时间：总面积除以每秒的面积，得到需要的秒数。"
+  };
+
+  function updateSlider() {
+    var v = Number(slider.value);
+    if (!isReverse) {
+      sliderVal.textContent = v + " s";
+      sliderReadout.innerHTML = "5 × " + v + " = " + (5 * v) + "<small>t = " + v + " s 时，机器人识别 " + (5 * v) + " m²</small>";
+    } else {
+      sliderVal.textContent = v + " m²";
+      var t = v / 5;
+      var tText = Number.isInteger(t) ? String(t) : t.toFixed(1);
+      sliderReadout.innerHTML = v + " ÷ 5 = " + tText + "<small>识别 " + v + " m² 需要 " + tText + " s</small>";
+    }
+  }
+
+  function setMode(rev) {
+    isReverse = rev;
+    forward.classList.toggle("is-hidden", rev);
+    reverse.classList.toggle("is-hidden", !rev);
+    modeBtn.textContent = rev ? "换回来：已知时间 t，求面积" : "反过来：已知面积 n，求时间";
+    sliderLabel.textContent = rev ? "面积 n" : "时间 t";
+    if (rev) {
+      slider.min = "0"; slider.max = "300"; slider.step = "25"; slider.value = "100";
+    } else {
+      slider.min = "0"; slider.max = "60"; slider.step = "5"; slider.value = "20";
+    }
+    mapNote.innerHTML = rev
+      ? "现在反过来：<b>n</b> 是总面积，<b>5</b> 是每秒识别面积，<b>n/5</b> 是所需时间。除法写成分数。"
+      : "点上面的 <b>5</b>、<b>t</b> 或 <b>5t</b>，看它在情境里对应什么。";
+    updateSlider();
+  }
+
+  document.querySelectorAll(".part").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".part").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      var key = b.getAttribute("data-part");
+      if (partText[key]) mapNote.innerHTML = partText[key];
+    });
+  });
+
+  slider.addEventListener("input", updateSlider);
+  modeBtn.addEventListener("click", function () { setMode(!isReverse); });
+  resetBtn.addEventListener("click", function () {
+    if (isReverse) setMode(false);
+    slider.value = "20";
+    updateSlider();
+  });
+  updateSlider();
+
+  /* 02 定义拆句 */
+  var segData = {
+    op: "<b>用运算符号</b>：加、减、乘、除、乘方都算。关键是「连接」，不是「判断相等」；所以 x+1=3 不算。",
+    what: "<b>把数或表示数的字母</b>：可以全是数，也可以全是字母，也可以混合。单独一个数或字母也满足这一条。",
+    link: "<b>连接起来</b>：用运算符号把上面的东西连成一个整体。连起来之后，它表示一个数量或数量关系。"
+  };
+  var note = document.getElementById("segNote");
+  document.querySelectorAll(".seg").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".seg").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      note.innerHTML = segData[b.getAttribute("data-seg")];
+    });
+  });
+
+  /* 正反例展开 */
+  document.querySelectorAll(".ex").forEach(function (b) {
+    b.querySelector(".ex__why").style.display = "none";
+    b.addEventListener("click", function () {
+      var open = b.getAttribute("aria-expanded") === "true";
+      b.setAttribute("aria-expanded", open ? "false" : "true");
+      b.querySelector(".ex__why").style.display = open ? "none" : "block";
+    });
+  });
+
+  /* 03 同式多义 */
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () {
+      var key = t.getAttribute("data-tab");
+      document.querySelectorAll(".tab").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+      });
+      document.getElementById("tabP").classList.toggle("is-hidden", key !== "p");
+      document.getElementById("tabN").classList.toggle("is-hidden", key !== "n");
+    });
+  });
+
+  document.querySelectorAll(".meaning").forEach(function (m) {
+    m.addEventListener("click", function () {
+      var list = m.parentNode.querySelectorAll(".meaning");
+      list.forEach(function (x) {
+        x.setAttribute("aria-pressed", x === m ? "true" : "false");
+      });
+      var detail = m.getAttribute("data-detail");
+      var target = m.closest("#tabP") ? document.getElementById("pDetail") : document.getElementById("nDetail");
+      if (target) target.textContent = detail;
+    });
+  });
+
+  /* 06 改写 */
+  document.querySelectorAll(".rw__btn").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var row = b.closest(".rw");
+      var open = row.classList.toggle("is-open");
+      b.textContent = open ? "收起" : "改写";
+    });
+  });
+
+  /* 07 反比例滑块 */
+  var sSlider = document.getElementById("sSlider");
+  var sVal = document.getElementById("sVal");
+  var sReadout = document.getElementById("sReadout");
+  function updateS() {
+    var x = Number(sSlider.value);
+    var y = 300 / x;
+    var yText = Number.isInteger(y) ? String(y) : y.toFixed(1);
+    sVal.textContent = x + " cm²";
+    sReadout.innerHTML = "x = " + x + " cm² 时，y = 300 ÷ " + x + " = " + yText + " cm<small>底面积 × 水高 = " + x + " × " + yText + " = 300，始终等于水的体积</small>";
+  }
+  sSlider.addEventListener("input", updateS);
+  updateS();
+
+  /* 10 复述自检 */
+  document.querySelectorAll("[data-ref]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var card = b.closest(".self");
+      var ref = card.querySelector(".ref");
+      ref.classList.toggle("is-open");
+      b.textContent = ref.classList.contains("is-open") ? "收起参考表述" : "看参考表述";
+    });
+  });
+  document.querySelectorAll(".self__rate").forEach(function (group) {
+    group.querySelectorAll(".rate-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        group.querySelectorAll(".rate-btn").forEach(function (x) {
+          x.setAttribute("aria-pressed", x === b ? "true" : "false");
+        });
+      });
+    });
+  });
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  document.getElementById("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      var targetId = preset === "standard" ? "map" : (preset === "error" ? "misconceptions" : "selfcheck");
+      var label = preset === "standard" ? "标准例：从情境映射开始。" : (preset === "error" ? "易错例：直接看六个误解。" : "挑战例：跳到复述自检。");
+      document.getElementById("presetNote").textContent = label;
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  /* 键盘 */
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    }
+  });
+
+  /* 打印展开 */
+  var openedForPrint = [];
+  window.addEventListener("beforeprint", function () {
+    openedForPrint = [];
+    document.querySelectorAll("details:not([open])").forEach(function (d) {
+      openedForPrint.push(d);
+      d.open = true;
+    });
+    document.querySelectorAll(".ex[aria-expanded='false']").forEach(function (b) {
+      b.setAttribute("aria-expanded", "true");
+      b.querySelector(".ex__why").style.display = "block";
+    });
+  });
+  window.addEventListener("afterprint", function () {
+    openedForPrint.forEach(function (d) { d.open = false; });
+    document.querySelectorAll(".ex[aria-expanded='true']").forEach(function (b) {
+      b.setAttribute("aria-expanded", "false");
+      b.querySelector(".ex__why").style.display = "none";
+    });
+  });
+})();
+</script>
+</body>
+</html>

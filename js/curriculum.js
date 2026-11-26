@@ -26,7 +26,7 @@ window.CURRICULUM = [
             ]
           },
           { id: "1.2-rd", title: "图说数学史：漫漫长路识负数", type: "reading" },
-          { id: "1-rv", title: "数学活动、小结、复习题1", type: "review" }
+          { id: "1-rv", title: "小结、复习题1", type: "review" }
         ]
       },
       {
@@ -55,17 +55,17 @@ window.CURRICULUM = [
             ]
           },
           { id: "2-rd", title: "我国古代正负数加减法则", type: "reading" },
-          { id: "2-rv", title: "数学活动、小结、复习题2", type: "review" },
+          { id: "2-rv", title: "小结、复习题2", type: "review" },
           { id: "2-pj", title: "进位制的认识与探究", type: "project" }
         ]
       },
       {
         no: 3, title: "代数式",
         sections: [
-          { id: "3.1", title: "列代数式表示数量关系" },
-          { id: "3.2", title: "代数式的值" },
+          { id: "3.1", title: "列代数式表示数量关系", ready: true },
           { id: "3-rd", title: "数字1与字母x的对话", type: "reading" },
-          { id: "3-rv", title: "数学活动、小结、复习题3", type: "review" }
+          { id: "3.2", title: "代数式的值", ready: true },
+          { id: "3-rv", title: "小结、复习题3", type: "review" }
         ]
       },
       {
