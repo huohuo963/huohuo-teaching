@@ -81,6 +81,15 @@ git push
 & "C:\Users\24178\.local\gh-cli\bin\gh.exe" api repos/huohuo963/huohuo-teaching/pages --jq .status
 ```
 
+### 推送失败时的兜底（已遇到，记下来避免重复踩）
+
+2026-11-26 本机出现过 `github.com:443` 连接超时/重置，`git push` 连续失败，但 `api.github.com` 与 `gh` 仍可用。遇到时的处理顺序：
+
+1. 先重试一次直连，确认不是短暂抖动；不要反复重试同一条死路。
+2. 仍失败时，改用 `gh api` 走 Git Data API：创建 blob → 创建 tree（`base_tree` 为远端 main 的 tree）→ 创建 commit（parent 为远端 main）→ 更新 `refs/heads/main`。仓库内已备好脚本 `scripts/push-via-api.ps1`，直接运行即可；第一批模型就是这样在 2026-11-26 上线的（远端提交 `ab51ffe`）。
+3. 若 API 也不可用，再让维护者在网页端按文件清单上传：`index.html`、`css/style.css`、`js/curriculum.js`、`js/app.js`、`models/`、`templates/`、`README.md` 保持原相对路径。
+4. 任何情况下都不要把 GitHub token 写进前端文件或提交到仓库；`gh` 已登录时直接用 `gh api` 即可。
+
 ## 版本说明（待确认）
 
 - 本轮按用户提供的 2024 新版逐节目录录入，**共 33 章**，最后一章为「第三十三章 投影与视图」。
