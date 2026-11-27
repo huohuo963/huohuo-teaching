@@ -304,12 +304,19 @@
 
   function secRowHTML(s) {
     var t = TYPE[s.type];
-    return '<a class="sec-row' + (s.depth ? ' is-child' : '') + (s.ready ? ' is-ready' : '')
-      + '" href="#s=' + enc(s.id) + '">'
+    var isGroup = s.children && s.children.length > 0;
+    var readyChildren = isGroup ? s.children.filter(function (c) { return c.ready; }).length : 0;
+    var groupReady = isGroup && readyChildren === s.children.length;
+    var stateText = isGroup
+      ? (readyChildren === 0 ? "待制作" : (groupReady ? s.children.length + " 小节已上线" : readyChildren + " / " + s.children.length + " 小节已上线"))
+      : (s.ready ? "已上线" : "待制作");
+    var href = isGroup ? "#s=" + enc(s.children[0].id) : "#s=" + enc(s.id);
+    return '<a class="sec-row' + (s.depth ? ' is-child' : '') + ((s.ready || groupReady) ? ' is-ready' : '')
+      + '" href="' + href + '">'
       + '<span class="sec-row__id">' + esc(s.type === "sec" ? s.id : t.mark) + '</span>'
       + '<span class="sec-row__title">' + esc(s.title) + '</span>'
       + (s.type !== "sec" ? '<span class="sec-row__type">' + esc(t.label) + '</span>' : '')
-      + '<span class="sec-row__state">' + (s.ready ? "已上线" : "待制作") + '</span>'
+      + '<span class="sec-row__state">' + stateText + '</span>'
       + '</a>';
   }
 
