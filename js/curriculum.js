@@ -83,29 +83,15 @@ window.CURRICULUM = [
           {
             id: "5.1", title: "方程",
             children: [
-              { id: "5.1.1", title: "从算式到方程、一元一次方程" },
-              { id: "5.1.2", title: "等式的性质" }
+              { id: "5.1.1", title: "从算式到方程", ready: true },
+              { id: "5.1.2", title: "等式的性质", ready: true }
             ]
           },
-          {
-            id: "5.2", title: "解一元一次方程",
-            children: [
-              { id: "5.2.1", title: "合并同类项" },
-              { id: "5.2.2", title: "移项" },
-              { id: "5.2.3", title: "去括号" },
-              { id: "5.2.4", title: "去分母" }
-            ]
-          },
-          {
-            id: "5.3", title: "实际问题与一元一次方程",
-            children: [
-              { id: "5.3.1", title: "配套、工程问题" },
-              { id: "5.3.2", title: "销售盈亏问题" },
-              { id: "5.3.3", title: "行程、方案选择问题" }
-            ]
-          },
-          { id: "5-ex", title: "无限循环小数化分数", type: "experiment" },
-          { id: "5-rv", title: "数学活动、小结、复习题5", type: "review" }
+          { id: "5.2", title: "解一元一次方程", ready: true },
+          { id: "5-ex", title: "探究与发现 无限循环小数化分数", type: "experiment" },
+          { id: "5.3", title: "实际问题与一元一次方程", ready: true },
+          { id: "5-rd", title: "初步认识数学模型", type: "reading" },
+          { id: "5-rv", title: "数学活动（阶梯计价、木杆挂重物）、小结、复习题5", type: "review" }
         ]
       },
       {

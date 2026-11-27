@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.1.1 从算式到方程 · 七上 第5章 一元一次方程</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button, summary { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 72px; }
+  .hero { padding: 8px 0 4px; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; letter-spacing: .02em; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 20px 0 0; padding: 14px 18px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+
+  section { margin-top: 40px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .card b { color: var(--brand-deep); }
+  .note { margin-top: 12px !important; font-size: 13.5px; color: var(--ink2); }
+  .note b { color: var(--brand-deep); }
+  .definition { font-family: var(--serif); font-size: 23px; line-height: 1.8; }
+  .definition mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 3px; }
+  .is-hidden { display: none !important; }
+
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  .readout { margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: #fbf5e8; font-family: var(--serif); font-size: 20px; text-align: center; color: var(--brand-deep); }
+  .readout small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .slider-row label { font-size: 13px; color: var(--ink2); min-width: 88px; }
+  .slider-row input[type="range"] { flex: 1 1 220px; min-width: 160px; accent-color: var(--brand); height: 32px; }
+  .slider-val { font-family: var(--serif); font-size: 17px; color: var(--brand-deep); min-width: 78px; text-align: right; }
+
+  .track { margin-top: 10px; }
+  .track__label { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink3); }
+  .track__bar { position: relative; height: 26px; margin-top: 4px; border-radius: 6px; background: #f0e8d6; overflow: hidden; }
+  .track__fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; transition: width .18s ease; }
+  .track__fill--a { background: var(--brand); }
+  .track__fill--b { background: var(--ochre); }
+  .track__val { position: absolute; right: 8px; top: 2px; font-family: var(--serif); font-size: 14px; color: var(--ink); }
+
+  .pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .pair { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; cursor: pointer; text-align: left; }
+  .pair:hover { border-color: var(--ochre); }
+  .pair b { display: block; font-family: var(--serif); font-size: 19px; }
+  .pair span { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink3); }
+  .pair.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .pair.is-bad { border-color: var(--err); background: #fbeee9; }
+  .pair-fb { margin-top: 10px !important; padding: 10px 12px; border-radius: 8px; background: #fdfaf2; font-size: 13.5px; color: var(--ink2); }
+  .pair-fb b { color: var(--brand-deep); }
+
+  .work { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); font-family: var(--serif); font-size: 19px; line-height: 1.9; color: var(--ink); }
+  .work mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 2px; }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+
+  .try-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .try-row .btn { font-family: var(--serif); font-size: 17px; min-width: 80px; }
+  .try-row .btn[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .value-box { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-top: 12px; font-family: var(--serif); font-size: 20px; text-align: center; }
+  .value-box div { padding: 10px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .value-box .cmp { border: none; background: transparent; font-size: 24px; color: var(--ink3); }
+  .value-box.is-eq div:not(.cmp) { border-color: var(--ok); background: #f0f4ea; }
+  .value-box.is-ne div:not(.cmp) { border-color: var(--err); background: #fbeee9; }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .mis p b { color: var(--ink); }
+
+  .selfcheck { display: grid; gap: 12px; margin-top: 14px; }
+  .sc { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .sc label { display: block; font-size: 14px; font-weight: 600; }
+  .sc textarea { width: 100%; min-height: 68px; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fffdf8; resize: vertical; }
+  .sc__ref { display: none; margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .sc__ref.is-open { display: block; }
+  .sc__ref b { color: var(--brand-deep); }
+  .sc__row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+  .sc__row .btn { padding: 6px 12px; font-size: 12.5px; min-height: 36px; }
+
+  .conclusion { margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 10px !important; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam { margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--ochre); border-radius: 8px; background: #fffdf8; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam b { color: var(--ink); }
+
+  footer { max-width: 1080px; margin: 0 auto; padding: 0 22px 42px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(420px, 92vw); padding: 22px 22px 40px; overflow-y: auto; background: #fffdf8; border-left: 1px solid var(--line); transform: translateX(104%); transition: transform .22s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 22px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 7px; }
+  .teacher .tool-btn { float: right; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .definition { font-size: 32px; }
+  body.is-projector .readout { font-size: 26px; }
+  body.is-projector .card, body.is-projector .q { padding: 24px 26px; }
+  body.is-projector .mis p, body.is-projector .acc-body, body.is-projector .sc label { font-size: 18px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 20px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 760px) {
+    main { padding: 22px 16px 60px; }
+    h1 { font-size: 29px; }
+    .definition { font-size: 21px; }
+    .pairs { grid-template-columns: 1fr; }
+    .mis-grid { grid-template-columns: 1fr; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .tool-btn, .btn { min-height: 44px; }
+    .value-box { font-size: 17px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher, .track__fill { transition: none; }
+  }
+
+  @media print {
+    .bar, .teacher, .tool-btn, .btn, .preset-row, .try-row { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    section { break-inside: avoid; }
+    .card, .mis, .sc, .conclusion { border-color: #bbb; background: #fff; }
+    footer { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#s=5.1.1" target="_top">← 返回 5.1.1</a>
+  <span class="bar__crumb">七上 · 第5章 一元一次方程 · 5.1.1</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">从算式到方程 · 2024 人教版 · 七上第 5 章</p>
+    <h1>从算式到方程<small>方程不是多写一个字母，而是把「未知量」也放进等式里，让相等关系直接说话。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">概念解剖</span>
+      <span class="badge">不判分 · 复述自检</span>
+      <span class="badge">5.1.1（教材约 2 课时）</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">本节只追四件事：能认出方程；能把一句数量关系翻译成方程；能检验一个数是不是方程的解；能按三个特征判断一元一次方程。</p>
+  </header>
+
+  <section id="arithmetic">
+    <div class="sec-head"><span class="sec-no">01</span><h2>算术还是方程：同一道追及题的两种写法</h2></div>
+    <p class="sec-sub">甲队从距大本营 1 km 的一号营地出发，每小时 1.2 km；乙队从距大本营 3 km 的二号营地出发，每小时 0.8 km。两队同时出发，多长时间后甲队追上乙队？</p>
+    <div class="card">
+      <div class="track">
+        <div class="track__label"><span>甲队距大本营</span><span>1.2x + 1</span></div>
+        <div class="track__bar"><div class="track__fill track__fill--a" id="barA" style="width:14%"></div><span class="track__val" id="valA">1 km</span></div>
+      </div>
+      <div class="track">
+        <div class="track__label"><span>乙队距大本营</span><span>0.8x + 3</span></div>
+        <div class="track__bar"><div class="track__fill track__fill--b" id="barB" style="width:30%"></div><span class="track__val" id="valB">3 km</span></div>
+      </div>
+      <div class="slider-row">
+        <label for="timeSlider">行进时间 x</label>
+        <input id="timeSlider" type="range" min="0" max="10" step="0.5" value="0">
+        <span class="slider-val" id="timeVal">0 h</span>
+      </div>
+      <div class="readout" id="timeReadout">甲 1.2×0+1 = 1 km；乙 0.8×0+3 = 3 km<small>拖动时间，看两条路程条什么时候一样长</small></div>
+      <p class="note"><b>算术法：</b>两队相差 3−1=2 km，速度差 1.2−0.8=0.4 km/h，追上要 2÷0.4=5 h。算式里只有已知数。<br><b>方程法：</b>设时间 x h，追上时两队距大本营的路程相等，列 <b>1.2x+1=0.8x+3</b>。未知数 x 和已知数一起参加运算，相等关系一眼可见。</p>
+      <p class="note"><b>教材原话：</b>从算式到方程是数学的一大进步。不是算术不好，而是方程能把「关系」直接写出来，复杂问题更容易下手。</p>
+    </div>
+  </section>
+
+  <section id="whatis">
+    <div class="sec-head"><span class="sec-no">02</span><h2>方程是什么：两个条件，缺一不可</h2></div>
+    <p class="sec-sub">先设字母表示未知数，再根据问题中的相等关系，列出一个含有未知数的等式，这样的等式叫做方程。</p>
+    <div class="card">
+      <p class="definition">方程 = <mark>等式</mark> + <mark>未知数</mark>。是等式但不含未知数，不是方程；含未知数但不是等式，也不是方程。</p>
+      <p class="note"><b>点一个式子，判断它是不是方程：</b></p>
+      <div class="pairs" id="eqBox">
+        <button class="pair" type="button" data-ok="1" data-why="有等号，且含有未知数 x，是方程。">
+          <b>2x + 3 = 9</b><span>等式 + 未知数</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="3+2=5 是等式，但只含已知数，没有未知数，所以不是方程。">
+          <b>3 + 2 = 5</b><span>是等式</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="x−1 含未知数，但没有等号，不是等式，所以不是方程。">
+          <b>x − 1</b><span>含未知数</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="x>3 是不等式，不是等式；方程必须是等式。">
+          <b>x &gt; 3</b><span>不等式</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="有等号，含未知数 y，是方程；未知数不一定要用 x 表示。">
+          <b>5y − 2 = 8</b><span>未知数可以是 y</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="有等号，含两个未知数 x、y，仍是方程；方程不要求只有一个未知数。">
+          <b>x + y = 10</b><span>两个未知数也是方程</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="这是一个运算式，没有等号，不是方程。">
+          <b>4x + 7</b><span>没有等号</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="有等号，含未知数 a，是方程。">
+          <b>a² − 1 = 0</b><span>未知数次数可以高于 1</span>
+        </button>
+      </div>
+      <p class="pair-fb" id="eqFb">点一个式子，看判断与理由。</p>
+      <p class="note"><b>边界提醒：</b>「方程」只要求「含未知数的等式」，不要求未知数次数是 1，也不要求只有一个未知数。那是下一节「一元一次方程」的额外条件。</p>
+    </div>
+  </section>
+
+  <section id="translate">
+    <div class="sec-head"><span class="sec-no">03</span><h2>把一句话翻译成方程：先找相等关系</h2></div>
+    <p class="sec-sub">列方程的关键不是算，而是找「谁和谁相等」。先说出相等关系，再设元，方程自然就出来了。</p>
+    <div class="accordion">
+      <details class="acc-item" open>
+        <summary>大水杯与小水杯：12 个大水杯的钱 = 16 个小水杯的钱</summary>
+        <div class="acc-body">
+          <p><b>相等关系：</b>买 12 个大水杯的总价 = 买 16 个小水杯的总价。</p>
+          <p>设大水杯单价 x 元，则小水杯单价 (x−5) 元。</p>
+          <span class="work">12x = 16(x − 5)</span>
+          <p>如果设小水杯单价 x 元，则大水杯 (x+5) 元，方程变成 <b>12(x+5) = 16x</b>。设谁为 x 都可以，方程长得不同，解出来的是同一个实际问题。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>纪念币：长 × 宽 = 面积 4000 mm²</summary>
+        <div class="acc-body">
+          <p>长宽比 8∶5，设长 x mm，则宽 (5/8)x mm。</p>
+          <span class="work">(5/8)x² = 4000</span>
+          <p><b>注意：</b>这是方程，但未知数次数是 2，<b>不是一元一次方程</b>。教材用它说明「方程」的范围比「一元一次方程」大。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>女生比男生多 80 人：女生人数 − 男生人数 = 80</summary>
+        <div class="acc-body">
+          <p>设全校学生 x 人，女生 0.52x 人，男生 (1−0.52)x 人。</p>
+          <span class="work">0.52x − (1 − 0.52)x = 80</span>
+          <p>这里出现了括号，后面 5.2 会学怎么去括号；现在先把关系列对。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>正方形绿地加宽 5 m：扩大后面积 = 500 m²</summary>
+        <div class="acc-body">
+          <p>设原正方形边长 x m，加宽后是 (x+5) m。</p>
+          <span class="work">x(x + 5) = 500，即 x² + 5x = 500</span>
+          <p><b>注意：</b>化简后含 x²，<b>不是一元一次方程</b>。判断一元一次方程前，一定要先看化简后的样子。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="solution">
+    <div class="sec-head"><span class="sec-no">04</span><h2>方程的解：代进去，看两边相不相等</h2></div>
+    <p class="sec-sub">使方程左、右两边的值相等的未知数的值，叫做方程的解；求方程的解的过程，叫做解方程。检验的方法只有一个：代入。</p>
+    <div class="card">
+      <p class="definition">在 <mark>1.2x + 1 = 0.8x + 3</mark> 里试三个值：</p>
+      <div class="try-row" id="tryRow">
+        <button class="btn" type="button" data-x="4" aria-pressed="false">x = 4</button>
+        <button class="btn" type="button" data-x="5" aria-pressed="true">x = 5</button>
+        <button class="btn" type="button" data-x="6" aria-pressed="false">x = 6</button>
+      </div>
+      <div class="value-box" id="tryBox">
+        <div>左边 = <span id="leftVal">7</span></div>
+        <div class="cmp" id="cmpSign">=</div>
+        <div>右边 = <span id="rightVal">7</span></div>
+      </div>
+      <div class="readout" id="tryReadout">x = 5 时，左边 1.2×5+1 = 7，右边 0.8×5+3 = 7，两边相等，所以 x=5 是方程的解。</div>
+
+      <p class="note" style="margin-top:20px !important"><b>再检验一次：</b>12x = 16(x−5)。x=10 和 x=20 哪个是解？</p>
+      <div class="try-row" id="try2Row">
+        <button class="btn" type="button" data-x="10" aria-pressed="false">x = 10</button>
+        <button class="btn" type="button" data-x="20" aria-pressed="true">x = 20</button>
+      </div>
+      <div class="value-box" id="try2Box">
+        <div>左边 = <span id="left2Val">240</span></div>
+        <div class="cmp" id="cmp2Sign">=</div>
+        <div>右边 = <span id="right2Val">240</span></div>
+      </div>
+      <div class="readout" id="try2Readout">x = 20 时，左边 12×20 = 240，右边 16×(20−5) = 240，两边相等，所以 x=20 是解。</div>
+      <p class="note"><b>规范写法：</b>先写「当 x=… 时」，再分别算左边、右边，最后写「左边=右边/左边≠右边，所以…是/不是方程的解」。不要只写一个「是」。</p>
+    </div>
+  </section>
+
+  <section id="linear">
+    <div class="sec-head"><span class="sec-no">05</span><h2>一元一次方程：三个特征同时满足</h2></div>
+    <p class="sec-sub">只含有一个未知数（元），含有未知数的式子都是整式，未知数的次数都是 1，这样的方程叫做一元一次方程。</p>
+    <div class="card">
+      <p class="definition"><mark>一元</mark>：一个未知数；<mark>一次</mark>：未知数次数是 1；<mark>整式</mark>：两边都是整式，分母里不能有未知数。</p>
+      <p class="note"><b>点一个式子，判断它是不是一元一次方程：</b></p>
+      <div class="pairs" id="linBox">
+        <button class="pair" type="button" data-ok="1" data-why="只含 x 一个未知数，两边都是整式，x 的次数是 1。">
+          <b>3x + 5 = 2x − 1</b><span>标准一元一次方程</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="含 x、y 两个未知数，不是「一元」。">
+          <b>3x + 1 = 5y</b><span>两个未知数</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="1/x 的分母含未知数，不是整式，所以不是一元一次方程。">
+          <b>1/x + 2 = 3</b><span>分母含未知数</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="未知数最高次数是 2，不是「一次」。">
+          <b>x² + 2x − 6 = 0</b><span>二次</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="先化简：2x²+5−2x²−2x=3，得 −2x+5=3，是一元一次方程。判断前要先化简。">
+          <b>2x² + 5 − 2(x² + x) = 3</b><span>化简后是一次</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="x=0 也是一元一次方程；未知数的值可以是 0。">
+          <b>x = 0</b><span>右边是 0 也可以</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="x>3 不是等式，连方程都不是。">
+          <b>3x &gt; 15</b><span>不等式</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="左边 2x+1 不是等式，整个式子不是方程。">
+          <b>2x + 1</b><span>没有等号</span>
+        </button>
+        <button class="pair" type="button" data-ok="1" data-why="只含 a 一个未知数，两边是整式，次数是 1。">
+          <b>3a + 9 = 15</b><span>未知数可以是 a</span>
+        </button>
+        <button class="pair" type="button" data-ok="0" data-why="2/x 的分母含未知数，不是整式，所以不是一元一次方程。">
+          <b>2/x = 3</b><span>分母含未知数</span>
+        </button>
+      </div>
+      <p class="pair-fb" id="linFb">点一个式子，看判断与理由。</p>
+      <p class="note"><b>易错边界：</b>「未知数次数是 1」看的是<strong>化简后</strong>；「整式」看的是<strong>分母里有没有未知数</strong>；「一元」看的是<strong>未知数的种类</strong>，不是未知数出现在几项里。</p>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">06</span><h2>五个常见错误</h2></div>
+    <p class="sec-sub">这一节的错，多半不是算错，而是「条件少看了一个」。</p>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>3+2=5 是方程</h3><p>它是等式，但<b>不含未知数</b>。方程必须同时满足「等式」和「含未知数」。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>x−1 是方程</h3><p>它含未知数，但<b>没有等号</b>，不是等式。方程首先得是等式。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>x²=4000 是一元一次方程</h3><p>它是方程，但未知数次数是 2，<b>不是一元一次方程</b>。先看化简后的次数。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>3x+1=5y 是一元一次方程</h3><p>含两个未知数，<b>不是「一元」</b>。一元只看未知数的种类，不看项数。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 05</div><h3>「方程的解」就是「解方程」</h3><p>方程的解是一个<b>值</b>（如 x=5）；解方程是一个<b>过程</b>（求这个值）。</p></div>
+    </div>
+  </section>
+
+  <section id="selfcheck">
+    <div class="sec-head"><span class="sec-no">07</span><h2>复述自检：说清楚才算会</h2></div>
+    <p class="sec-sub">不判分。先自己写，再点「看参考表述」对照；说不清的地方，回到对应小节再看一遍。</p>
+    <div class="selfcheck">
+      <div class="sc">
+        <label for="sc1">1. 方程和等式是什么关系？举一个「是等式但不是方程」的例子。</label>
+        <textarea id="sc1" placeholder="用自己的话写……"></textarea>
+        <div class="sc__row"><button class="btn" type="button" data-ref="ref1">看参考表述</button></div>
+        <div class="sc__ref" id="ref1"><b>参考：</b>方程一定是等式，等式不一定是方程。方程是「含有未知数的等式」。例如 3+2=5 是等式，但没有未知数，所以不是方程。</div>
+      </div>
+      <div class="sc">
+        <label for="sc2">2. 一元一次方程有哪三个特征？</label>
+        <textarea id="sc2" placeholder="用自己的话写……"></textarea>
+        <div class="sc__row"><button class="btn" type="button" data-ref="ref2">看参考表述</button></div>
+        <div class="sc__ref" id="ref2"><b>参考：</b>①只含一个未知数；②含有未知数的式子都是整式；③未知数的次数都是 1。三个条件要同时满足。</div>
+      </div>
+      <div class="sc">
+        <label for="sc3">3. 为什么 x=5 是 1.2x+1=0.8x+3 的解？</label>
+        <textarea id="sc3" placeholder="用自己的话写……"></textarea>
+        <div class="sc__row"><button class="btn" type="button" data-ref="ref3">看参考表述</button></div>
+        <div class="sc__ref" id="ref3"><b>参考：</b>把 x=5 代入，左边 1.2×5+1=7，右边 0.8×5+3=7，左边=右边，所以 x=5 是方程的解。</div>
+      </div>
+      <div class="sc">
+        <label for="sc4">4. 列方程最关键的一步是什么？</label>
+        <textarea id="sc4" placeholder="用自己的话写……"></textarea>
+        <div class="sc__row"><button class="btn" type="button" data-ref="ref4">看参考表述</button></div>
+        <div class="sc__ref" id="ref4"><b>参考：</b>找相等关系。先想清楚「谁和谁相等」，再设未知数、列方程；相等关系找错，方程一定错。</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <div class="sec-head"><span class="sec-no">08</span><h2>小结与中考连接</h2></div>
+    <div class="conclusion">
+      方程 = <b>含未知数的等式</b>；一元一次方程 = <b>一个未知数 + 整式 + 次数 1</b>；方程的解 = <b>代入后两边相等的未知数的值</b>。
+      <p class="transfer"><b>最容易丢分的地方：</b>把「含未知数」当成方程的全部条件；判断一元一次方程不先化简；把 x²=4000 当一元一次；检验时只写结论不写左右两边的值。</p>
+      <div class="exam">
+        <b>长春真题回看：</b><br>
+        2022 第 11 题（填空 3 分）：第一车间人数比第二车间的 4/5 少 30，调 10 人后第一车间是第二车间的 3/4。设第二车间 x 人，列一元一次方程解得原来第一车间 <b>170</b> 人。<br>
+        2024 第 17 题（解答 6 分）：《九章算术》盈不足，每人出 400 钱余 3400，每人出 300 钱余 100，求人数与金价。设人数 x，列方程解得 <b>33 人、9800 钱</b>。
+      </div>
+      <p class="transfer"><b>命题落点：</b>长春不单独考「什么是方程」的选择题，而是把「设元—列方程」放进填空或第 17、18 题。本节的概念是那些题的起点：相等关系找不准，后面解对方程也没用。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 5 章 5.1.1 从算式到方程</span>
+    <span>核对日期：2026-11-28</span>
+    <span>模型版本：1.0（按 2024 版正文与例题制作）</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 5.1.1</h2>
+  <p>2024 人教版七上第 5 章，教材 5.1 方程约 3 课时，本节 5.1.1 约 2 课时。核对日期 2026-11-28。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能说出方程的两个条件，能把实际问题中的相等关系翻译成方程，能规范检验方程的解，能按三个特征判断一元一次方程。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「甲队从 1 km 处出发，每小时 1.2 km；乙队从 3 km 处出发，每小时 0.8 km。用算术，你要先算相差 2 km、速度差 0.4，再算 5 小时。今天换个写法：设时间是 x，追上时两队距大本营一样远，直接写 1.2x+1=0.8x+3。未知数也能参加运算，这就是方程。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「3+2=5 为什么不是方程？」期望：没有未知数；方程必须含未知数。</li>
+    <li>「x−1 为什么不是方程？」期望：没有等号，不是等式。</li>
+    <li>「x²=4000 是方程吗？是一元一次方程吗？」期望：是方程，不是一元一次，次数是 2。</li>
+    <li>「x=5 为什么是解？」期望：代入后左边=右边，都是 7。</li>
+    <li>「列方程最关键的一步是什么？」期望：找相等关系，不是急着算。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：从登山追及开始；易错例：直接看 x²=4000 与 3x+1=5y；挑战例：跳到复述自检。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「有 x 就是方程。」→ 拿 x−1、x>3 对照，强调必须有等号。</li>
+    <li>「有等号就是方程。」→ 拿 3+2=5 对照，强调必须含未知数。</li>
+    <li>「x²=4000 也是一元一次吧？」→ 让他看化简后的次数，明确是二次。</li>
+    <li>「检验只写『是解』就行。」→ 要求写出左边、右边的具体值，再比较。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>板书三行：方程（等式+未知数）；一元一次（一元、一次、整式）；方程的解（代入，左右相等）。题单 6 题：3 题判断方程、2 题列方程、1 题检验。</p>
+
+  <h3>课后 1 题</h3>
+  <p>某校女生占 52%，比男生多 80 人，求全校人数。设全校 x 人，列 0.52x−(1−0.52)x=80，解得 x=1000。追问：这个方程是一元一次方程吗？为什么？</p>
+
+  <h3>长春落点</h3>
+  <p>2022 第 11 题（3 分）与 2024 第 17 题（6 分）都不是考「什么是方程」，而是考「设元—列方程」。本节要把相等关系的翻译练熟，概念只需讲清边界。</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  function fmt(v) {
+    if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v)).replace("-", "−");
+    return String(Math.round(v * 100) / 100).replace("-", "−");
+  }
+  function setPressed(group, el) {
+    group.forEach(function (b) { b.setAttribute("aria-pressed", b === el ? "true" : "false"); });
+  }
+
+  /* 01 追及 */
+  var timeSlider = document.getElementById("timeSlider");
+  var timeVal = document.getElementById("timeVal");
+  var barA = document.getElementById("barA");
+  var barB = document.getElementById("barB");
+  var valA = document.getElementById("valA");
+  var valB = document.getElementById("valB");
+  var timeReadout = document.getElementById("timeReadout");
+  function updateTime() {
+    var t = Number(timeSlider.value);
+    var a = 1.2 * t + 1;
+    var b = 0.8 * t + 3;
+    timeVal.textContent = fmt(t) + " h";
+    barA.style.width = Math.min(100, a / 14 * 100) + "%";
+    barB.style.width = Math.min(100, b / 14 * 100) + "%";
+    valA.textContent = fmt(a) + " km";
+    valB.textContent = fmt(b) + " km";
+    if (Math.abs(a - b) < 1e-9) {
+      timeReadout.innerHTML = "甲 " + fmt(a) + " km，乙 " + fmt(b) + " km，<b>两条一样长</b><small>x = 5 时追上；这就是方程 1.2x+1=0.8x+3 的解</small>";
+    } else {
+      timeReadout.innerHTML = "甲 " + fmt(a) + " km，乙 " + fmt(b) + " km，相差 " + fmt(Math.abs(b - a)) + " km<small>继续拖，看什么时候两条路程条一样长</small>";
+    }
+  }
+  timeSlider.addEventListener("input", updateTime);
+  updateTime();
+
+  /* 02 方程判断 */
+  function bindPairs(boxId, fbId) {
+    var box = document.getElementById(boxId);
+    var fb = document.getElementById(fbId);
+    Array.prototype.forEach.call(box.querySelectorAll(".pair"), function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(box.querySelectorAll(".pair"), function (x) { x.classList.remove("is-ok", "is-bad"); });
+        var ok = b.getAttribute("data-ok") === "1";
+        b.classList.add(ok ? "is-ok" : "is-bad");
+        fb.innerHTML = "<b>" + (ok ? "是。" : "不是。") + "</b>" + b.getAttribute("data-why");
+      });
+    });
+  }
+  bindPairs("eqBox", "eqFb");
+  bindPairs("linBox", "linFb");
+
+  /* 04 方程的解 */
+  var tryBtns = Array.prototype.slice.call(document.querySelectorAll("#tryRow .btn"));
+  var leftVal = document.getElementById("leftVal");
+  var rightVal = document.getElementById("rightVal");
+  var cmpSign = document.getElementById("cmpSign");
+  var tryBox = document.getElementById("tryBox");
+  var tryReadout = document.getElementById("tryReadout");
+  function updateTry(x) {
+    var l = 1.2 * x + 1;
+    var r = 0.8 * x + 3;
+    leftVal.textContent = fmt(l);
+    rightVal.textContent = fmt(r);
+    var eq = Math.abs(l - r) < 1e-9;
+    cmpSign.textContent = eq ? "=" : "≠";
+    tryBox.classList.toggle("is-eq", eq);
+    tryBox.classList.toggle("is-ne", !eq);
+    tryReadout.innerHTML = eq
+      ? "x = " + fmt(x) + " 时，左边 1.2×" + fmt(x) + "+1 = " + fmt(l) + "，右边 0.8×" + fmt(x) + "+3 = " + fmt(r) + "，两边相等，<b>所以 x=" + fmt(x) + " 是方程的解</b>。"
+      : "x = " + fmt(x) + " 时，左边 " + fmt(l) + "，右边 " + fmt(r) + "，两边不相等，所以 x=" + fmt(x) + " 不是方程的解。";
+  }
+  tryBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      setPressed(tryBtns, b);
+      updateTry(Number(b.getAttribute("data-x")));
+    });
+  });
+  updateTry(5);
+
+  var try2Btns = Array.prototype.slice.call(document.querySelectorAll("#try2Row .btn"));
+  var left2Val = document.getElementById("left2Val");
+  var right2Val = document.getElementById("right2Val");
+  var cmp2Sign = document.getElementById("cmp2Sign");
+  var try2Box = document.getElementById("try2Box");
+  var try2Readout = document.getElementById("try2Readout");
+  function updateTry2(x) {
+    var l = 12 * x;
+    var r = 16 * (x - 5);
+    left2Val.textContent = fmt(l);
+    right2Val.textContent = fmt(r);
+    var eq = Math.abs(l - r) < 1e-9;
+    cmp2Sign.textContent = eq ? "=" : "≠";
+    try2Box.classList.toggle("is-eq", eq);
+    try2Box.classList.toggle("is-ne", !eq);
+    try2Readout.innerHTML = eq
+      ? "x = " + fmt(x) + " 时，左边 12×" + fmt(x) + " = " + fmt(l) + "，右边 16×(" + fmt(x) + "−5) = " + fmt(r) + "，两边相等，<b>所以 x=" + fmt(x) + " 是解</b>。"
+      : "x = " + fmt(x) + " 时，左边 " + fmt(l) + "，右边 " + fmt(r) + "，两边不相等，所以 x=" + fmt(x) + " 不是解。";
+  }
+  try2Btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      setPressed(try2Btns, b);
+      updateTry2(Number(b.getAttribute("data-x")));
+    });
+  });
+  updateTry2(20);
+
+  /* 07 复述自检 */
+  document.querySelectorAll("[data-ref]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var ref = document.getElementById(b.getAttribute("data-ref"));
+      ref.classList.toggle("is-open");
+      b.textContent = ref.classList.contains("is-open") ? "收起参考" : "看参考表述";
+    });
+  });
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  document.getElementById("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      var targetId = preset === "standard" ? "arithmetic" : (preset === "error" ? "misconceptions" : "selfcheck");
+      var label = preset === "standard" ? "标准例：从登山追及开始。" : (preset === "error" ? "易错例：直接看五个常见错误。" : "挑战例：跳到复述自检。");
+      document.getElementById("presetNote").textContent = label;
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>

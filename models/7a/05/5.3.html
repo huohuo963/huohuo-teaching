@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.3 实际问题与一元一次方程 · 七上 第5章 一元一次方程</title>
+<script>
+  if (/[?&]embed=1/.test(location.search)) document.documentElement.className += " embed";
+</script>
+<style>
+  :root {
+    --bg: #f5efe2; --paper: #efe6d1; --panel: #fffdf8;
+    --ink: #2b2419; --ink2: #5f5443; --ink3: #96886f;
+    --line: #e0d5be; --line-soft: #ece3d0;
+    --brand: #a3541f; --brand-deep: #83401a; --ochre: #b9863c; --orange: #cd6a2e;
+    --ok: #4f6b3a; --err: #a33b24;
+    --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", STSong, SimSun, Georgia, serif;
+    --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button, summary { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .bar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: rgba(245,239,226,.96); border-bottom: 1px solid var(--line); font-size: 13px; flex-wrap: wrap; }
+  .bar__back { color: var(--brand); font-weight: 600; text-decoration: none; }
+  .bar__crumb { color: var(--ink3); }
+  .bar__tools { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool-btn { padding: 5px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); cursor: pointer; }
+  .tool-btn:hover, .tool-btn[aria-pressed="true"] { border-color: var(--brand); color: var(--brand); }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 22px 72px; }
+  .hero { padding: 8px 0 4px; }
+  .eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .16em; color: var(--brand); }
+  h1 { margin: 0; font-family: var(--serif); font-size: 36px; line-height: 1.3; letter-spacing: .02em; }
+  h1 small { display: block; margin-top: 8px; font-family: var(--sans); font-size: 15px; font-weight: 400; color: var(--ink2); }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge { padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 12px; color: var(--ink2); }
+  .badge--brand { border-color: rgba(163,84,31,.35); color: var(--brand); }
+  .goal { margin: 20px 0 0; padding: 14px 18px; border-left: 3px solid var(--brand); background: #fbf5e8; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+
+  section { margin-top: 40px; scroll-margin-top: 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .sec-no { font-family: var(--serif); font-size: 13px; letter-spacing: .12em; color: var(--brand); }
+  h2 { margin: 0; font-family: var(--serif); font-size: 23px; line-height: 1.4; }
+  .sec-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink3); }
+  .card { margin-top: 16px; padding: 20px 22px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 10px; }
+  .card b { color: var(--brand-deep); }
+  .note { margin-top: 12px !important; font-size: 13.5px; color: var(--ink2); }
+  .note b { color: var(--brand-deep); }
+  .definition { font-family: var(--serif); font-size: 23px; line-height: 1.8; }
+  .definition mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 3px; }
+  .is-hidden { display: none !important; }
+
+  .btn { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; min-height: 40px; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn--primary { background: var(--brand); border-color: var(--brand); color: #fff8ec; }
+  .btn--primary:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: #fff8ec; }
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  .readout { margin-top: 10px; padding: 12px 14px; border-radius: 8px; background: #fbf5e8; font-family: var(--serif); font-size: 20px; text-align: center; color: var(--brand-deep); }
+  .readout small { display: block; margin-top: 4px; font-family: var(--sans); font-size: 12.5px; color: var(--ink2); }
+  .readout.is-bad { background: #fbeee9; color: var(--err); }
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .slider-row label { font-size: 13px; color: var(--ink2); min-width: 96px; }
+  .slider-row input[type="range"] { flex: 1 1 200px; min-width: 150px; accent-color: var(--brand); height: 32px; }
+  .slider-val { font-family: var(--serif); font-size: 17px; color: var(--brand-deep); min-width: 88px; text-align: right; }
+
+  .track { margin-top: 10px; }
+  .track__label { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink3); }
+  .track__bar { position: relative; height: 26px; margin-top: 4px; border-radius: 6px; background: #f0e8d6; overflow: hidden; }
+  .track__fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; transition: width .18s ease; }
+  .track__fill--a { background: var(--brand); }
+  .track__fill--b { background: var(--ochre); }
+  .track__val { position: absolute; right: 8px; top: 2px; font-family: var(--serif); font-size: 14px; color: var(--ink); }
+
+  .stack { display: flex; height: 34px; margin-top: 10px; border-radius: 8px; overflow: hidden; background: #f0e8d6; border: 1px solid var(--line); }
+  .stack__seg { display: flex; align-items: center; justify-content: center; font-size: 11.5px; color: #fff8ec; transition: width .18s ease; white-space: nowrap; overflow: hidden; }
+  .stack__seg--a { background: var(--brand); }
+  .stack__seg--b { background: var(--ochre); }
+
+  .sales-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .sale { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .sale h3 { margin: 0 0 6px; font-family: var(--serif); font-size: 17px; }
+  .sale p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .sale .big { display: block; margin-top: 8px; font-family: var(--serif); font-size: 22px; color: var(--brand-deep); }
+  .sale dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; margin: 8px 0 0; font-size: 13px; }
+  .sale dt { color: var(--ink3); }
+  .sale dd { margin: 0; font-family: var(--serif); font-size: 15px; }
+
+  .integral { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .integral div { padding: 12px 14px; border: 1px solid var(--line); border-radius: 9px; background: #fff; text-align: center; }
+  .integral b { display: block; font-family: var(--serif); font-size: 26px; color: var(--brand-deep); }
+  .integral small { color: var(--ink3); }
+
+  .accordion { margin-top: 14px; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-item > summary { display: flex; align-items: flex-start; gap: 10px; padding: 14px 4px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 500; min-height: 44px; }
+  .acc-item > summary::-webkit-details-marker { display: none; }
+  .acc-item > summary::before { content: "+"; flex: 0 0 18px; font-family: var(--serif); font-size: 18px; color: var(--brand); }
+  .acc-item[open] > summary::before { content: "−"; }
+  .acc-body { padding: 0 0 16px 28px; font-size: 14px; color: var(--ink2); }
+  .acc-body p { margin: 0; }
+  .acc-body p + p { margin-top: 8px; }
+  .acc-body b { color: var(--brand-deep); }
+
+  .work { display: block; margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--line); font-family: var(--serif); font-size: 19px; line-height: 1.9; color: var(--ink); }
+  .work mark { background: #f3dfc0; color: var(--brand-deep); padding: 0 2px; }
+
+  .mis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .mis { padding: 14px 16px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 8px; background: var(--panel); }
+  .mis__wrong { font-size: 12px; color: var(--brand); letter-spacing: .06em; }
+  .mis h3 { margin: 4px 0 8px; font-family: var(--serif); font-size: 17px; }
+  .mis p { margin: 0; font-size: 13.5px; color: var(--ink2); }
+  .mis p b { color: var(--ink); }
+
+  .quiz { margin-top: 16px; display: grid; gap: 12px; }
+  .q { padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  .q__stem { margin: 0; font-size: 15px; font-weight: 600; }
+  .q__opts { display: grid; gap: 8px; margin-top: 10px; }
+  .q__opts button { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font-size: 14px; cursor: pointer; min-height: 42px; }
+  .q__opts button:hover { border-color: var(--ochre); }
+  .q__opts button.is-ok { border-color: var(--ok); background: #f0f4ea; }
+  .q__opts button.is-bad { border-color: var(--err); background: #fbeee9; }
+  .q__opts button.is-locked { cursor: default; }
+  .q__fb { display: none; margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbf5e8; font-size: 13.5px; color: var(--ink2); }
+  .q__fb.is-open { display: block; }
+  .q__fb b { color: var(--brand-deep); }
+  .quiz__bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--ink3); }
+  .quiz__bar button { margin-left: auto; }
+
+  .conclusion { margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(163,84,31,.28); border-radius: 10px; background: #fbf5e8; font-family: var(--serif); font-size: 18px; line-height: 1.8; }
+  .conclusion b { color: var(--brand-deep); }
+  .transfer { margin-top: 10px !important; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam { margin-top: 12px; padding: 12px 14px; border: 1px dashed var(--ochre); border-radius: 8px; background: #fffdf8; font-family: var(--sans); font-size: 13.5px; color: var(--ink2); }
+  .exam b { color: var(--ink); }
+
+  footer { max-width: 1080px; margin: 0 auto; padding: 0 22px 42px; font-size: 12px; color: var(--ink3); line-height: 1.9; }
+  footer .foot-line { border-top: 1px solid var(--line); padding-top: 14px; display: flex; gap: 8px 20px; flex-wrap: wrap; }
+
+  .teacher { position: fixed; top: 0; right: 0; bottom: 0; z-index: 70; width: min(420px, 92vw); padding: 22px 22px 40px; overflow-y: auto; background: #fffdf8; border-left: 1px solid var(--line); transform: translateX(104%); transition: transform .22s ease; }
+  .teacher.is-open { transform: translateX(0); }
+  .teacher h2 { font-size: 20px; }
+  .teacher h3 { margin: 22px 0 6px; font-size: 14px; letter-spacing: .08em; color: var(--brand); }
+  .teacher p, .teacher li { font-size: 13.5px; color: var(--ink2); }
+  .teacher ol { padding-left: 20px; margin: 6px 0 0; }
+  .teacher li { margin-top: 7px; }
+  .teacher .tool-btn { float: right; }
+
+  body.is-projector { font-size: 20px; }
+  body.is-projector main { max-width: 1240px; }
+  body.is-projector h1 { font-size: 46px; }
+  body.is-projector h2 { font-size: 30px; }
+  body.is-projector .goal { font-size: 24px; }
+  body.is-projector .definition { font-size: 32px; }
+  body.is-projector .readout { font-size: 26px; }
+  body.is-projector .card, body.is-projector .q { padding: 24px 26px; }
+  body.is-projector .mis p, body.is-projector .acc-body, body.is-projector .q__stem, body.is-projector .sale p { font-size: 18px; }
+  body.is-projector .bar__crumb, body.is-projector .badge { display: none; }
+
+  .embed .bar { display: none; }
+  .embed main { padding-top: 20px; }
+  .embed .hero .eyebrow, .embed .hero h1 { display: none; }
+  .embed .hero .badges { margin-top: 0; }
+
+  @media (max-width: 760px) {
+    main { padding: 22px 16px 60px; }
+    h1 { font-size: 29px; }
+    .definition { font-size: 21px; }
+    .sales-grid, .integral, .mis-grid { grid-template-columns: 1fr; }
+    .bar { padding: 8px 12px; }
+    .bar__crumb { display: none; }
+    .teacher { width: 100vw; }
+    .tool-btn, .btn { min-height: 44px; }
+    .stack__seg { font-size: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .teacher, .track__fill, .stack__seg { transition: none; }
+  }
+
+  @media print {
+    .bar, .teacher, .tool-btn, .btn, .preset-row, .quiz__bar { display: none !important; }
+    body { background: #fff; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    section { break-inside: avoid; }
+    .card, .mis, .q, .conclusion, .sale { border-color: #bbb; background: #fff; }
+    .q__fb { display: block !important; }
+    footer { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="bar__back" href="../../../index.html#s=5.3" target="_top">← 返回 5.3</a>
+  <span class="bar__crumb">七上 · 第5章 一元一次方程 · 5.3</span>
+  <div class="bar__tools">
+    <button class="tool-btn" id="projectorBtn" type="button" aria-pressed="false">投影模式</button>
+    <button class="tool-btn" id="fullBtn" type="button">全屏</button>
+    <button class="tool-btn" id="teacherBtn" type="button" aria-expanded="false">教师模式 T</button>
+  </div>
+</header>
+
+<main>
+  <header class="hero">
+    <p class="eyebrow">方程模型 · 2024 人教版 · 七上第 5 章</p>
+    <h1>实际问题与一元一次方程<small>应用题的分水岭不在算，而在「谁和谁相等」。先把相等关系说出来，再设元列方程。</small></h1>
+    <div class="badges">
+      <span class="badge badge--brand">S 旗舰样板</span>
+      <span class="badge">模型型 · 5 题检测</span>
+      <span class="badge">4 课时内容（配套 · 工程 · 销售 · 积分 · 方案）</span>
+      <span class="badge">单文件 · 断网可用</span>
+    </div>
+    <p class="goal">本节只追一件事：拿到一个实际情境，你能先找出相等关系，再设元列方程，最后回到实际检验答案。</p>
+  </header>
+
+  <section id="steps">
+    <div class="sec-head"><span class="sec-no">01</span><h2>列方程四步：审、找、设、检</h2></div>
+    <p class="sec-sub">教材把用方程解决实际问题归纳为：分析数量关系 → 找相等关系 → 设未知数列方程 → 解方程并检验作答。</p>
+    <div class="card">
+      <p class="definition"><mark>审</mark>清已知与未知 → <mark>找</mark>相等关系 → <mark>设</mark>元列方程 → 解方程并<mark>检</mark>验作答。</p>
+      <p class="note"><b>最容易被跳过的是第一步和最后一步。</b>不审清「哪些量已知、哪些量未知」，设元就会设错；不检验「解是否符合实际」，会出现人数为分数、时间为负数还照写的答案。</p>
+      <p class="note"><b>长春评分点：</b>第 17、18 题的解答题，设未知数、列方程、解方程、作答各占分。只写一个答案，过程分拿不到。</p>
+    </div>
+  </section>
+
+  <section id="peitao">
+    <div class="sec-head"><span class="sec-no">02</span><h2>配套问题：螺母数量 = 2 × 螺栓数量</h2></div>
+    <p class="sec-sub">某车间 22 名工人，每人每天生产 1200 个螺栓或 2000 个螺母。1 个螺栓配 2 个螺母，怎样安排人数刚好配套？</p>
+    <div class="card">
+      <div class="track">
+        <div class="track__label"><span>螺栓总数 1200x</span><span id="boltNum">12000 个</span></div>
+        <div class="track__bar"><div class="track__fill track__fill--a" id="boltBar" style="width:45%"></div></div>
+      </div>
+      <div class="track">
+        <div class="track__label"><span>螺母总数 2000(22−x)</span><span id="nutNum">24000 个</span></div>
+        <div class="track__bar"><div class="track__fill track__fill--b" id="nutBar" style="width:90%"></div></div>
+      </div>
+      <div class="slider-row">
+        <label for="workerSlider">生产螺栓人数 x</label>
+        <input id="workerSlider" type="range" min="0" max="22" step="1" value="10">
+        <span class="slider-val" id="workerVal">10 人</span>
+      </div>
+      <div class="readout" id="peitaoReadout">螺栓 12000 个，螺母 24000 个，螺母正好是螺栓的 2 倍<small>配套：2000(22−x) = 2×1200x，解得 x=10</small></div>
+      <p class="note"><b>相等关系：</b>螺母数量 = 2 × 螺栓数量。设 x 人生产螺栓，(22−x) 人生产螺母，列 <b>2000(22−x)=2×1200x</b>，解得 x=10，所以 10 人生产螺栓、12 人生产螺母。</p>
+      <p class="note"><b>易错：</b>「2 倍」乘在哪一边要看清。1 个螺栓配 2 个螺母，是螺母多，所以 2×螺栓 = 螺母；乘反了方程就错。</p>
+    </div>
+  </section>
+
+  <section id="gongcheng">
+    <div class="sec-head"><span class="sec-no">03</span><h2>工程问题：把总工作量看成 1</h2></div>
+    <p class="sec-sub">整理一批图书，1 人整理需 40 h。先安排一部分人整理 4 h，再增加 2 人一起整理 8 h 完成。先安排多少人？</p>
+    <div class="card">
+      <div class="stack" id="workStack">
+        <div class="stack__seg stack__seg--a" id="segA" style="width:20%">前 4 h 20%</div>
+        <div class="stack__seg stack__seg--b" id="segB" style="width:80%">后 8 h 80%</div>
+      </div>
+      <div class="slider-row">
+        <label for="peopleSlider">先安排人数 x</label>
+        <input id="peopleSlider" type="range" min="0" max="6" step="1" value="2">
+        <span class="slider-val" id="peopleVal">2 人</span>
+      </div>
+      <div class="readout" id="gongchengReadout">前 4 h 完成 8/40，后 8 h 完成 32/40，合计 40/40 = 1<small>两段工作量之和 = 总工作量 1</small></div>
+      <p class="note"><b>基本关系：</b>工作量 = 人均效率 × 人数 × 时间。总工作量设为 1，则人均效率是 1/40。</p>
+      <p class="note"><b>方程：</b>前一段 x 人做 4 h，工作量 4x/40；后一段 (x+2) 人做 8 h，工作量 8(x+2)/40。两段之和等于 1：<b>4x/40 + 8(x+2)/40 = 1</b>，解得 x=2。</p>
+      <p class="note"><b>易错：</b>第二段人数是 x+2，不是 x；两段的时间分别是 4 h 和 8 h，不要混。</p>
+    </div>
+  </section>
+
+  <section id="sales">
+    <div class="sec-head"><span class="sec-no">04</span><h2>销售盈亏：进价、标价、折扣、利润、利润率</h2></div>
+    <p class="sec-sub">先拖动三个滑块，看售价、利润、利润率怎么联动；再看教材里「两件衣服都卖 60 元」的经典判断。</p>
+    <div class="card">
+      <div class="slider-row">
+        <label for="costSlider">进价</label>
+        <input id="costSlider" type="range" min="30" max="100" step="1" value="50">
+        <span class="slider-val" id="costVal">50 元</span>
+      </div>
+      <div class="slider-row">
+        <label for="listSlider">标价</label>
+        <input id="listSlider" type="range" min="40" max="150" step="1" value="100">
+        <span class="slider-val" id="listVal">100 元</span>
+      </div>
+      <div class="slider-row">
+        <label for="discountSlider">折扣</label>
+        <input id="discountSlider" type="range" min="5" max="10" step="0.5" value="9">
+        <span class="slider-val" id="discountVal">9 折</span>
+      </div>
+      <div class="readout" id="salesReadout">售价 90 元，利润 40 元，利润率 80%<small>售价 = 标价 × 折扣；利润 = 售价 − 进价；利润率 = 利润 ÷ 进价</small></div>
+      <p class="note"><b>四个关系：</b>售价 = 标价 × 折扣率；利润 = 售价 − 进价；利润率 = 利润 ÷ 进价 × 100%；售价 = 进价 × (1 + 利润率)。</p>
+
+      <p class="note" style="margin-top:20px !important"><b>教材探究 1：</b>两件衣服都以 60 元卖出，一件盈利 25%，另一件亏损 25%。卖这两件衣服总的是盈还是亏？</p>
+      <div class="sales-grid">
+        <div class="sale">
+          <h3>盈利 25% 的那件</h3>
+          <p>设进价 x 元，售价 = 进价 × (1+25%)。</p>
+          <dl><dt>方程</dt><dd>x + 0.25x = 60</dd><dt>进价</dt><dd>48 元</dd><dt>利润</dt><dd>+12 元</dd></dl>
+        </div>
+        <div class="sale">
+          <h3>亏损 25% 的那件</h3>
+          <p>设进价 y 元，售价 = 进价 × (1−25%)。</p>
+          <dl><dt>方程</dt><dd>y − 0.25y = 60</dd><dt>进价</dt><dd>80 元</dd><dt>利润</dt><dd>−20 元</dd></dl>
+        </div>
+      </div>
+      <div class="readout is-bad" style="margin-top:12px">总进价 48+80=128 元，总售价 120 元，<b>总亏损 8 元</b><small>一件赚 12、一件亏 20，合起来亏 8；「都卖 60 元」不等于「都不赚不亏」</small></div>
+      <p class="note"><b>关键：</b>利润率是在<b>进价</b>的基础上算的，不是售价。盈利 25% 的进价小（48），亏损 25% 的进价大（80），所以亏的那件基数大，总体亏。</p>
+    </div>
+  </section>
+
+  <section id="integral">
+    <div class="sec-head"><span class="sec-no">05</span><h2>球赛积分：解必须是整数</h2></div>
+    <p class="sec-sub">某次球赛共 14 场，胜一场 2 分、负一场 1 分。某队的胜场总积分能等于负场总积分吗？</p>
+    <div class="card">
+      <div class="slider-row">
+        <label for="winSlider">胜场数 y</label>
+        <input id="winSlider" type="range" min="0" max="14" step="1" value="5">
+        <span class="slider-val" id="winVal">5 场</span>
+      </div>
+      <div class="integral">
+        <div>胜场总积分<b id="winPts">10</b><small>2y</small></div>
+        <div>负场总积分<b id="losePts">9</b><small>14 − y</small></div>
+      </div>
+      <div class="readout" id="integralReadout">胜场积分 10，负场积分 9，相差 1<small>继续拖，看能不能相等</small></div>
+      <p class="note"><b>列方程：</b>设胜 y 场，则负 (14−y) 场。若胜场总积分等于负场总积分，则 <b>2y = 14 − y</b>，解得 y = 14/3。</p>
+      <p class="note"><b>检验：</b>14/3 不是整数，而胜场数必须是整数，所以<b>没有哪支球队</b>能做到胜场总积分等于负场总积分。这就是「方程有解，但解不符合实际」的典型例子。教材在这里训练的不是解方程，而是<b>回头看解的实际意义</b>。</p>
+    </div>
+  </section>
+
+  <section id="plan">
+    <div class="sec-head"><span class="sec-no">06</span><h2>方案选择：先找费用相等，再分区间比较</h2></div>
+    <p class="sec-sub">1 级能效空调 3000 元，每年耗电 640 kW·h；3 级能效空调 2600 元，每年耗电 800 kW·h。电价 0.5 元/(kW·h)。使用多少年时两款综合费用相同？</p>
+    <div class="card">
+      <div class="track">
+        <div class="track__label"><span>1 级：3000 + 320t</span><span id="costA">4600 元</span></div>
+        <div class="track__bar"><div class="track__fill track__fill--a" id="barA" style="width:59%"></div></div>
+      </div>
+      <div class="track">
+        <div class="track__label"><span>3 级：2600 + 400t</span><span id="costB">4600 元</span></div>
+        <div class="track__bar"><div class="track__fill track__fill--b" id="barB" style="width:59%"></div></div>
+      </div>
+      <div class="slider-row">
+        <label for="yearSlider">使用年数 t</label>
+        <input id="yearSlider" type="range" min="0" max="12" step="1" value="5">
+        <span class="slider-val" id="yearVal">5 年</span>
+      </div>
+      <div class="readout" id="planReadout">两款都是 4600 元，费用相同<small>3000+320t = 2600+400t，解得 t=5</small></div>
+      <p class="note"><b>怎么比较：</b>3 级费用 − 1 级费用 = (2600+400t) − (3000+320t) = 80t − 400 = 80(t−5)。t&lt;5 时差为负，3 级更省；t&gt;5 时差为正，1 级更省。</p>
+      <p class="note"><b>伏笔：</b>两条费用都是 t 的一次式，画出来是两条直线，交点就是 t=5。这就是八年级一次函数与方程的联系——现在先用方程把交点找出来。</p>
+    </div>
+  </section>
+
+  <section id="examples">
+    <div class="sec-head"><span class="sec-no">07</span><h2>教材例与探究：五道题的完整过程</h2></div>
+    <p class="sec-sub">每条都按「相等关系 → 设元 → 方程 → 解 → 作答」写全，方便对照课堂板书。</p>
+    <div class="accordion">
+      <details class="acc-item" open>
+        <summary>例 1 配套：螺栓与螺母</summary>
+        <div class="acc-body">
+          <p><b>相等关系：</b>螺母数量 = 2 × 螺栓数量。</p>
+          <span class="work">设 x 人生产螺栓，则 (22−x) 人生产螺母。<br>2000(22−x) = 2×1200x<br>44000 − 2000x = 2400x<br>44000 = 4400x<br>x = 10，22−x = 12</span>
+          <p><b>答：</b>安排 10 人生产螺栓、12 人生产螺母。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>例 2 工程：整理图书</summary>
+        <div class="acc-body">
+          <p><b>相等关系：</b>前一段工作量 + 后一段工作量 = 1。</p>
+          <span class="work">设先安排 x 人整理 4 h。<br>4x/40 + 8(x+2)/40 = 1<br>两边乘 40：4x + 8(x+2) = 40<br>4x + 8x + 16 = 40<br>12x = 24<br>x = 2</span>
+          <p><b>答：</b>先安排 2 人整理。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>探究 1 销售：两件衣服都卖 60 元</summary>
+        <div class="acc-body">
+          <p><b>相等关系：</b>售价 = 进价 × (1 + 利润率)。</p>
+          <span class="work">盈利件：x + 0.25x = 60，x = 48<br>亏损件：y − 0.25y = 60，y = 80<br>总进价 128，总售价 120<br>120 − 128 = −8</span>
+          <p><b>答：</b>卖这两件衣服总的是亏损，亏 8 元。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>探究 2 球赛积分：胜场总积分能等于负场总积分吗</summary>
+        <div class="acc-body">
+          <p>由积分表先求规则：负一场 1 分，胜一场 2 分。</p>
+          <span class="work">设胜 y 场，则负 (14−y) 场。<br>2y = 14 − y<br>3y = 14<br>y = 14/3</span>
+          <p><b>检验：</b>胜场数必须是整数，14/3 不符合实际，所以不能。</p>
+        </div>
+      </details>
+      <details class="acc-item">
+        <summary>探究 3 方案选择：两款空调</summary>
+        <div class="acc-body">
+          <p><b>相等关系：</b>两款综合费用相等。</p>
+          <span class="work">1 级：3000 + 0.5×640t = 3000 + 320t<br>3 级：2600 + 0.5×800t = 2600 + 400t<br>3000 + 320t = 2600 + 400t<br>400 = 80t<br>t = 5</span>
+          <p><b>比较：</b>t&lt;5 选 3 级，t=5 两款一样，t&gt;5 选 1 级。</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="misconceptions">
+    <div class="sec-head"><span class="sec-no">08</span><h2>五个常见错误</h2></div>
+    <p class="sec-sub">应用题的错，多半不是解方程错，而是相等关系列反了、总量设错了。</p>
+    <div class="mis-grid">
+      <div class="mis"><div class="mis__wrong">错误 01</div><h3>配套比乘反</h3><p>1 个螺栓配 2 个螺母，应是 <b>螺母 = 2×螺栓</b>，不是 螺栓 = 2×螺母。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 02</div><h3>工程总量不设为 1</h3><p>总工作量设为 1，人均效率才是 1/40；设成 40 会把方程复杂化，也容易漏掉「两段之和」。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 03</div><h3>利润率算在售价上</h3><p>利润率 = 利润 ÷ <b>进价</b>。盈利 25% 的进价是 48，不是 60÷1.25 以外的数。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 04</div><h3>积分题不检验整数</h3><p>解出 y=14/3 就写「能」，忘了胜场数必须是整数，解不符合实际。</p></div>
+      <div class="mis"><div class="mis__wrong">错误 05</div><h3>方案比较只看单价</h3><p>空调要算「售价 + 电费」的综合费用；只比 3000 和 2600，会漏掉每年电费的差。</p></div>
+    </div>
+  </section>
+
+  <section id="quizSec">
+    <div class="sec-head"><span class="sec-no">09</span><h2>当堂检测：5 题</h2></div>
+    <p class="sec-sub">选中即判对错，下面有解析。做完可重做；不计入任何记录。</p>
+    <div class="quiz" id="quiz">
+      <div class="q">
+        <p class="q__stem">1. 22 名工人，每人每天生产 1200 个螺栓或 2000 个螺母，1 个螺栓配 2 个螺母。设 x 人生产螺栓，方程是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="1">A. 2000(22−x) = 2×1200x</button>
+          <button type="button" data-ok="0">B. 1200x = 2×2000(22−x)</button>
+          <button type="button" data-ok="0">C. 2000x = 2×1200(22−x)</button>
+          <button type="button" data-ok="0">D. 1200(22−x) = 2×2000x</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>螺栓 1200x 个，螺母 2000(22−x) 个；螺母是螺栓的 2 倍，所以 2000(22−x)=2×1200x，解得 x=10。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">2. 1 人整理图书需 40 h，先 x 人整理 4 h，再增加 2 人整理 8 h 完成。方程是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. 4x + 8(x+2) = 1</button>
+          <button type="button" data-ok="1">B. 4x/40 + 8(x+2)/40 = 1</button>
+          <button type="button" data-ok="0">C. 4x/40 + 8x/40 = 1</button>
+          <button type="button" data-ok="0">D. 4(x+2)/40 + 8x/40 = 1</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>人均效率 1/40；前段 x 人 4 h 是 4x/40，后段 (x+2) 人 8 h 是 8(x+2)/40，两段之和为 1。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">3. 一件衣服以 60 元卖出，盈利 25%，它的进价是（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. 45 元</button>
+          <button type="button" data-ok="1">B. 48 元</button>
+          <button type="button" data-ok="0">C. 50 元</button>
+          <button type="button" data-ok="0">D. 75 元</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>设进价 x，x+0.25x=60，1.25x=60，x=48。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">4. 14 场球赛，胜一场 2 分、负一场 1 分。某队胜场总积分能等于负场总积分吗？（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. 能，胜 4 场时</button>
+          <button type="button" data-ok="0">B. 能，胜 5 场时</button>
+          <button type="button" data-ok="1">C. 不能，解为 14/3，不是整数</button>
+          <button type="button" data-ok="0">D. 不能，因为胜场积分一定大于负场积分</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>设胜 y 场，2y=14−y，y=14/3；胜场数必须是整数，所以不能。</div>
+      </div>
+      <div class="q">
+        <p class="q__stem">5. 1 级空调 3000 元、每年电费 320 元；3 级 2600 元、每年电费 400 元。使用多少年两款费用相同？（ ）</p>
+        <div class="q__opts">
+          <button type="button" data-ok="0">A. 4 年</button>
+          <button type="button" data-ok="1">B. 5 年</button>
+          <button type="button" data-ok="0">C. 6 年</button>
+          <button type="button" data-ok="0">D. 8 年</button>
+        </div>
+        <div class="q__fb"><b>解析：</b>3000+320t=2600+400t，400=80t，t=5。</div>
+      </div>
+    </div>
+    <div class="quiz__bar">
+      <span id="quizStat">已答 0 / 5 · 答对 0</span>
+      <button class="btn" type="button" id="quizReset">重做</button>
+    </div>
+  </section>
+
+  <section id="summary">
+    <div class="sec-head"><span class="sec-no">10</span><h2>小结与中考连接</h2></div>
+    <div class="conclusion">
+      应用题的主线只有一条：<b>找相等关系 → 设元列方程 → 解方程 → 检验作答</b>。配套看「倍数」，工程看「总量 1」，销售看「售价−进价」，积分看「整数」，方案看「费用相等」。
+      <p class="transfer"><b>最容易丢分的地方：</b>配套比乘反；工程总量不设为 1；利润率算在售价上；积分不检验整数；方案只比单价。</p>
+      <div class="exam">
+        <b>长春真题回看：</b><br>
+        2022 第 11 题（3 分）：车间人数调配，列 (4/5)x−30+10=(3/4)(x−10)，解得 x=250，第一车间 <b>170</b> 人。<br>
+        2024 第 17 题（6 分）：《九章算术》盈不足，列 400x−3400=300x−100，解得 <b>33 人、9800 钱</b>。<br>
+        2025 第 21(3)（2 分）：由 5450=2700+55(t−60) 解得 <b>t=110</b> 分钟。
+      </div>
+      <p class="transfer"><b>命题落点：</b>长春卷的方程应用固定落在填空 3 分或第 17/18 题 6–7 分，且常以教材例、习题为原型改编。把教材的配套、工程、销售、积分、方案五类讲透，比刷全国题库更对路。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-line">
+    <span>教材：2024 人教版七年级上册 · 第 5 章 5.3 实际问题与一元一次方程</span>
+    <span>核对日期：2026-11-28</span>
+    <span>模型版本：1.0（按 2024 版正文与例题制作）</span>
+    <span>无数据收集 · 断网可用</span>
+  </div>
+</footer>
+
+<aside class="teacher" id="teacherPanel" aria-label="教师模式" aria-hidden="true">
+  <button class="tool-btn" type="button" id="teacherClose">关闭</button>
+  <h2>教师模式 · 5.3</h2>
+  <p>2024 人教版七上第 5 章，教材安排约 4 课时（配套与工程、销售盈亏、球赛积分、方案选择）。核对日期 2026-11-28。</p>
+
+  <h3>本节目标</h3>
+  <p>学生能从配套、工程、销售、积分、方案五类情境中找出相等关系，设元列方程，解出后检验答案是否符合实际。</p>
+
+  <h3>3 分钟开场（可直接念）</h3>
+  <p>「两件衣服都卖 60 元，一件赚 25%，一件亏 25%。你先猜：赚还是亏？很多人说刚好不赚不亏。我们算完会发现亏 8 元。为什么？因为利润率算在进价上，两件进价不一样。」</p>
+
+  <h3>5 个追问（按顺序）</h3>
+  <ol>
+    <li>「1 个螺栓配 2 个螺母，谁是谁的 2 倍？」期望：螺母是螺栓的 2 倍。</li>
+    <li>「工程问题为什么把总量设为 1？」期望：人均效率变成 1/40，两段工作量直接相加。</li>
+    <li>「利润率算在谁身上？」期望：进价，不是售价。</li>
+    <li>「14/3 为什么不能当答案？」期望：胜场数必须是整数，解不符合实际。</li>
+    <li>「方案比较为什么要先找费用相等？」期望：相等点是分界，之后分区间判断。</li>
+  </ol>
+
+  <h3>3 个预设场景</h3>
+  <div class="preset-row">
+    <button class="tool-btn" type="button" data-preset="standard">标准例</button>
+    <button class="tool-btn" type="button" data-preset="error">易错例</button>
+    <button class="tool-btn" type="button" data-preset="challenge">挑战例</button>
+  </div>
+  <p id="presetNote">标准例：从配套滑块开始；易错例：直接看销售两件衣服；挑战例：跳到方案选择。</p>
+
+  <h3>常见学生反应</h3>
+  <ol>
+    <li>「配套就是人数按 1∶2 分。」→ 用滑块演示，人数比不是 1∶2，产量比才是。</li>
+    <li>「工程总量设 40 也行。」→ 可以，但方程会变成 4x+8(x+2)=40，本质相同；设 1 更简洁。</li>
+    <li>「都卖 60 元，一赚一亏，应该不赚不亏。」→ 用 48 与 80 的进价对比，算出亏 8 元。</li>
+    <li>「y=14/3 约等于 4.67，取 5 就行。」→ 强调场数必须整数，不能四舍五入。</li>
+  </ol>
+
+  <h3>与板书、题单的衔接</h3>
+  <p>板书四行：审（已知未知）、找（相等关系）、设（设元列方程）、检（实际意义）。题单 6 题：配套、工程、销售、积分、方案各 1 题，再加 1 题自编情境。</p>
+
+  <h3>课后 1 题</h3>
+  <p>某商品标价 500 元，打八折出售仍盈利 25%，求进价。设进价 x，500×0.8=x(1+25%)，x=320 元。</p>
+
+  <h3>长春落点</h3>
+  <p>2022 第 11 题（3 分）、2024 第 17 题（6 分）、2025 第 21(3)（2 分）都考方程建模。长春不单独考解法，考的是「找相等关系 + 检验实际意义」，与本节主线一致。</p>
+
+  <h3>离线使用</h3>
+  <p>本页单文件，无网络请求；拷到 U 盘或校园网电脑双击即可。手机竖屏可用，投影模式在右上角。</p>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+
+  function fmt(v) {
+    if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v)).replace("-", "−");
+    return String(Math.round(v * 100) / 100).replace("-", "−");
+  }
+
+  /* 02 配套 */
+  var workerSlider = document.getElementById("workerSlider");
+  var workerVal = document.getElementById("workerVal");
+  var boltNum = document.getElementById("boltNum");
+  var nutNum = document.getElementById("nutNum");
+  var boltBar = document.getElementById("boltBar");
+  var nutBar = document.getElementById("nutBar");
+  var peitaoReadout = document.getElementById("peitaoReadout");
+  function updatePeitao() {
+    var x = Number(workerSlider.value);
+    var bolts = 1200 * x;
+    var nuts = 2000 * (22 - x);
+    workerVal.textContent = x + " 人";
+    boltNum.textContent = bolts + " 个";
+    nutNum.textContent = nuts + " 个";
+    boltBar.style.width = Math.min(100, bolts / 26400 * 100) + "%";
+    nutBar.style.width = Math.min(100, nuts / 26400 * 100) + "%";
+    var diff = nuts - 2 * bolts;
+    if (diff === 0) {
+      peitaoReadout.classList.remove("is-bad");
+      peitaoReadout.innerHTML = "螺栓 " + bolts + " 个，螺母 " + nuts + " 个，螺母正好是螺栓的 2 倍<small>配套：2000(22−x) = 2×1200x，解得 x=10</small>";
+    } else {
+      peitaoReadout.classList.add("is-bad");
+      peitaoReadout.innerHTML = "螺栓 " + bolts + " 个，螺母 " + nuts + " 个，螺母" + (diff > 0 ? "多" : "少") + " " + Math.abs(diff) + " 个<small>还没配套：需要螺母 = 2×螺栓，继续拖</small>";
+    }
+  }
+  workerSlider.addEventListener("input", updatePeitao);
+  updatePeitao();
+
+  /* 03 工程 */
+  var peopleSlider = document.getElementById("peopleSlider");
+  var peopleVal = document.getElementById("peopleVal");
+  var segA = document.getElementById("segA");
+  var segB = document.getElementById("segB");
+  var gongchengReadout = document.getElementById("gongchengReadout");
+  function updateGongcheng() {
+    var x = Number(peopleSlider.value);
+    var a = 4 * x / 40;
+    var b = 8 * (x + 2) / 40;
+    var total = a + b;
+    peopleVal.textContent = x + " 人";
+    segA.style.width = Math.min(100, a * 100) + "%";
+    segB.style.width = Math.min(100, b * 100) + "%";
+    segA.textContent = "前 4 h " + Math.round(a * 100) + "%";
+    segB.textContent = "后 8 h " + Math.round(b * 100) + "%";
+    if (Math.abs(total - 1) < 1e-9) {
+      gongchengReadout.classList.remove("is-bad");
+      gongchengReadout.innerHTML = "前 4 h 完成 " + fmt(a) + "，后 8 h 完成 " + fmt(b) + "，合计 1<small>两段工作量之和 = 总工作量 1，x=2 时刚好完成</small>";
+    } else {
+      gongchengReadout.classList.add("is-bad");
+      gongchengReadout.innerHTML = "前 4 h 完成 " + fmt(a) + "，后 8 h 完成 " + fmt(b) + "，合计 " + fmt(total) + "<small>" + (total < 1 ? "还没完成，继续增加人数" : "超过总工作量 1，人数多了") + "</small>";
+    }
+  }
+  peopleSlider.addEventListener("input", updateGongcheng);
+  updateGongcheng();
+
+  /* 04 销售 */
+  var costSlider = document.getElementById("costSlider");
+  var listSlider = document.getElementById("listSlider");
+  var discountSlider = document.getElementById("discountSlider");
+  var costVal = document.getElementById("costVal");
+  var listVal = document.getElementById("listVal");
+  var discountVal = document.getElementById("discountVal");
+  var salesReadout = document.getElementById("salesReadout");
+  function updateSales() {
+    var cost = Number(costSlider.value);
+    var list = Number(listSlider.value);
+    var disc = Number(discountSlider.value);
+    var price = list * disc / 10;
+    var profit = price - cost;
+    var rate = cost === 0 ? 0 : profit / cost * 100;
+    costVal.textContent = cost + " 元";
+    listVal.textContent = list + " 元";
+    discountVal.textContent = fmt(disc) + " 折";
+    var status = profit > 0 ? "盈利" : (profit < 0 ? "亏损" : "不盈不亏");
+    salesReadout.classList.toggle("is-bad", profit < 0);
+    salesReadout.innerHTML = "售价 " + fmt(price) + " 元，利润 " + fmt(profit) + " 元，利润率 " + fmt(rate) + "%<small>" + status + "；售价 = 标价 × 折扣，利润 = 售价 − 进价，利润率 = 利润 ÷ 进价</small>";
+  }
+  costSlider.addEventListener("input", updateSales);
+  listSlider.addEventListener("input", updateSales);
+  discountSlider.addEventListener("input", updateSales);
+  updateSales();
+
+  /* 05 积分 */
+  var winSlider = document.getElementById("winSlider");
+  var winVal = document.getElementById("winVal");
+  var winPts = document.getElementById("winPts");
+  var losePts = document.getElementById("losePts");
+  var integralReadout = document.getElementById("integralReadout");
+  function updateIntegral() {
+    var y = Number(winSlider.value);
+    var wp = 2 * y;
+    var lp = 14 - y;
+    winVal.textContent = y + " 场";
+    winPts.textContent = String(wp);
+    losePts.textContent = String(lp);
+    var diff = wp - lp;
+    if (diff === 0) {
+      integralReadout.classList.remove("is-bad");
+      integralReadout.innerHTML = "胜场积分 " + wp + "，负场积分 " + lp + "，相等<small>但 2y=14−y 的解是 14/3，不是整数，实际中做不到</small>";
+    } else {
+      integralReadout.classList.remove("is-bad");
+      integralReadout.innerHTML = "胜场积分 " + wp + "，负场积分 " + lp + "，相差 " + Math.abs(diff) + "<small>" + (diff > 0 ? "胜场积分更高" : "负场积分更高") + "；继续拖，看能不能相等</small>";
+    }
+  }
+  winSlider.addEventListener("input", updateIntegral);
+  updateIntegral();
+
+  /* 06 方案 */
+  var yearSlider = document.getElementById("yearSlider");
+  var yearVal = document.getElementById("yearVal");
+  var costA = document.getElementById("costA");
+  var costB = document.getElementById("costB");
+  var barA = document.getElementById("barA");
+  var barB = document.getElementById("barB");
+  var planReadout = document.getElementById("planReadout");
+  function updatePlan() {
+    var t = Number(yearSlider.value);
+    var a = 3000 + 320 * t;
+    var b = 2600 + 400 * t;
+    yearVal.textContent = t + " 年";
+    costA.textContent = a + " 元";
+    costB.textContent = b + " 元";
+    barA.style.width = Math.min(100, a / 7800 * 100) + "%";
+    barB.style.width = Math.min(100, b / 7800 * 100) + "%";
+    if (a === b) {
+      planReadout.classList.remove("is-bad");
+      planReadout.innerHTML = "两款都是 " + a + " 元，费用相同<small>3000+320t = 2600+400t，解得 t=5；t<5 选 3 级，t>5 选 1 级</small>";
+    } else {
+      planReadout.classList.remove("is-bad");
+      planReadout.innerHTML = "1 级 " + a + " 元，3 级 " + b + " 元，" + (a < b ? "1 级" : "3 级") + "更省 " + Math.abs(a - b) + " 元<small>费用差 = 80(t−5)，t<5 时 3 级省，t>5 时 1 级省</small>";
+    }
+  }
+  yearSlider.addEventListener("input", updatePlan);
+  updatePlan();
+
+  /* 09 检测 */
+  var qs = document.querySelectorAll("#quizSec .q");
+  var quizStat = document.getElementById("quizStat");
+  var quizReset = document.getElementById("quizReset");
+  var answered = 0;
+  var correct = 0;
+  function updateStat() {
+    quizStat.textContent = "已答 " + answered + " / " + qs.length + " · 答对 " + correct;
+  }
+  qs.forEach(function (q) {
+    var opts = q.querySelectorAll(".q__opts button");
+    opts.forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (q.dataset.done) return;
+        q.dataset.done = "1";
+        var ok = b.getAttribute("data-ok") === "1";
+        opts.forEach(function (x) { x.classList.add("is-locked"); });
+        b.classList.add(ok ? "is-ok" : "is-bad");
+        if (!ok) {
+          opts.forEach(function (x) {
+            if (x.getAttribute("data-ok") === "1") x.classList.add("is-ok");
+          });
+        }
+        q.querySelector(".q__fb").classList.add("is-open");
+        answered += 1;
+        if (ok) correct += 1;
+        updateStat();
+      });
+    });
+  });
+  quizReset.addEventListener("click", function () {
+    answered = 0;
+    correct = 0;
+    qs.forEach(function (q) {
+      delete q.dataset.done;
+      q.querySelectorAll(".q__opts button").forEach(function (b) {
+        b.classList.remove("is-ok", "is-bad", "is-locked");
+      });
+      q.querySelector(".q__fb").classList.remove("is-open");
+    });
+    updateStat();
+  });
+  updateStat();
+
+  /* 教师模式 */
+  var teacher = document.getElementById("teacherPanel");
+  var teacherBtn = document.getElementById("teacherBtn");
+  function setTeacher(open) {
+    teacher.classList.toggle("is-open", open);
+    teacher.setAttribute("aria-hidden", open ? "false" : "true");
+    teacherBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  teacherBtn.addEventListener("click", function () { setTeacher(!teacher.classList.contains("is-open")); });
+  document.getElementById("teacherClose").addEventListener("click", function () { setTeacher(false); });
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var preset = b.getAttribute("data-preset");
+      var targetId = preset === "standard" ? "peitao" : (preset === "error" ? "sales" : "plan");
+      var label = preset === "standard" ? "标准例：从配套滑块开始。" : (preset === "error" ? "易错例：直接看销售两件衣服。" : "挑战例：跳到方案选择。");
+      document.getElementById("presetNote").textContent = label;
+      var target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* 投影与全屏 */
+  var projectorBtn = document.getElementById("projectorBtn");
+  projectorBtn.addEventListener("click", function () {
+    var on = !document.body.classList.contains("is-projector");
+    document.body.classList.toggle("is-projector", on);
+    projectorBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  var fullBtn = document.getElementById("fullBtn");
+  fullBtn.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+      if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  });
+  document.addEventListener("fullscreenchange", function () {
+    fullBtn.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (e.target.tagName || "").toLowerCase();
+    var typing = tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+    if (typing) return;
+    if (e.key === "t" || e.key === "T") {
+      e.preventDefault();
+      setTeacher(!teacher.classList.contains("is-open"));
+    } else if (e.key === "Escape") {
+      setTeacher(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>
